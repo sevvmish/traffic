@@ -4,15 +4,5 @@ using UnityEngine;
 
 public class Globals : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public const float TIME_FOR_ACCIDENT = 3f;
 }

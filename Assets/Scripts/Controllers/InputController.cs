@@ -87,7 +87,7 @@ public class InputController : MonoBehaviour
             {
                 Transform part = hit.collider.transform;
 
-                if (hit.collider.gameObject.layer.Equals(7) && hit.collider.TryGetComponent(out Region region) && !region.IsBusy)
+                if (hit.collider.gameObject.layer.Equals(7) && hit.collider.TryGetComponent(out Region region) && !region.IsBusyRotate)
                 {
                     int sign = 0;
                     if (hit.point.x >= part.position.x)

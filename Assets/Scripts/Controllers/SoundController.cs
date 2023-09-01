@@ -20,6 +20,12 @@ public class SoundController : MonoBehaviour
                 audioSource.clip = GameManager.Instance.GetAssets().ErrorClip;
                 audioSource.Play();
                 break;
+
+            case SoundsUI.positive:
+                audioSource.Stop();
+                audioSource.clip = GameManager.Instance.GetAssets().positiveSoundClip;
+                audioSource.Play();
+                break;
         }
     }
 }
@@ -27,5 +33,6 @@ public class SoundController : MonoBehaviour
 public enum SoundsUI
 {
     none,
-    error
+    error,
+    positive
 }

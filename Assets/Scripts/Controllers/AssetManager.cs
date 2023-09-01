@@ -20,11 +20,13 @@ public class AssetManager : MonoBehaviour
     public AudioClip ErrorClip;
     public AudioClip SmallTownAmbient;
     public AudioClip hornClip;
+    public AudioClip hornDoubleClip;
     public AudioClip ambuSirenClip;
     public AudioClip sirenClip;
     public AudioClip specSignalClip;
     public AudioClip motorSoundLightClip;
     public AudioClip motorSoundHeavyClip;
+    public AudioClip positiveSoundClip;
 
 
     public GameObject GetVehicle(Vehicles vehicle)

@@ -65,8 +65,20 @@ public class RegionController : MonoBehaviour
         }
 
         xBorder = new Vector2(minX + cameraTransform.position.x + 8, maxX + cameraTransform.position.x - 8);
-        zBorder = new Vector2(minZ + cameraTransform.position.z+2, maxZ + cameraTransform.position.z - 2);
+        zBorder = new Vector2(minZ + cameraTransform.position.z+2, maxZ + cameraTransform.position.z - 5);
         print(xBorder + " = " + zBorder);
+    }
+
+    public void UpdateAll()
+    {
+        for (int i = 0; i < infrastructures.Count; i++)
+        {
+            if (infrastructures[i].GetGameObject().TryGetComponent(out Region r))
+            {
+                r.UpdateEnds();
+            }
+
+        }
     }
 
     private void addRegion(Vector3 pos, Vector3 rot)
@@ -101,7 +113,7 @@ public class RegionController : MonoBehaviour
         {
             if (infrastructures[i].GetGameObject().TryGetComponent(out Region r)) {
 
-                if (!r.gameObject.activeSelf) continue;
+                if (!r.gameObject.activeSelf || !r.IsActive) continue;
                 if (vehicle.currentRegion != null && vehicle.currentRegion == r) continue;
 
                 for (int j = 0; j < r.entrances.Length; j++)
@@ -121,14 +133,18 @@ public class RegionController : MonoBehaviour
                       
         }
         
-        vehicle.SetNewRoot(region, from, to, center);
+        if ((vehicle.transform.position - from.position).magnitude < minDistnaceForConnectionOK)
+        {
+            vehicle.SetNewRoot(region, from, to, center);
+        }
+        
     }
 
     public bool IsDeadEndForRoute(Region region, Transform end)
     {
         for (int j = 0; j < infrastructures.Count; j++)
         {
-            if (infrastructures[j].GetGameObject().TryGetComponent(out Region r))
+            if (infrastructures[j].GetGameObject().TryGetComponent(out Region r) && r.IsActive)
             {
                 if (region != null && r == region) continue;
 

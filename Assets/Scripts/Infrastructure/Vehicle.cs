@@ -11,6 +11,7 @@ public class Vehicle : MonoBehaviour
     public Transform from { get; private set; }
     public Transform to { get; private set; }
     public Transform center { get; private set; }
+    public bool IsCanMove { get; private set; }
 
     public RegionController regionController { get; private set; }
     public Vehicles vehicleType { get; private set; }
@@ -28,12 +29,14 @@ public class Vehicle : MonoBehaviour
         vehicleType = type;
         TimeForRide = timeForRide;
         driveVFX.SetActive(true);
+        IsCanMove = true;
     }
 
     // Update is called once per frame
     void Update()
     {        
-        if (isStart)
+
+        if (isStart && IsCanMove)
         {
             _timer += Time.deltaTime;
 
@@ -52,28 +55,38 @@ public class Vehicle : MonoBehaviour
                 transform.position = Vector3.Lerp(center.position, to.position, _timer / (TimeForRide / 2f));
                 transform.LookAt(to);
             }
-            
 
-            /*
+
             float dist = (transform.position - prevPosition).magnitude;
-            if (dist > 0 && !driveVFX.activeSelf)
-            {
-                driveVFX.SetActive(true);
-            } 
-            else if (dist <= 0 && driveVFX.activeSelf)
-            {
-                driveVFX.SetActive(false);
-            }
 
-            prevPosition = transform.position;*/
+            if (dist <= 0) MakeSelfDestruction();
+            prevPosition = transform.position;
         }
                
         if (isStart && _timer > 0.1f && (transform.position - to.position).magnitude <= 0.1f)
         {
             isStart = false;
             regionController.GetNewRoot(this, to);            
+        }        
+    }
+
+    public void SetMove(bool isMove)
+    {
+        IsCanMove = isMove;
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {        
+        if (collision.gameObject.TryGetComponent(out Vehicle v))
+        {
+            if (v.vehicleType != vehicleType)
+            {                
+                currentRegion.SetInActive_Accident
+                    (Globals.TIME_FOR_ACCIDENT, Vector3.Lerp(transform.position, v.transform.position, 0.5f) + Vector3.up * 0.5f, this, v);
+            }
         }
     }
+
 
     public void SetNewRoot(Region currentRegion, Transform from, Transform to, Transform center)
     {

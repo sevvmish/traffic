@@ -35,6 +35,8 @@ public class VehicleSpawner : MonoBehaviour, CityInfrastructure
 
     public void SpawnVehicle(Vehicles vehicle, Vector3 pos)
     {
+        if (regionController.IsDeadEndForRoute(null, transform)) { return; }
+
         GameObject transport = default;
         
         switch(vehicle)

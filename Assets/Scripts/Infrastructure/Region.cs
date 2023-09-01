@@ -5,21 +5,26 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Region : MonoBehaviour, CityInfrastructure
-{    
+{
+    public float RotationAngle = 90;
+
     public Transform[] entrances = new Transform[0];
     public Transform[] entrancesEnd = new Transform[0];
     public Transform[] centers = new Transform[0];
     public GameObject[] endBarrier = new GameObject[0];
-    public bool IsBusy { get => isBusy; }
+    public bool IsActive { get; private set; }
+    public bool IsBusyRotate { get => isBusyRotate; }
     public Action<Vehicle> OnVehicleAdded;
 
     [SerializeField] private GameObject edgeEffect;
-        
+    [SerializeField] private GameObject accidentEffect;
+    [SerializeField] private GameObject lockEffect;
+
     private HashSet<Vehicle> currentVehicles = new HashSet<Vehicle>();
 
     private Transform _transform;
     private RegionController regionController;
-    private bool isBusy;
+    private bool isBusyRotate;
     private AudioSource _audioSource;
     
     private readonly float swipeSpeed = 0.25f;
@@ -30,6 +35,8 @@ public class Region : MonoBehaviour, CityInfrastructure
         _audioSource = GetComponent<AudioSource>();
         if (edgeEffect != null) edgeEffect.SetActive(true);
         _transform = transform;
+        if (accidentEffect != null) accidentEffect.SetActive(false);
+        if (lockEffect != null) lockEffect.SetActive(false);
     }
 
     public void SetData(RegionController r)
@@ -40,7 +47,95 @@ public class Region : MonoBehaviour, CityInfrastructure
         {
             endBarrier[i].SetActive(false);
         }
+
+        IsActive = true;
                 
+    }
+
+    public void SetInActive_Accident(float _time, Vector3 pos, Vehicle one, Vehicle two)
+    {
+        if (IsActive) StartCoroutine(playInactive(_time, pos, one, two));
+    }
+    private IEnumerator playInactive(float _time, Vector3 pos, Vehicle one, Vehicle two)
+    {
+        IsActive = false;
+        regionController.UpdateAll();
+        accidentEffect.transform.position = pos;
+        accidentEffect.transform.localScale = Vector3.one;
+        one.SetMove(false);
+        two.SetMove(false);
+        one.transform.DORotate( 
+            new Vector3(one.transform.localEulerAngles.x, one.transform.localEulerAngles.y + UnityEngine.Random.Range(5f, 35f), one.transform.localEulerAngles.z), 0.2f).SetEase(Ease.InOutSine);
+        two.transform.DORotate(
+            new Vector3(one.transform.localEulerAngles.x, one.transform.localEulerAngles.y - UnityEngine.Random.Range(5f, 35f), one.transform.localEulerAngles.z), 0.2f).SetEase(Ease.InOutSine);
+
+        accidentEffect.SetActive(true);
+
+        if (currentVehicles.Count > 0)
+        {
+            foreach (Vehicle v in currentVehicles)
+            {
+                if (v != one && v != two)
+                {
+                    v.MakeSelfDestruction();
+                }                
+            }
+        }
+
+        yield return new WaitForSeconds(0.1f);
+        StartCoroutine(playLockEffect());
+        edgeEffect?.GetComponent<ParticleSystem>().Play();
+
+        yield return new WaitForSeconds(_time-0.4f);
+        one.transform.DOScale(Vector3.zero, 0.3f);
+        two.transform.DOScale(Vector3.zero, 0.3f);
+        yield return new WaitForSeconds(0.3f);
+
+        one.transform.localScale = Vector3.one;
+        two.transform.localScale = Vector3.one;
+
+        one.MakeSelfDestruction();
+        two.MakeSelfDestruction();        
+        IsActive = true;
+        regionController.UpdateAll();
+
+        accidentEffect.transform.DOScale(Vector3.zero, 0.3f);
+        yield return new WaitForSeconds(0.3f);
+        accidentEffect.SetActive(false);
+    }
+    private IEnumerator playLockEffect()
+    {
+        lockEffect.SetActive(true);
+        lockEffect.transform.localPosition = Vector3.zero;
+        lockEffect.transform.localScale = Vector3.zero;
+        lockEffect.transform.DOLocalMove(new Vector3(0,4,0), 0.3f).SetEase(Ease.InOutBounce);
+        lockEffect.transform.DOScale(Vector3.one, 0.3f).SetEase(Ease.InOutBounce); 
+        yield return new WaitForSeconds(0.3f);
+
+        lockEffect.transform.DOPunchScale(Vector3.one * 0.3f, 0.3f).SetEase(Ease.InOutBounce);
+        yield return new WaitForSeconds(0.2f);
+
+        lockEffect.transform.DOLocalRotate(new Vector3(0, 0, -45), 0.25f).SetEase(Ease.OutSine);
+        yield return new WaitForSeconds(0.25f);
+
+        lockEffect.transform.DOLocalRotate(new Vector3(0, 0, 40), 0.5f).SetEase(Ease.OutSine);
+        yield return new WaitForSeconds(0.5f);
+
+        lockEffect.transform.DOLocalRotate(new Vector3(0, 0, -30), 0.4f).SetEase(Ease.OutSine);
+        yield return new WaitForSeconds(0.4f);
+
+        lockEffect.transform.DOLocalRotate(new Vector3(0, 0, 20), 0.3f).SetEase(Ease.OutSine);
+        yield return new WaitForSeconds(0.3f);
+
+        lockEffect.transform.DOLocalRotate(new Vector3(0, 0, -10), 0.2f).SetEase(Ease.OutSine);
+        yield return new WaitForSeconds(0.2f);
+
+        lockEffect.transform.DOLocalRotate(new Vector3(0, 0, 0), 0.2f).SetEase(Ease.OutSine);
+        yield return new WaitForSeconds(0.5f);
+
+        lockEffect.transform.localScale = Vector3.one;
+        lockEffect.SetActive(false);
+
     }
 
     public void UpdateEnds()
@@ -80,7 +175,7 @@ public class Region : MonoBehaviour, CityInfrastructure
 
     public void RotateRegion(int sign)
     {
-        if (isBusy)
+        if (isBusyRotate || !IsActive)
         {
             playError();
             return;
@@ -97,7 +192,7 @@ public class Region : MonoBehaviour, CityInfrastructure
                 }                    
             }
         }
-
+                
         StartCoroutine(rotatePart(sign));
     }
 
@@ -109,7 +204,7 @@ public class Region : MonoBehaviour, CityInfrastructure
     private IEnumerator rotatePart(int sign)
     {   
         Vector3 pos = _transform.position;
-        isBusy = true;
+        isBusyRotate = true;
 
         for (int i = 0; i < entrancesEnd.Length; i++)
         {
@@ -127,12 +222,13 @@ public class Region : MonoBehaviour, CityInfrastructure
         yield return new WaitForSeconds(0.025f);
 
 
-        _transform.DORotate(new Vector3(_transform.eulerAngles.x, _transform.eulerAngles.y + 90 * sign, _transform.eulerAngles.z), swipeSpeed);
+        _transform.DORotate(new Vector3(_transform.eulerAngles.x, _transform.eulerAngles.y + RotationAngle * sign, _transform.eulerAngles.z), swipeSpeed);
         yield return new WaitForSeconds(swipeSpeed);
         _transform.position = pos;
         
-        isBusy = false;
-        UpdateEnds();
+        isBusyRotate = false;
+        //UpdateEnds();
+        regionController.UpdateAll();
     }
 
     public CityInfrastructureTypes GetInfrastructureTypes()

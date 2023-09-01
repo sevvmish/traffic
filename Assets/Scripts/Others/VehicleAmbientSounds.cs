@@ -35,16 +35,17 @@ public class VehicleAmbientSounds : MonoBehaviour
     {        
         while (true)
         {
-            yield return new WaitForSeconds(UnityEngine.Random.Range(0.5f,1f));
-            audioSource.clip = assets.motorSoundLightClip;
-            audioSource.Play();
-            yield return new WaitForSeconds(2f);
-            yield return new WaitForSeconds(UnityEngine.Random.Range(0.5f, 1.5f));
+            //yield return new WaitForSeconds(UnityEngine.Random.Range(0.5f,1f));
+            //audioSource.clip = assets.motorSoundLightClip;
+            //audioSource.Play();
+            //yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(UnityEngine.Random.Range(1f, 3f));
             int chanse = UnityEngine.Random.Range(0, 100);
-            if (chanse < 30)
+            if (chanse < 40)
             {
                 audioSource.clip = assets.hornClip;
                 audioSource.Play();
+                yield return new WaitForSeconds(UnityEngine.Random.Range(0, 2f));
             }
         }
     }
@@ -53,16 +54,17 @@ public class VehicleAmbientSounds : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(UnityEngine.Random.Range(0.5f, 1f));
-            audioSource.clip = assets.motorSoundHeavyClip;
-            audioSource.Play();
-            yield return new WaitForSeconds(2f);
-            yield return new WaitForSeconds(UnityEngine.Random.Range(0.5f, 1.5f));
+            //yield return new WaitForSeconds(UnityEngine.Random.Range(0.5f, 1f));
+            //audioSource.clip = assets.motorSoundHeavyClip;
+            //audioSource.Play();
+            //yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(UnityEngine.Random.Range(1f, 3f));
             int chanse = UnityEngine.Random.Range(0, 100);
-            if (chanse < 30)
+            if (chanse < 40)
             {
-                audioSource.clip = assets.hornClip;
+                audioSource.clip = assets.hornDoubleClip;
                 audioSource.Play();
+                yield return new WaitForSeconds(UnityEngine.Random.Range(0, 2f));
             }
         }
     }
@@ -87,7 +89,7 @@ public class VehicleAmbientSounds : MonoBehaviour
                 h = 20;
             }
                         
-            yield return new WaitForSeconds(UnityEngine.Random.Range(1.5f, 3f));
+            yield return new WaitForSeconds(UnityEngine.Random.Range(0.5f, 2f));
             chanse = UnityEngine.Random.Range(0, 100);
             if (chanse < (30 + h))
             {
@@ -97,9 +99,9 @@ public class VehicleAmbientSounds : MonoBehaviour
             }
 
             
-            audioSource.clip = assets.motorSoundHeavyClip;
-            audioSource.Play();
-            yield return new WaitForSeconds(2f);
+            //audioSource.clip = assets.motorSoundHeavyClip;
+            //audioSource.Play();
+            //yield return new WaitForSeconds(2f);
         }
     }
 }
