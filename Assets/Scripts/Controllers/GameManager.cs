@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,11 +6,50 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
+
+    [Header("Win conditions")]
+    public int TaxiCount;
+    public int TaxiCurrent { get; private set; }
+    public int VanCount;
+    public int VanCurrent { get; private set; }
+    public int AmbulanceCount;
+    public int AmbulanceCurrent { get; private set; }
+    public Action OnChangedConditionsAmount;
+
+    public void AddTaxi() 
+    {
+        print("add taxi");
+        TaxiCurrent++;
+        OnChangedConditionsAmount?.Invoke();        
+    }
         
-    [Header("transport use")]
-    public bool IsTaxi;
-    public bool IsVan;
-    public bool IsAmbulance;
+    public void RemoveTaxi()
+    {
+        print("rem taxi");
+        if (TaxiCurrent > 0) TaxiCurrent--;
+        OnChangedConditionsAmount?.Invoke();        
+    }
+    public void AddVan()
+    {
+        VanCurrent++;
+        OnChangedConditionsAmount?.Invoke();        
+    }
+    public void RemoveVan()
+    {
+        if (VanCurrent > 0) VanCurrent--;
+        OnChangedConditionsAmount?.Invoke();        
+    }
+    public void AddAmbulance()
+    {
+        AmbulanceCurrent++;
+        OnChangedConditionsAmount?.Invoke();        
+    }
+    public void RemoveAmbulance()
+    {
+        if (AmbulanceCurrent > 0) AmbulanceCurrent--;
+        OnChangedConditionsAmount?.Invoke();        
+    }
+
 
     public RegionController regionController { get; private set; }
 
@@ -42,6 +82,10 @@ public class GameManager : MonoBehaviour
 
         Screen.SetResolution(1200, 600, true);
         
+        if (TaxiCount == 0 && VanCount == 0 && AmbulanceCount == 0)
+        {
+            UnityEngine.Debug.LogError("Error in match conditions!");
+        }
 
         regionController = GetComponent<RegionController>();
         inputController = GetComponent<InputController>();
@@ -64,7 +108,7 @@ public class GameManager : MonoBehaviour
 
     private void InitVehiclesPools()
     {
-        if (IsTaxi)
+        if (TaxiCount > 0)
         {
             assets.TaxiPool = new ObjectPool(10, assets.GetVehicle(Vehicles.taxi), regionController.Location());
         }
@@ -73,7 +117,7 @@ public class GameManager : MonoBehaviour
             assets.TaxiPool = new ObjectPool(1, assets.GetVehicle(Vehicles.taxi), regionController.Location());
         }
 
-        if (IsVan)
+        if (VanCount > 0)
         {
             assets.VanPool = new ObjectPool(10, assets.GetVehicle(Vehicles.van), regionController.Location());
         }
@@ -82,7 +126,7 @@ public class GameManager : MonoBehaviour
             assets.VanPool = new ObjectPool(1, assets.GetVehicle(Vehicles.van), regionController.Location());
         }
 
-        if (IsAmbulance)
+        if (AmbulanceCount > 0)
         {
             assets.AmbulancePool = new ObjectPool(10, assets.GetVehicle(Vehicles.ambulance), regionController.Location());
         }

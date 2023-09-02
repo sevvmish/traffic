@@ -40,6 +40,11 @@ public class VehicleSpawner : MonoBehaviour, CityInfrastructure
         GameObject transport = default;
         float timeForRide = 0;
         
+        if (vehicle == Vehicles.none)
+        {
+            vehicle = (Vehicles)UnityEngine.Random.Range(1, 4);
+        }
+
         switch(vehicle)
         {
             case Vehicles.taxi:

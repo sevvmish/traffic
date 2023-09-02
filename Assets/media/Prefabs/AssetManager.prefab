@@ -60,3 +60,4 @@ MonoBehaviour:
   motorSoundLightClip: {fileID: 8300000, guid: 704cf873ef77e404ebb841aa6022c8b6, type: 3}
   motorSoundHeavyClip: {fileID: 8300000, guid: f763ef2d738aab44fbcaf5591d90c254, type: 3}
   positiveSoundClip: {fileID: 8300000, guid: c27cbc7f56a4f41499363f7671a0e672, type: 3}
+  ErrorBiggerClip: {fileID: 8300000, guid: 1a1632f9caf8d564dbc48414bc714682, type: 3}

@@ -27,6 +27,7 @@ public class AssetManager : MonoBehaviour
     public AudioClip motorSoundLightClip;
     public AudioClip motorSoundHeavyClip;
     public AudioClip positiveSoundClip;
+    public AudioClip ErrorBiggerClip;
 
 
     public GameObject GetVehicle(Vehicles vehicle)

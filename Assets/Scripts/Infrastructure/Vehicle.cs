@@ -23,6 +23,7 @@ public class Vehicle : MonoBehaviour
     private Vector3 prevPosition;
     private bool isCenterReached;
 
+    public bool HasRegion;
 
     public void SetData(RegionController r, Vehicles type, float timeForRide)
     {
@@ -36,7 +37,6 @@ public class Vehicle : MonoBehaviour
     // Update is called once per frame
     void Update()
     {        
-
         if (isStart && IsCanMove)
         {
             _timer += Time.deltaTime;
@@ -140,6 +140,7 @@ public class Vehicle : MonoBehaviour
         if (this.currentRegion != null)
         {
             this.currentRegion.RemoveVehicle(this);
+            this.currentRegion = null;
         }
 
         AssetManager assetManager = GameManager.Instance.GetAssets();

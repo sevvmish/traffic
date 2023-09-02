@@ -240,6 +240,7 @@ public class Region : MonoBehaviour, CityInfrastructure
     {   
         Vector3 pos = _transform.position;
         isBusyRotate = true;
+        IsActive = false;
 
         for (int i = 0; i < entrancesEnd.Length; i++)
         {
@@ -262,6 +263,7 @@ public class Region : MonoBehaviour, CityInfrastructure
         _transform.position = pos;
         
         isBusyRotate = false;
+        IsActive= true;
         //UpdateEnds();
         regionController.UpdateAll();
     }
