@@ -40,7 +40,7 @@ public class GameManager : MonoBehaviour
             Instance = this;
         }
 
-        Screen.SetResolution(1400, 700, true);
+        Screen.SetResolution(1200, 600, true);
         
 
         regionController = GetComponent<RegionController>();

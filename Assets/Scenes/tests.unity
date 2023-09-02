@@ -824,6 +824,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6534344692076709930, guid: 043024ea41b9cfd4aac61176d9b2b6ff, type: 3}
+      propertyPath: SpawnFrequency
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 6767286383419918973, guid: 043024ea41b9cfd4aac61176d9b2b6ff, type: 3}
       propertyPath: m_Name
       value: Ambulance Spawner
@@ -1130,7 +1134,7 @@ MonoBehaviour:
   m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 1400, y: 700}
+  m_ReferenceResolution: {x: 1200, y: 600}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
@@ -2441,6 +2445,10 @@ PrefabInstance:
     - target: {fileID: 1896642324574430172, guid: 5dea1d70e5d5fed47849639457867bf1, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4461983662808138375, guid: 5dea1d70e5d5fed47849639457867bf1, type: 3}
+      propertyPath: SpawnFrequency
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7416784296526021425, guid: 5dea1d70e5d5fed47849639457867bf1, type: 3}
       propertyPath: m_Name

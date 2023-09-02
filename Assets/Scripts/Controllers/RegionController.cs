@@ -99,7 +99,8 @@ public class RegionController : MonoBehaviour
         {
             //if (vehicle.currentRegion != null) vehicle.currentRegion.RemoveVehicle(vehicle);
             //Destroy(vehicle.gameObject);
-            vehicle.MakeSelfDestruction();
+            //vehicle.MakeSelfDestruction();
+            vehicle.MakeSelfDestructionWithVFX();
             return;
         }
 

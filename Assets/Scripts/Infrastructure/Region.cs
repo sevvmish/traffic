@@ -19,6 +19,7 @@ public class Region : MonoBehaviour, CityInfrastructure
     [SerializeField] private GameObject edgeEffect;
     [SerializeField] private GameObject accidentEffect;
     [SerializeField] private GameObject lockEffect;
+    [SerializeField] private GameObject border;
 
     private HashSet<Vehicle> currentVehicles = new HashSet<Vehicle>();
 
@@ -37,6 +38,28 @@ public class Region : MonoBehaviour, CityInfrastructure
         _transform = transform;
         if (accidentEffect != null) accidentEffect.SetActive(false);
         if (lockEffect != null) lockEffect.SetActive(false);
+        if (border != null) border.SetActive(Globals.IsShowBorder);
+    }
+
+    private void Update()
+    {
+        if (currentVehicles.Count>0 && IsActive)
+        {
+            foreach (var vehicle in currentVehicles)
+            {
+                foreach (var vehicle2 in currentVehicles)
+                {
+                    if (
+                        vehicle != vehicle2 
+                        && vehicle.vehicleType != vehicle2.vehicleType 
+                        && (vehicle.transform.position - vehicle2.transform.position).magnitude < Globals.DISTANCE_FOR_ACCIDENT
+                        )
+                    {
+                        SetInActive_Accident(Globals.TIME_FOR_ACCIDENT, Vector3.Lerp(vehicle.transform.position, vehicle2.transform.position, 0.5f) + Vector3.up * 0.5f, vehicle, vehicle2);
+                    }
+                }
+            }
+        }
     }
 
     public void SetData(RegionController r)
@@ -199,6 +222,18 @@ public class Region : MonoBehaviour, CityInfrastructure
     private void playError()
     {
         GameManager.Instance.GetSoundUI().PlayUISound(SoundsUI.error);
+    }
+
+    public void PlayDestroWithVFX(int index)
+    {
+        StartCoroutine(playDestroWithVFX(index));
+    }
+    private IEnumerator playDestroWithVFX(int index)
+    {
+        endBarrier[index].transform.GetChild(0).gameObject.SetActive(true);
+
+        yield return new WaitForSeconds(2);
+        endBarrier[index].transform.GetChild(0).gameObject.SetActive(false);
     }
 
     private IEnumerator rotatePart(int sign)

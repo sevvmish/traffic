@@ -46,12 +46,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _type: 0
-  horn: {fileID: 8300000, guid: 4a4b838e45bc8a647822868e8eb55277, type: 3}
-  ambuSiren: {fileID: 8300000, guid: 82d5053bc63f3324cac4753e164618a5, type: 3}
-  siren: {fileID: 8300000, guid: 189e22fa566adbe40a8f9058d72ee907, type: 3}
-  specSignal: {fileID: 8300000, guid: 645d8ca331265164a9fa41b65bbbe8dd, type: 3}
-  motorSoundLight: {fileID: 8300000, guid: 704cf873ef77e404ebb841aa6022c8b6, type: 3}
-  motorSoundHeavy: {fileID: 8300000, guid: f763ef2d738aab44fbcaf5591d90c254, type: 3}
 --- !u!82 &1609408020855648349
 AudioSource:
   m_ObjectHideFlags: 0
@@ -64,7 +58,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 0.8
+  m_Volume: 0.6
   m_Pitch: 1
   Loop: 0
   Mute: 0

@@ -1,6 +1,7 @@
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 
 public class Vehicle : MonoBehaviour
@@ -73,8 +74,10 @@ public class Vehicle : MonoBehaviour
     public void SetMove(bool isMove)
     {
         IsCanMove = isMove;
+        driveVFX.SetActive(isMove);
     }
 
+    /*
     private void OnCollisionEnter(Collision collision)
     {        
         if (collision.gameObject.TryGetComponent(out Vehicle v))
@@ -86,10 +89,12 @@ public class Vehicle : MonoBehaviour
             }
         }
     }
-
+    */
 
     public void SetNewRoot(Region currentRegion, Transform from, Transform to, Transform center)
     {
+        if (currentRegion != null && !currentRegion.IsActive) return;
+
         if (this.currentRegion != null)
         {
             this.currentRegion.RemoveVehicle(this);
@@ -108,8 +113,26 @@ public class Vehicle : MonoBehaviour
 
         isStart = true;
         isCenterReached = false;
-       
+
+        SetMove(true);       
     }
+
+    public void MakeSelfDestructionWithVFX()
+    {
+        if (currentRegion.endBarrier.Length > 0)
+        {
+            for (int i = 0; i < currentRegion.endBarrier.Length; i++)
+            {
+                if ((transform.position - currentRegion.endBarrier[i].transform.position).magnitude < 1)
+                {                    
+                    currentRegion.PlayDestroWithVFX(i);
+                    break;
+                }
+            }
+        }
+        MakeSelfDestruction();
+    }
+    
 
 
     public void MakeSelfDestruction()

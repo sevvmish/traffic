@@ -5,7 +5,7 @@ using UnityEngine;
 public class VehicleSpawner : MonoBehaviour, CityInfrastructure
 {
     public Vehicles _vehicle;
-    public float Frequency = 0;
+    public float SpawnFrequency = 5f;
         
     private RegionController regionController;
     private AssetManager assetManager;
@@ -16,13 +16,13 @@ public class VehicleSpawner : MonoBehaviour, CityInfrastructure
     {
         assetManager = GameManager.Instance.GetAssets();
         regionController = GameManager.Instance.regionController;
-        _timer = Frequency;
+        _timer = SpawnFrequency;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (_timer > Frequency)
+        if (_timer > SpawnFrequency)
         {
             _timer = 0;
             SpawnVehicle(_vehicle, this.transform.localPosition);
@@ -38,26 +38,30 @@ public class VehicleSpawner : MonoBehaviour, CityInfrastructure
         if (regionController.IsDeadEndForRoute(null, transform)) { return; }
 
         GameObject transport = default;
+        float timeForRide = 0;
         
         switch(vehicle)
         {
             case Vehicles.taxi:
                 transport = assetManager.TaxiPool.GetObject();
+                timeForRide = Globals.TIME_FOR_RIDE_TAXI;
                 break;
 
             case Vehicles.van:
                 transport = assetManager.VanPool.GetObject();
+                timeForRide = Globals.TIME_FOR_RIDE_VAN;
                 break;
 
             case Vehicles.ambulance:
                 transport = assetManager.AmbulancePool.GetObject();
+                timeForRide = Globals.TIME_FOR_RIDE_AMBULANCE;
                 break;
         }
 
         GameObject g = transport;//Instantiate(transport, regionController.Location());
         g.SetActive(true);
         g.transform.localPosition = pos;
-        g.GetComponent<Vehicle>().SetData(regionController, vehicle, 3f);
+        g.GetComponent<Vehicle>().SetData(regionController, vehicle, timeForRide);
         regionController.GetNewRoot(g.GetComponent<Vehicle>(), null);
 
     }
