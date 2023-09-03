@@ -24,8 +24,16 @@ public class VehicleSpawner : MonoBehaviour, CityInfrastructure
     {
         if (_timer > SpawnFrequency)
         {
-            _timer = 0;
-            SpawnVehicle(_vehicle, this.transform.localPosition);
+            if (SpawnVehicle(_vehicle, this.transform.localPosition))
+            {
+                _timer = 0;
+            }
+            else
+            {
+                _timer -= 0.1f;
+            }
+            
+            
         }
         else
         {
@@ -33,9 +41,9 @@ public class VehicleSpawner : MonoBehaviour, CityInfrastructure
         }
     }
 
-    public void SpawnVehicle(Vehicles vehicle, Vector3 pos)
+    public bool SpawnVehicle(Vehicles vehicle, Vector3 pos)
     {
-        if (regionController.IsDeadEndForRoute(null, transform)) { return; }
+        if (regionController.IsDeadEndForRoute(null, transform)) { return false; }
 
         GameObject transport = default;
         float timeForRide = 0;
@@ -69,6 +77,7 @@ public class VehicleSpawner : MonoBehaviour, CityInfrastructure
         g.GetComponent<Vehicle>().SetData(regionController, vehicle, timeForRide);
         regionController.GetNewRoot(g.GetComponent<Vehicle>(), null);
 
+        return true;
     }
 
     public CityInfrastructureTypes GetInfrastructureTypes()

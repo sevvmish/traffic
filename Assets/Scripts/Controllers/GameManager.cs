@@ -97,7 +97,7 @@ public class GameManager : MonoBehaviour
         mainCameraBody.position = new Vector3(
             (regionController.xBorder.x + regionController.xBorder.y) / 2,
             mainCameraBody.position.y,
-            (regionController.zBorder.x + regionController.zBorder.y) / 2 - 3);
+            (regionController.zBorder.x + regionController.zBorder.y) / 2);
 
         inputController.SetData(mainCamera, mainCameraBody, joystick, mainCar, regionController.Location(), regionController);
         ambient.SetData(ambientType);
