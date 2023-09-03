@@ -20,6 +20,8 @@ public class Region : MonoBehaviour, CityInfrastructure
     [SerializeField] private GameObject accidentEffect;
     [SerializeField] private GameObject lockEffect;
     [SerializeField] private GameObject border;
+    [SerializeField] private Material whenNotBlocked;
+    [SerializeField] private Material whenBlocked;
 
     private HashSet<Vehicle> currentVehicles = new HashSet<Vehicle>();
 
@@ -39,6 +41,7 @@ public class Region : MonoBehaviour, CityInfrastructure
         if (accidentEffect != null) accidentEffect.SetActive(false);
         if (lockEffect != null) lockEffect.SetActive(false);
         if (border != null) border.SetActive(Globals.IsShowBorder);
+        setBorderLocked(false);
     }
 
     private void Update()
@@ -72,7 +75,7 @@ public class Region : MonoBehaviour, CityInfrastructure
         }
 
         IsActive = true;
-                
+        
     }
 
     public void SetInActive_Accident(float _time, Vector3 pos, Vehicle one, Vehicle two)
@@ -82,6 +85,8 @@ public class Region : MonoBehaviour, CityInfrastructure
     private IEnumerator playInactive(float _time, Vector3 pos, Vehicle one, Vehicle two)
     {
         IsActive = false;
+        setBorderLocked(true);
+
         regionController.UpdateAll();
         accidentEffect.transform.position = pos;
         accidentEffect.transform.localScale = Vector3.one;
@@ -120,6 +125,8 @@ public class Region : MonoBehaviour, CityInfrastructure
         one.MakeSelfDestruction();
         two.MakeSelfDestruction();        
         IsActive = true;
+        setBorderLocked(false);
+
         regionController.UpdateAll();
 
         accidentEffect.transform.DOScale(Vector3.zero, 0.3f);
@@ -129,6 +136,7 @@ public class Region : MonoBehaviour, CityInfrastructure
     private IEnumerator playLockEffect()
     {
         lockEffect.SetActive(true);
+        lockEffect.transform.LookAt(Vector3.forward * 1000);
         lockEffect.transform.localPosition = Vector3.zero;
         lockEffect.transform.localScale = Vector3.zero;
         lockEffect.transform.DOLocalMove(new Vector3(0,4,0), 0.3f).SetEase(Ease.InOutBounce);
@@ -138,27 +146,52 @@ public class Region : MonoBehaviour, CityInfrastructure
         lockEffect.transform.DOPunchScale(Vector3.one * 0.3f, 0.3f).SetEase(Ease.InOutBounce);
         yield return new WaitForSeconds(0.2f);
 
-        lockEffect.transform.DOLocalRotate(new Vector3(0, 0, -45), 0.25f).SetEase(Ease.OutSine);
+        lockEffect.transform.DOLocalRotate(new Vector3(lockEffect.transform.localEulerAngles.x, lockEffect.transform.localEulerAngles.y, -45), 0.25f).SetEase(Ease.OutSine);
         yield return new WaitForSeconds(0.25f);
 
-        lockEffect.transform.DOLocalRotate(new Vector3(0, 0, 40), 0.5f).SetEase(Ease.OutSine);
+        lockEffect.transform.DOLocalRotate(new Vector3(lockEffect.transform.localEulerAngles.x, lockEffect.transform.localEulerAngles.y, 40), 0.5f).SetEase(Ease.OutSine);
         yield return new WaitForSeconds(0.5f);
 
-        lockEffect.transform.DOLocalRotate(new Vector3(0, 0, -30), 0.4f).SetEase(Ease.OutSine);
+        lockEffect.transform.DOLocalRotate(new Vector3(lockEffect.transform.localEulerAngles.x, lockEffect.transform.localEulerAngles.y, -30), 0.4f).SetEase(Ease.OutSine);
         yield return new WaitForSeconds(0.4f);
 
-        lockEffect.transform.DOLocalRotate(new Vector3(0, 0, 20), 0.3f).SetEase(Ease.OutSine);
+        lockEffect.transform.DOLocalRotate(new Vector3(lockEffect.transform.localEulerAngles.x, lockEffect.transform.localEulerAngles.y, 20), 0.3f).SetEase(Ease.OutSine);
         yield return new WaitForSeconds(0.3f);
 
-        lockEffect.transform.DOLocalRotate(new Vector3(0, 0, -10), 0.2f).SetEase(Ease.OutSine);
+        lockEffect.transform.DOLocalRotate(new Vector3(lockEffect.transform.localEulerAngles.x, lockEffect.transform.localEulerAngles.y, -10), 0.2f).SetEase(Ease.OutSine);
         yield return new WaitForSeconds(0.2f);
 
-        lockEffect.transform.DOLocalRotate(new Vector3(0, 0, 0), 0.2f).SetEase(Ease.OutSine);
+        lockEffect.transform.DOLocalRotate(new Vector3(lockEffect.transform.localEulerAngles.x, lockEffect.transform.localEulerAngles.y, 0), 0.2f).SetEase(Ease.OutSine);
         yield return new WaitForSeconds(0.5f);
 
         lockEffect.transform.localScale = Vector3.one;
         lockEffect.SetActive(false);
+    }
 
+    private void setBorderLocked(bool isLocked)
+    {
+        if (border == null) return;
+
+        if (isLocked)
+        {
+            if (border.transform.childCount > 0)
+            {
+                for (int i = 0; i < border.transform.childCount; i++)
+                {
+                    border.transform.GetChild(i).GetComponent<MeshRenderer>().material = whenBlocked;
+                }
+            }
+        }
+        else
+        {
+            if (border.transform.childCount > 0)
+            {
+                for (int i = 0; i < border.transform.childCount; i++)
+                {
+                    border.transform.GetChild(i).GetComponent<MeshRenderer>().material = whenNotBlocked;
+                }
+            }
+        }
     }
 
     public void UpdateEnds()

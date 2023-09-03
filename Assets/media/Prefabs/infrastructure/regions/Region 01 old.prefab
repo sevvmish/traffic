@@ -1204,7 +1204,7 @@ GameObject:
   - component: {fileID: 4626970210813312666}
   - component: {fileID: 3024729551054870670}
   m_Layer: 7
-  m_Name: Region 01
+  m_Name: Region 01 old
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

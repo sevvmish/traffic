@@ -445,7 +445,7 @@ GameObject:
   - component: {fileID: 2390356414300198173}
   - component: {fileID: 1955396983337108130}
   m_Layer: 7
-  m_Name: Region 02
+  m_Name: Region 02 new example
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -514,6 +514,8 @@ MonoBehaviour:
   accidentEffect: {fileID: 4654473898752713613}
   lockEffect: {fileID: 1320000146100468865}
   border: {fileID: 8239761015877005630}
+  whenNotBlocked: {fileID: 2100000, guid: d70e19066004a924b866728834e0e2e1, type: 2}
+  whenBlocked: {fileID: 2100000, guid: 2d2b1d63d222cb34db062c99e3de300e, type: 2}
 --- !u!82 &2390356414300198173
 AudioSource:
   m_ObjectHideFlags: 0
