@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -18,10 +19,23 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI ambulanceDataText;
 
     private GameManager gm;
-    
+    private int currentTaxi;
+    private int currentVan;
+    private int currentAmbu;
+
+    private RectTransform taxiRect;
+    private RectTransform vanRect;
+    private RectTransform ambuRect;
+
+    private Vector3 dataShakeAmount = new Vector3(0.4f, 0.6f, 0);
+
     public void SetData()
     {
         gm = GameManager.Instance;
+
+        taxiRect = taxiDataText.GetComponent<RectTransform>();
+        vanRect = vanDataText.GetComponent<RectTransform>();
+        ambuRect = ambulanceDataText.GetComponent<RectTransform>();
 
         taxiDataPanel.SetActive(gm.TaxiCount > 0);
         vanDataPanel.SetActive(gm.VanCount > 0);
@@ -41,7 +55,11 @@ public class UIManager : MonoBehaviour
         }
 
         winConditionUpdate();
-        gm.OnChangedConditionsAmount = winConditionUpdate;        
+        gm.OnChangedConditionsAmount = winConditionUpdate;
+
+        currentTaxi = gm.TaxiCurrent;
+        currentVan = gm.VanCurrent;
+        currentAmbu = gm.AmbulanceCurrent;
     }
 
     private void winConditionUpdate()
@@ -49,5 +67,20 @@ public class UIManager : MonoBehaviour
         taxiDataText.text = gm.TaxiCurrent + "/" + gm.TaxiCount;
         vanDataText.text = gm.VanCurrent + "/" + gm.VanCount;
         ambulanceDataText.text = gm.AmbulanceCurrent + "/" + gm.AmbulanceCount;
+
+        if (currentTaxi != gm.TaxiCurrent)
+        {
+            taxiRect.DOPunchScale(dataShakeAmount, 0.2f).SetEase(Ease.InOutFlash);
+        }
+
+        if (currentVan != gm.VanCurrent)
+        {
+            vanRect.DOPunchScale(dataShakeAmount, 0.2f).SetEase(Ease.InOutFlash);
+        }
+
+        if (currentAmbu != gm.AmbulanceCurrent)
+        {
+            ambuRect.DOPunchScale(dataShakeAmount, 0.2f).SetEase(Ease.InOutFlash);
+        }
     }
 }

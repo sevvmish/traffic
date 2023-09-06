@@ -11,6 +11,15 @@ public class AssetManager : MonoBehaviour
     public GameObject Van;
     public GameObject Ambulance;
 
+    [Header("Vehicles signes")]
+    public GameObject TaxiSign;
+    public GameObject VanSign;
+    public GameObject AmbulanceSign;
+    public ObjectPool TaxiSignPool;
+    public ObjectPool VanSignPool;
+    public ObjectPool AmbulanceSignPool;
+
+
     [Header("Vehicles pools")]
     public ObjectPool TaxiPool;
     public ObjectPool VanPool;
@@ -28,6 +37,7 @@ public class AssetManager : MonoBehaviour
     public AudioClip motorSoundHeavyClip;
     public AudioClip positiveSoundClip;
     public AudioClip ErrorBiggerClip;
+    public AudioClip Swallow;
 
 
     public GameObject GetVehicle(Vehicles vehicle)

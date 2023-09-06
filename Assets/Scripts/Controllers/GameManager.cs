@@ -10,8 +10,10 @@ public class GameManager : MonoBehaviour
     [Header("Win conditions")]
     public int TaxiCount;
     public int TaxiCurrent { get; private set; }
+
     public int VanCount;
     public int VanCurrent { get; private set; }
+    
     public int AmbulanceCount;
     public int AmbulanceCurrent { get; private set; }
     public Action OnChangedConditionsAmount;
@@ -111,28 +113,34 @@ public class GameManager : MonoBehaviour
         if (TaxiCount > 0)
         {
             assets.TaxiPool = new ObjectPool(10, assets.GetVehicle(Vehicles.taxi), regionController.Location());
+            assets.TaxiSignPool = new ObjectPool(10, assets.TaxiSign);
         }
         else
         {
             assets.TaxiPool = new ObjectPool(1, assets.GetVehicle(Vehicles.taxi), regionController.Location());
+            assets.TaxiSignPool = new ObjectPool(1, assets.TaxiSign);
         }
 
         if (VanCount > 0)
         {
             assets.VanPool = new ObjectPool(10, assets.GetVehicle(Vehicles.van), regionController.Location());
+            assets.VanSignPool = new ObjectPool(10, assets.VanSign);
         }
         else
         {
             assets.VanPool = new ObjectPool(1, assets.GetVehicle(Vehicles.van), regionController.Location());
+            assets.VanSignPool = new ObjectPool(1, assets.VanSign);
         }
 
         if (AmbulanceCount > 0)
         {
             assets.AmbulancePool = new ObjectPool(10, assets.GetVehicle(Vehicles.ambulance), regionController.Location());
+            assets.AmbulanceSignPool = new ObjectPool(10, assets.AmbulanceSign);
         }
         else
         {
             assets.AmbulancePool = new ObjectPool(1, assets.GetVehicle(Vehicles.ambulance), regionController.Location());
+            assets.AmbulanceSignPool = new ObjectPool(1, assets.AmbulanceSign);
         }
 
     }

@@ -15,14 +15,23 @@ public class RegionController : MonoBehaviour
 
     private readonly float minDistnaceForConnectionOK = 2f;
 
+    public ObjectSpawner GetObjectSpawner(Vehicles _type)
+    {
+        for (int i = 0; i < infrastructures.Count; i++)
+        {
+            if (infrastructures[i].GetInfrastructureTypes() == CityInfrastructureTypes.object_spawner 
+                && infrastructures[i].GetGameObject().GetComponent<ObjectSpawner>().MainType == _type)
+            {
+                return infrastructures[i].GetGameObject().GetComponent<ObjectSpawner>();
+            }
+        }
+
+        return null;
+    }
+
     public void SetData(Transform cameraTransform)
     {
-        //addRegion(Vector3.zero, Vector3.zero);
-        //addRegion(new Vector3(10, 0, 0), new Vector3(0,90,0));
-        //addRegion(new Vector3(-10, 0, 0), new Vector3(0, 180, 0));
-        //addRegion(new Vector3(0, 0, 10), new Vector3(0, 0, 0));
-        //addRegion(new Vector3(0, 0, -10), new Vector3(0, 270, 0));
-
+        
         for (int i = 0; i < location.childCount; i++)
         {
             if (location.GetChild(i).gameObject.TryGetComponent(out CityInfrastructure r) && location.GetChild(i).gameObject.activeSelf)
@@ -189,5 +198,6 @@ public enum CityInfrastructureTypes
 {
     region,
     spawner,
-    receiver
+    receiver,
+    object_spawner
 }

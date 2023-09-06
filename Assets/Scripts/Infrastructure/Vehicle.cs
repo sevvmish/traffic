@@ -25,6 +25,10 @@ public class Vehicle : MonoBehaviour
 
     public bool HasRegion;
 
+    private ObjectSpawner objectSpawner;
+    private Transform sign;
+    public bool IsWithObjectInside { get; private set; }
+
     public void SetData(RegionController r, Vehicles type, float timeForRide)
     {
         regionController = r;
@@ -32,6 +36,26 @@ public class Vehicle : MonoBehaviour
         TimeForRide = timeForRide;
         driveVFX.SetActive(true);
         IsCanMove = true;
+
+        objectSpawner = regionController.GetObjectSpawner(type);
+
+        switch(vehicleType)
+        {
+            case Vehicles.taxi:
+                sign = GameManager.Instance.GetAssets().TaxiSignPool.GetObject().transform;
+                sign.gameObject.SetActive(false);
+                break;
+
+            case Vehicles.van:
+                sign = GameManager.Instance.GetAssets().VanSignPool.GetObject().transform;
+                sign.gameObject.SetActive(false);
+                break;
+
+            case Vehicles.ambulance:
+                sign = GameManager.Instance.GetAssets().AmbulanceSignPool.GetObject().transform;
+                sign.gameObject.SetActive(false);
+                break;
+        }
     }
 
     // Update is called once per frame
@@ -63,12 +87,29 @@ public class Vehicle : MonoBehaviour
             if (dist <= 0) MakeSelfDestruction();
             prevPosition = transform.position;
         }
+
+        if (!IsWithObjectInside && (transform.position - objectSpawner.GetPosition()).magnitude <= Globals.DISTANCE_FOR_OBJECTS)
+        {
+            IsWithObjectInside = true;
+            sign.gameObject.SetActive(true);
+
+            transform.DOPunchScale(Vector3.one * 0.4f, 0.3f).SetEase(Ease.InOutFlash);
+            GameManager.Instance.GetSoundUI().PlayUISound(SoundsUI.swallow);
+            objectSpawner.SpawnNewObject();
+        }
+
+        if (sign.gameObject.activeSelf)
+        {
+            sign.position = transform.position + Vector3.up * 2.5f;
+        }
                
         if (isStart && _timer > 0.1f && (transform.position - to.position).magnitude <= 0.1f)
         {
             isStart = false;
             regionController.GetNewRoot(this, to);            
-        }        
+        }
+
+
     }
 
     public void SetMove(bool isMove)
@@ -143,20 +184,24 @@ public class Vehicle : MonoBehaviour
             this.currentRegion = null;
         }
 
+        IsWithObjectInside = false;
         AssetManager assetManager = GameManager.Instance.GetAssets();
         //Destroy(gameObject);
         switch (vehicleType)
         {
             case Vehicles.taxi:
                 assetManager.TaxiPool.ReturnObject(this.gameObject);
+                assetManager.TaxiSignPool.ReturnObject(sign.gameObject);
                 break;
 
             case Vehicles.van:
                 assetManager.VanPool.ReturnObject(this.gameObject);
+                assetManager.VanSignPool.ReturnObject(sign.gameObject);
                 break;
 
             case Vehicles.ambulance:
                 assetManager.AmbulancePool.ReturnObject(this.gameObject);
+                assetManager.AmbulanceSignPool.ReturnObject(sign.gameObject);
                 break;
         }
 

@@ -47,6 +47,9 @@ MonoBehaviour:
   Taxi: {fileID: 198244945698061480, guid: facf6986f1a344b468fec5cb44f956e6, type: 3}
   Van: {fileID: 1971128033328186346, guid: 707d07f1e8b73074084279be68943f5d, type: 3}
   Ambulance: {fileID: 177441855946691870, guid: 623cbf908f754994cbd2b32e7475861b, type: 3}
+  TaxiSign: {fileID: 8591971414546800995, guid: f733f56cb9b235a4da119c69dd1a7dc1, type: 3}
+  VanSign: {fileID: 7250579514150907251, guid: 0097250727b260643afe9c695434acf5, type: 3}
+  AmbulanceSign: {fileID: 568580997589635644, guid: 0df505d7639faa246a01c42b91f07f02, type: 3}
   TaxiPool: {fileID: 0}
   VanPool: {fileID: 0}
   AmbulancePool: {fileID: 0}
@@ -61,3 +64,4 @@ MonoBehaviour:
   motorSoundHeavyClip: {fileID: 8300000, guid: f763ef2d738aab44fbcaf5591d90c254, type: 3}
   positiveSoundClip: {fileID: 8300000, guid: c27cbc7f56a4f41499363f7671a0e672, type: 3}
   ErrorBiggerClip: {fileID: 8300000, guid: 1a1632f9caf8d564dbc48414bc714682, type: 3}
+  Swallow: {fileID: 8300000, guid: 8d8031e48ed259c40860a0a5f443eb4b, type: 3}

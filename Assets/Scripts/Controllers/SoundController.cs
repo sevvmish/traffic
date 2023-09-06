@@ -32,6 +32,12 @@ public class SoundController : MonoBehaviour
                 audioSource.clip = GameManager.Instance.GetAssets().ErrorBiggerClip;
                 audioSource.Play();
                 break;
+
+            case SoundsUI.swallow:
+                audioSource.Stop();
+                audioSource.clip = GameManager.Instance.GetAssets().Swallow;
+                audioSource.Play();
+                break;
         }
     }
 }
@@ -41,5 +47,6 @@ public enum SoundsUI
     none,
     error,
     positive,
-    error_big
+    error_big,
+    swallow
 }
