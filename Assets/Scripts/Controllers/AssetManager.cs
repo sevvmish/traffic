@@ -38,6 +38,7 @@ public class AssetManager : MonoBehaviour
     public AudioClip positiveSoundClip;
     public AudioClip ErrorBiggerClip;
     public AudioClip Swallow;
+    public AudioClip Tick;
 
 
     public GameObject GetVehicle(Vehicles vehicle)

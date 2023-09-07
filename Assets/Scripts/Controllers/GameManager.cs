@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
 
     [Header("Win conditions")]
+    public float GameTime;
     public int TaxiCount;
     public int TaxiCurrent { get; private set; }
 
@@ -83,7 +84,9 @@ public class GameManager : MonoBehaviour
         }
 
         Screen.SetResolution(1200, 600, true);
-        
+        UIManager.BackImageBlack(true, 0);
+        UIManager.BackImageBlack(false, 1f);
+
         if (TaxiCount == 0 && VanCount == 0 && AmbulanceCount == 0)
         {
             UnityEngine.Debug.LogError("Error in match conditions!");
@@ -103,9 +106,12 @@ public class GameManager : MonoBehaviour
 
         inputController.SetData(mainCamera, mainCameraBody, joystick, mainCar, regionController.Location(), regionController);
         ambient.SetData(ambientType);
-        uiManager.SetData();
-
         
+        uiManager.SetData(GameTime);
+        uiManager.GameTimerStatus(true);
+
+
+
     }
 
     private void InitVehiclesPools()

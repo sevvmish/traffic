@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class Region : MonoBehaviour, CityInfrastructure
 {
+    public bool IsFakeRegion;
     public float RotationAngle = 90;
 
     public Transform[] entrances = new Transform[0];

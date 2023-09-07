@@ -88,7 +88,7 @@ public class Vehicle : MonoBehaviour
             prevPosition = transform.position;
         }
 
-        if (!IsWithObjectInside && (transform.position - objectSpawner.GetPosition()).magnitude <= Globals.DISTANCE_FOR_OBJECTS)
+        if (objectSpawner != null && !IsWithObjectInside && (transform.position - objectSpawner.GetPosition()).magnitude <= Globals.DISTANCE_FOR_OBJECTS)
         {
             IsWithObjectInside = true;
             sign.gameObject.SetActive(true);

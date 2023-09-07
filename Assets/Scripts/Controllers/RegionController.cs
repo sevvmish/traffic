@@ -48,7 +48,7 @@ public class RegionController : MonoBehaviour
 
         for (int i = 0; i < infrastructures.Count; i++)
         {
-            if (infrastructures[i].GetGameObject().TryGetComponent(out Region r))
+            if (infrastructures[i].GetGameObject().TryGetComponent(out Region r) && !r.IsFakeRegion)
             {
                 r.UpdateEnds();
 
@@ -75,7 +75,6 @@ public class RegionController : MonoBehaviour
 
         xBorder = new Vector2(minX + cameraTransform.position.x + 8, maxX + cameraTransform.position.x - 8);
         zBorder = new Vector2(minZ + cameraTransform.position.z, maxZ + cameraTransform.position.z);
-        print(xBorder + " = " + zBorder);
     }
 
     public void UpdateAll()

@@ -163,6 +163,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c66db256fe0db1541a1e1202eea586a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  effect: {fileID: 0}
+  whatToShake: {fileID: 0}
   VehicleType: 0
 --- !u!114 &6984179809636166683
 MonoBehaviour:
@@ -176,6 +178,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc37342f43197e440a81aaaa073ad8a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  IsFakeRegion: 1
+  RotationAngle: 90
   entrances:
   - {fileID: 7091975951630007463}
   entrancesEnd:
@@ -184,6 +188,11 @@ MonoBehaviour:
   - {fileID: 1874737412683734564}
   endBarrier: []
   edgeEffect: {fileID: 0}
+  accidentEffect: {fileID: 0}
+  lockEffect: {fileID: 0}
+  border: {fileID: 0}
+  whenNotBlocked: {fileID: 0}
+  whenBlocked: {fileID: 0}
 --- !u!1 &6812309948881049400
 GameObject:
   m_ObjectHideFlags: 0
