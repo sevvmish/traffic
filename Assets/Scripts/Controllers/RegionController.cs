@@ -5,7 +5,6 @@ using UnityEngine;
 public class RegionController : MonoBehaviour
 {
     [SerializeField] private Transform location;
-    [SerializeField] private GameObject reg;
     [SerializeField] private List<CityInfrastructure> infrastructures = new List<CityInfrastructure>();
 
     public Transform Location() => location;
@@ -14,6 +13,8 @@ public class RegionController : MonoBehaviour
     public List<CityInfrastructure> GetInfrastructures() => infrastructures;
 
     private readonly float minDistnaceForConnectionOK = 2f;
+
+    private Transform[] ObjectPlaces;
 
     public ObjectSpawner GetObjectSpawner(Vehicles _type)
     {
@@ -29,6 +30,27 @@ public class RegionController : MonoBehaviour
         return null;
     }
 
+    public Transform[] GetObjectPlaces()
+    {
+        List<Transform> result = new List<Transform>();
+
+        for (int i = 0; i < infrastructures.Count; i++)
+        {
+            if (infrastructures[i].GetInfrastructureTypes() == CityInfrastructureTypes.region && infrastructures[i].GetGameObject().TryGetComponent(out Region r))
+            {
+                if (r.ObjectPlaces.Length > 0)
+                {
+                    for (int j = 0; j < r.ObjectPlaces.Length; j++)
+                    {
+                        result.Add(r.ObjectPlaces[j]);
+                    }
+                }
+            }
+        }
+
+        return result.ToArray();
+    }
+
     public void SetData(Transform cameraTransform)
     {
         
@@ -38,6 +60,7 @@ public class RegionController : MonoBehaviour
             {
                 if (r.GetInfrastructureTypes() == CityInfrastructureTypes.region) r.GetGameObject().GetComponent<Region>().SetData(this);
                 infrastructures.Add(r);
+
             }            
         }
 
@@ -89,25 +112,25 @@ public class RegionController : MonoBehaviour
         }
     }
 
-    private void addRegion(Vector3 pos, Vector3 rot)
-    {
-        GameObject r = Instantiate(reg, location);
-        r.transform.localPosition = pos;
-        r.transform.localEulerAngles = rot;
-        r.transform.localScale = Vector3.one * 0.95f;
-        r.SetActive(true);
-        Region region = r.GetComponent<Region>();
-        region.SetData(this);
-        infrastructures.Add(region);
-    }
-
+    
     public void GetNewRoot(Vehicle vehicle, Transform currentEnd)
     {
+        if (currentEnd != null)
+        {
+            for (int i = 0; i < infrastructures.Count; i++)
+            {
+                if (infrastructures[i].GetInfrastructureTypes() == CityInfrastructureTypes.receiver 
+                    && (infrastructures[i].GetEntryPoint().position - currentEnd.position).magnitude < 2)
+                {
+                    infrastructures[i].GetGameObject().GetComponent<VehicleReceiver>().GetVehicle(vehicle);
+                    return;
+                }
+            }
+        }
+
+
         if (currentEnd != null && IsDeadEndForRoute(vehicle.currentRegion, currentEnd))
         {
-            //if (vehicle.currentRegion != null) vehicle.currentRegion.RemoveVehicle(vehicle);
-            //Destroy(vehicle.gameObject);
-            //vehicle.MakeSelfDestruction();
             vehicle.MakeSelfDestructionWithVFX();
             return;
         }
@@ -149,6 +172,39 @@ public class RegionController : MonoBehaviour
         
     }
 
+    public Region GetClosestRoot(Vector3 position, float distance, out Transform from, out Transform to, out Transform center)
+    {        
+        Region region = null;
+        from = null;
+        to = null;
+        center = null;
+        float minDistance = 1000;
+
+        for (int i = 0; i < infrastructures.Count; i++)
+        {
+            if (infrastructures[i].GetGameObject().TryGetComponent(out Region r))
+            {
+
+                if (!r.gameObject.activeSelf || !r.IsActive) continue;
+                
+                for (int j = 0; j < r.entrances.Length; j++)
+                {
+                    float dist = (position - r.entrances[j].position).magnitude;
+                    if (dist < distance && dist < minDistance)
+                    {
+                        minDistance = dist;
+                        region = r;
+                        from = r.entrances[j];
+                        to = r.entrancesEnd[j];
+                        center = r.centers[j];
+                    }
+                }
+            }
+        }
+
+        return region;
+    }
+
     public bool IsDeadEndForRoute(Region region, Transform end)
     {
         for (int j = 0; j < infrastructures.Count; j++)
@@ -175,7 +231,13 @@ public class RegionController : MonoBehaviour
     {
         for (int j = 0; j < infrastructures.Count; j++)
         {
+            /*
             if ((infrastructures[j].GetGameObject().transform.position - end.position).magnitude < radius)
+            {
+                return true;
+            }*/
+
+            if ((infrastructures[j].GetEntryPoint().position - end.position).magnitude <= radius)
             {
                 return true;
             }
@@ -191,6 +253,7 @@ public interface CityInfrastructure
 {
     CityInfrastructureTypes GetInfrastructureTypes();
     GameObject GetGameObject();
+    Transform GetEntryPoint();
 }
 
 public enum CityInfrastructureTypes

@@ -44,6 +44,12 @@ public class SoundController : MonoBehaviour
                 audioSource.clip = GameManager.Instance.GetAssets().Tick;
                 audioSource.Play();
                 break;
+
+            case SoundsUI.pop:
+                audioSource.Stop();
+                audioSource.clip = GameManager.Instance.GetAssets().Pop;
+                audioSource.Play();
+                break;
         }
     }
 }
@@ -55,5 +61,6 @@ public enum SoundsUI
     positive,
     error_big,
     swallow,
-    tick
+    tick,
+    pop
 }

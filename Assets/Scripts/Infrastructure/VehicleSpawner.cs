@@ -4,11 +4,15 @@ using UnityEngine;
 
 public class VehicleSpawner : MonoBehaviour, CityInfrastructure
 {
+    [SerializeField] private Transform EntryPoint;
     public Vehicles _vehicle;
     public float SpawnFrequency = 5f;
+    public int Limit = 0;
+    private int currentCount;
         
     private RegionController regionController;
     private AssetManager assetManager;
+    private GameManager gameManager;
     private float _timer;
 
     // Start is called before the first frame update
@@ -17,34 +21,47 @@ public class VehicleSpawner : MonoBehaviour, CityInfrastructure
         assetManager = GameManager.Instance.GetAssets();
         regionController = GameManager.Instance.regionController;
         _timer = SpawnFrequency;
+        gameManager = GameManager.Instance;
+        if (Limit < 1) Limit = 1000000;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (_timer > SpawnFrequency)
+        if (gameManager.IsGameStarted)
         {
-            if (SpawnVehicle(_vehicle, this.transform.localPosition))
+            if (_timer > SpawnFrequency && currentCount < Limit)
             {
-                _timer = 0;
+                if (SpawnVehicle(_vehicle, this.transform.localPosition))
+                {
+                    _timer = 0;
+                }
+                else
+                {
+                    _timer -= 0.1f;
+                }
+
+
             }
             else
             {
-                _timer -= 0.1f;
+                _timer += Time.deltaTime;
             }
-            
-            
         }
-        else
-        {
-            _timer += Time.deltaTime;
-        }
+        
     }
 
     public bool SpawnVehicle(Vehicles vehicle, Vector3 pos)
     {
-        if (regionController.IsDeadEndForRoute(null, transform)) { return false; }
+        //if (regionController.IsDeadEndForRoute(null, transform)) { return false; }
+        Transform from = null;
+        Transform to = null;
+        Transform center = null;
+        Region region = regionController.GetClosestRoot(transform.position, 6, out from, out to, out center);
 
+        if (region == null) return false;
+
+        currentCount++;
         GameObject transport = default;
         float timeForRide = 0;
         
@@ -75,7 +92,8 @@ public class VehicleSpawner : MonoBehaviour, CityInfrastructure
         g.SetActive(true);
         g.transform.localPosition = pos;
         g.GetComponent<Vehicle>().SetData(regionController, vehicle, timeForRide);
-        regionController.GetNewRoot(g.GetComponent<Vehicle>(), null);
+        //regionController.GetNewRoot(g.GetComponent<Vehicle>(), null);
+        g.GetComponent<Vehicle>().SetNewRoot(region, from, to, center);
 
         return true;
     }
@@ -88,6 +106,11 @@ public class VehicleSpawner : MonoBehaviour, CityInfrastructure
     public GameObject GetGameObject()
     {
         return gameObject;
+    }
+
+    public Transform GetEntryPoint()
+    {
+        return EntryPoint;
     }
 }
 

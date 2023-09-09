@@ -28,6 +28,7 @@ public class AssetManager : MonoBehaviour
     [Header("Sounds")]
     public AudioClip ErrorClip;
     public AudioClip SmallTownAmbient;
+    public AudioClip ForestAmbient;
     public AudioClip hornClip;
     public AudioClip hornDoubleClip;
     public AudioClip ambuSirenClip;
@@ -39,6 +40,7 @@ public class AssetManager : MonoBehaviour
     public AudioClip ErrorBiggerClip;
     public AudioClip Swallow;
     public AudioClip Tick;
+    public AudioClip Pop;
 
 
     public GameObject GetVehicle(Vehicles vehicle)

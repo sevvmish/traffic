@@ -5,7 +5,7 @@ using UnityEngine;
 public class ObjectSpawner : MonoBehaviour, CityInfrastructure
 {
     public Vehicles MainType;
-    [SerializeField] private Transform[] places;
+    private Transform[] places = new Transform[0];
     [SerializeField] private GameObject[] appearance;
 
     private Transform currentPlace;
@@ -15,6 +15,8 @@ public class ObjectSpawner : MonoBehaviour, CityInfrastructure
 
     private GameObject currentAppearance;
     private GameObject sign;
+
+    private bool isFirstStarted;
 
     private void Start()
     {
@@ -31,38 +33,61 @@ public class ObjectSpawner : MonoBehaviour, CityInfrastructure
         {
             case Vehicles.taxi:
                 sign = Instantiate(GameManager.Instance.GetAssets().TaxiSign);
-                //sign.transform.parent = objects[i].transform;
-                //sign.transform.position = transform.position + Vector3.up * 2.5f;
-                sign.gameObject.SetActive(true);
+                
                 break;
 
             case Vehicles.van:
                 sign = Instantiate(GameManager.Instance.GetAssets().VanSign);
-                //sign.transform.parent = objects[i].transform;
-                //sign.transform.position = transform.position + Vector3.up * 2.5f;
-                sign.gameObject.SetActive(true);
+                
                 break;
 
             case Vehicles.ambulance:
                 sign = Instantiate(GameManager.Instance.GetAssets().AmbulanceSign);
-                //sign.transform.parent = objects[i].transform;
-                //sign.transform.position = transform.position + Vector3.up * 2.5f;
-                sign.gameObject.SetActive(true);
+                
                 break;
         }
 
-        SpawnNewObject();
+        
     }
 
     private void Update()
     {
-        sign.transform.position = currentPlace.position + Vector3.up * 2.5f;
+        if (currentPlace != null)
+        {
+            if (sign != null && !sign.activeSelf) sign.SetActive(true);
+            sign.transform.position = currentPlace.position + Vector3.up * 2.5f;
+        }
+            
+
+        if (!isFirstStarted && GameManager.Instance.IsGameStarted)
+        {
+            isFirstStarted = true;
+            SpawnNewObject();
+        }
+                
     }
 
-    public Vector3 GetPosition() => currentPlace.position;
+    public Vector3 GetPosition()
+    {
+        if (currentPlace != null)
+        {
+            return currentPlace.position;
+        }
+        else
+        {
+            return new Vector3 (1000, 1000, 1000);
+        }
+        
+    }
 
     public void SpawnNewObject()
     {
+        if (places.Length == 0)
+        {
+            places = GameManager.Instance.regionController.GetObjectPlaces();
+            if (places.Length == 0) return;
+        }
+
         if (previousPlace == null && currentPlace == null)
         {
             currentPlace = places[UnityEngine.Random.Range(0, places.Length)];
@@ -94,5 +119,10 @@ public class ObjectSpawner : MonoBehaviour, CityInfrastructure
     public GameObject GetGameObject()
     {
         return gameObject;
+    }
+
+    public Transform GetEntryPoint()
+    {
+        return gameObject.transform;
     }
 }

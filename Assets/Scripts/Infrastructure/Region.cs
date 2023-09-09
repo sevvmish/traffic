@@ -13,6 +13,7 @@ public class Region : MonoBehaviour, CityInfrastructure
     public Transform[] entrancesEnd = new Transform[0];
     public Transform[] centers = new Transform[0];
     public GameObject[] endBarrier = new GameObject[0];
+    public Transform[] ObjectPlaces = new Transform[0];
     public bool IsActive { get; private set; }
     public bool IsBusyRotate { get => isBusyRotate; }
     public Action<Vehicle> OnVehicleAdded;
@@ -310,5 +311,10 @@ public class Region : MonoBehaviour, CityInfrastructure
     public GameObject GetGameObject()
     {
         return gameObject;
+    }
+
+    public Transform GetEntryPoint()
+    {
+        return gameObject.transform;
     }
 }

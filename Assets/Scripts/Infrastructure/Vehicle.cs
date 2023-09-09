@@ -1,4 +1,5 @@
 using DG.Tweening;
+using DG.Tweening.Core.Easing;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
@@ -22,6 +23,7 @@ public class Vehicle : MonoBehaviour
     private float _timer;
     private Vector3 prevPosition;
     private bool isCenterReached;
+    private GameManager gameManager;
 
     public bool HasRegion;
 
@@ -31,6 +33,7 @@ public class Vehicle : MonoBehaviour
 
     public void SetData(RegionController r, Vehicles type, float timeForRide)
     {
+        gameManager = GameManager.Instance;
         regionController = r;
         vehicleType = type;
         TimeForRide = timeForRide;
@@ -42,17 +45,17 @@ public class Vehicle : MonoBehaviour
         switch(vehicleType)
         {
             case Vehicles.taxi:
-                sign = GameManager.Instance.GetAssets().TaxiSignPool.GetObject().transform;
+                sign = gameManager.GetAssets().TaxiSignPool.GetObject().transform;
                 sign.gameObject.SetActive(false);
                 break;
 
             case Vehicles.van:
-                sign = GameManager.Instance.GetAssets().VanSignPool.GetObject().transform;
+                sign = gameManager.GetAssets().VanSignPool.GetObject().transform;
                 sign.gameObject.SetActive(false);
                 break;
 
             case Vehicles.ambulance:
-                sign = GameManager.Instance.GetAssets().AmbulanceSignPool.GetObject().transform;
+                sign = gameManager.GetAssets().AmbulanceSignPool.GetObject().transform;
                 sign.gameObject.SetActive(false);
                 break;
         }
@@ -60,7 +63,9 @@ public class Vehicle : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {        
+    {
+        if (!gameManager.IsGameStarted) return;
+
         if (isStart && IsCanMove)
         {
             _timer += Time.deltaTime;
@@ -118,19 +123,6 @@ public class Vehicle : MonoBehaviour
         driveVFX.SetActive(isMove);
     }
 
-    /*
-    private void OnCollisionEnter(Collision collision)
-    {        
-        if (collision.gameObject.TryGetComponent(out Vehicle v))
-        {
-            if (v.vehicleType != vehicleType)
-            {                
-                currentRegion.SetInActive_Accident
-                    (Globals.TIME_FOR_ACCIDENT, Vector3.Lerp(transform.position, v.transform.position, 0.5f) + Vector3.up * 0.5f, this, v);
-            }
-        }
-    }
-    */
 
     public void SetNewRoot(Region currentRegion, Transform from, Transform to, Transform center)
     {

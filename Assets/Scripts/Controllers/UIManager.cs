@@ -38,6 +38,8 @@ public class UIManager : MonoBehaviour
     private RectTransform ambuRect;
 
     private Vector3 dataShakeAmount = new Vector3(0.4f, 0.6f, 0);
+    private Vector2 bigSizeUIFrame = new Vector2(150, 50);
+    private Vector2 smallSizeUIFrame = new Vector2(107, 50);
 
     public void SetData(float timeForGame)
     {
@@ -59,15 +61,15 @@ public class UIManager : MonoBehaviour
 
         if (gm.TaxiCount > 9 || gm.VanCount > 9 || gm.AmbulanceCount > 9)
         {
-            taxiDataPanel.transform.GetChild(0).GetComponent<RectTransform>().sizeDelta = new Vector2 (175, 55);
-            vanDataPanel.transform.GetChild(0).GetComponent<RectTransform>().sizeDelta = new Vector2(175, 55);
-            ambulanceDataPanel.transform.GetChild(0).GetComponent<RectTransform>().sizeDelta = new Vector2(175, 55);
+            taxiDataPanel.transform.GetChild(0).GetComponent<RectTransform>().sizeDelta = bigSizeUIFrame;
+            vanDataPanel.transform.GetChild(0).GetComponent<RectTransform>().sizeDelta = bigSizeUIFrame;
+            ambulanceDataPanel.transform.GetChild(0).GetComponent<RectTransform>().sizeDelta = bigSizeUIFrame;
         }
         else if(gm.TaxiCount < 10 && gm.VanCount < 10 && gm.AmbulanceCount < 10)
         {
-            taxiDataPanel.transform.GetChild(0).GetComponent<RectTransform>().sizeDelta = new Vector2(120, 55);
-            vanDataPanel.transform.GetChild(0).GetComponent<RectTransform>().sizeDelta = new Vector2(120, 55);
-            ambulanceDataPanel.transform.GetChild(0).GetComponent<RectTransform>().sizeDelta = new Vector2(120, 55);
+            taxiDataPanel.transform.GetChild(0).GetComponent<RectTransform>().sizeDelta = smallSizeUIFrame;
+            vanDataPanel.transform.GetChild(0).GetComponent<RectTransform>().sizeDelta = smallSizeUIFrame;
+            ambulanceDataPanel.transform.GetChild(0).GetComponent<RectTransform>().sizeDelta = smallSizeUIFrame;
         }
 
         winConditionUpdate();
@@ -86,18 +88,51 @@ public class UIManager : MonoBehaviour
 
         if (currentTaxi != gm.TaxiCurrent)
         {
+            if (currentTaxi < gm.TaxiCurrent)
+            {
+                StartCoroutine(showColorTMP(Color.white, Color.green, 0.3f, taxiDataText));
+            }
+            else
+            {
+                StartCoroutine(showColorTMP(Color.white, Color.red, 0.3f, taxiDataText));
+            }
             taxiRect.DOPunchScale(dataShakeAmount, 0.2f).SetEase(Ease.InOutFlash);
+            currentTaxi = gm.TaxiCurrent;
         }
 
         if (currentVan != gm.VanCurrent)
         {
+            if (currentVan < gm.VanCurrent)
+            {
+                StartCoroutine(showColorTMP(Color.white, Color.green, 0.3f, vanDataText));
+            }
+            else
+            {
+                StartCoroutine(showColorTMP(Color.white, Color.red, 0.3f, vanDataText));
+            }
             vanRect.DOPunchScale(dataShakeAmount, 0.2f).SetEase(Ease.InOutFlash);
+            currentVan = gm.VanCurrent;
         }
 
         if (currentAmbu != gm.AmbulanceCurrent)
         {
+            if (currentAmbu < gm.AmbulanceCurrent)
+            {
+                StartCoroutine(showColorTMP(Color.white, Color.green, 0.3f, ambulanceDataText));
+            }
+            else
+            {
+                StartCoroutine(showColorTMP(Color.white, Color.red, 0.3f, ambulanceDataText));
+            }
             ambuRect.DOPunchScale(dataShakeAmount, 0.2f).SetEase(Ease.InOutFlash);
+            currentAmbu = gm.AmbulanceCurrent;
         }
+    }
+    private IEnumerator showColorTMP(Color standartColor, Color newColor, float _timer, TextMeshProUGUI tmp)
+    {
+        tmp.color = newColor;
+        yield return new WaitForSeconds(_timer);
+        tmp.color = standartColor;
     }
 
     public static void BackImageBlack(bool isBlack, float _time)

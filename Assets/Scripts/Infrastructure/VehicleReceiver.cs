@@ -3,8 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class VehicleReceiver : MonoBehaviour
+public class VehicleReceiver : MonoBehaviour, CityInfrastructure
 {
+    [SerializeField] private Transform EntryPoint;
+
     [SerializeField] private GameObject effect;
     [SerializeField] private Transform whatToShake;
     public Vehicles VehicleType;
@@ -15,13 +17,13 @@ public class VehicleReceiver : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        currentRegion = GetComponent<Region>();
-        currentRegion.OnVehicleAdded = getVehicle;
+        //currentRegion = GetComponent<Region>();
+        //currentRegion.OnVehicleAdded = GetVehicle;
         gameManager = GameManager.Instance;
     }
 
-    private void getVehicle(Vehicle vehicle)
-    {
+    public void GetVehicle(Vehicle vehicle)
+    {        
         if (VehicleType == vehicle.vehicleType)
         {
             switch(VehicleType)
@@ -69,5 +71,20 @@ public class VehicleReceiver : MonoBehaviour
         
             
         vehicle.MakeSelfDestruction();
+    }
+
+    public CityInfrastructureTypes GetInfrastructureTypes()
+    {
+        return CityInfrastructureTypes.receiver;
+    }
+
+    public GameObject GetGameObject()
+    {
+        return gameObject;
+    }
+
+    public Transform GetEntryPoint()
+    {
+        return EntryPoint;
     }
 }

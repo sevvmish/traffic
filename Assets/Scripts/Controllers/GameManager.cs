@@ -9,6 +9,8 @@ public class GameManager : MonoBehaviour
 
     [Header("Win conditions")]
     public float GameTime;
+    public bool IsGameStarted { get; private set; }
+
     public int TaxiCount;
     public int TaxiCurrent { get; private set; }
 
@@ -108,10 +110,22 @@ public class GameManager : MonoBehaviour
         ambient.SetData(ambientType);
         
         uiManager.SetData(GameTime);
-        uiManager.GameTimerStatus(true);
 
+        //start game
+        StartCoroutine(gameStartDelay());
+    }
 
+    private IEnumerator gameStartDelay()
+    {
+        yield return new WaitForSeconds(2f);
+        regionController.UpdateAll();
+        SetGameStatus(true);
+    }
 
+    public void SetGameStatus(bool isStarted)
+    {
+        uiManager.GameTimerStatus(isStarted);
+        IsGameStarted = isStarted;
     }
 
     private void InitVehiclesPools()

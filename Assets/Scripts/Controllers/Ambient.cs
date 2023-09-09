@@ -16,6 +16,11 @@ public class Ambient : MonoBehaviour
                 audioSource.clip = GameManager.Instance.GetAssets().SmallTownAmbient;
                 audioSource.Play();
                 break;
+
+            case AmbientType.forest:
+                audioSource.clip = GameManager.Instance.GetAssets().ForestAmbient;
+                audioSource.Play();
+                break;
         }
     }
 }
@@ -23,5 +28,6 @@ public class Ambient : MonoBehaviour
 public enum AmbientType
 {
     none,
-    small_town
+    small_town,
+    forest
 }
