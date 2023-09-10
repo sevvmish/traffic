@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class ObjectSpawner : MonoBehaviour, CityInfrastructure
 {
-    public Vehicles MainType;
-    private Transform[] places = new Transform[0];
+    public Vehicles MainType;    
     [SerializeField] private GameObject[] appearance;
 
     private Transform currentPlace;
@@ -17,37 +16,41 @@ public class ObjectSpawner : MonoBehaviour, CityInfrastructure
     private GameObject sign;
 
     private bool isFirstStarted;
+    private GameManager gameManager;
 
     private void Start()
     {
-       
+        gameManager = GameManager.Instance;
+
         objects = new GameObject[appearance.Length];
         for (int i = 0; i < objects.Length; i++)
         {
             objects[i] = Instantiate(appearance[i]);
-            objects[i].GetComponent<ObjectBehaviour>().MainType = Vehicles.ambulance;
+            objects[i].GetComponent<ObjectBehaviour>().MainType = MainType;
             objects[i].SetActive(false);
         }
 
         switch (MainType)
         {
             case Vehicles.taxi:
-                sign = Instantiate(GameManager.Instance.GetAssets().TaxiSign);
+                sign = Instantiate(gameManager.GetAssets().TaxiSign);
                 
                 break;
 
             case Vehicles.van:
-                sign = Instantiate(GameManager.Instance.GetAssets().VanSign);
+                sign = Instantiate(gameManager.GetAssets().VanSign);
                 
                 break;
 
             case Vehicles.ambulance:
-                sign = Instantiate(GameManager.Instance.GetAssets().AmbulanceSign);
+                sign = Instantiate(gameManager.GetAssets().AmbulanceSign);
                 
                 break;
         }
 
-        
+        sign.SetActive(false);
+
+
     }
 
     private void Update()
@@ -59,7 +62,7 @@ public class ObjectSpawner : MonoBehaviour, CityInfrastructure
         }
             
 
-        if (!isFirstStarted && GameManager.Instance.IsGameStarted)
+        if (!isFirstStarted && gameManager.IsGameStarted)
         {
             isFirstStarted = true;
             SpawnNewObject();
@@ -81,25 +84,27 @@ public class ObjectSpawner : MonoBehaviour, CityInfrastructure
     }
 
     public void SpawnNewObject()
-    {
-        if (places.Length == 0)
-        {
-            places = GameManager.Instance.regionController.GetObjectPlaces();
-            if (places.Length == 0) return;
-        }
-
+    {        
         if (previousPlace == null && currentPlace == null)
         {
-            currentPlace = places[UnityEngine.Random.Range(0, places.Length)];
+            currentPlace = gameManager.regionController.GetObjectPlace();
         }
         else if (currentPlace != null)
         {
             previousPlace = currentPlace;
+            gameManager.regionController.ReturnObjectPlace(currentPlace);
 
             for (int i = 0; i < 100; i++)
             {
-                currentPlace = places[UnityEngine.Random.Range(0, places.Length)];
-                if (currentPlace != previousPlace) break;
+                currentPlace = gameManager.regionController.GetObjectPlace();
+                if (currentPlace == previousPlace)
+                {
+                    gameManager.regionController.ReturnObjectPlace(currentPlace);
+                }
+                else
+                {
+                    break;
+                }
             }
 
             currentAppearance.SetActive(false);

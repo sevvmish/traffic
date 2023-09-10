@@ -9,6 +9,14 @@ public class ObjectBehaviour : MonoBehaviour
 
     private float _timer;
 
+    private void OnEnable()
+    {
+        if (MainType == Vehicles.van)
+        {
+            transform.DOLocalRotate(new Vector3(0, UnityEngine.Random.Range(0, 360), 0), 0.3f).SetEase(Ease.Linear);
+        }
+    }
+
     private void Update()
     {
         if (MainType == Vehicles.taxi || MainType == Vehicles.ambulance)

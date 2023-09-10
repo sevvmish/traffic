@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class RegionController : MonoBehaviour
@@ -15,6 +16,7 @@ public class RegionController : MonoBehaviour
     private readonly float minDistnaceForConnectionOK = 2f;
 
     private Transform[] ObjectPlaces;
+    private HashSet<Transform> busyPlaces = new HashSet<Transform>();
 
     public ObjectSpawner GetObjectSpawner(Vehicles _type)
     {
@@ -30,9 +32,9 @@ public class RegionController : MonoBehaviour
         return null;
     }
 
-    public Transform[] GetObjectPlaces()
+    public Transform GetObjectPlace()
     {
-        List<Transform> result = new List<Transform>();
+        List<Transform> preResult = new List<Transform>();
 
         for (int i = 0; i < infrastructures.Count; i++)
         {
@@ -42,13 +44,22 @@ public class RegionController : MonoBehaviour
                 {
                     for (int j = 0; j < r.ObjectPlaces.Length; j++)
                     {
-                        result.Add(r.ObjectPlaces[j]);
+                        if (busyPlaces.Contains(r.ObjectPlaces[j])) continue;
+                        preResult.Add(r.ObjectPlaces[j]);
                     }
                 }
             }
         }
 
-        return result.ToArray();
+        Transform result = preResult.ToArray()[UnityEngine.Random.Range(0, preResult.Count)];
+        busyPlaces.Add(result);
+
+        return result;
+    }
+
+    public void ReturnObjectPlace(Transform objectPlace)
+    {
+        if (busyPlaces.Contains(objectPlace)) busyPlaces.Remove(objectPlace);
     }
 
     public void SetData(Transform cameraTransform)
