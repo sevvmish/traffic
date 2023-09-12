@@ -32,6 +32,7 @@ public class RegionController : MonoBehaviour
         return null;
     }
 
+    
     public Transform GetObjectPlace()
     {
         List<Transform> preResult = new List<Transform>();
@@ -272,5 +273,6 @@ public enum CityInfrastructureTypes
     region,
     spawner,
     receiver,
-    object_spawner
+    object_spawner,
+    vehicle_stopper
 }

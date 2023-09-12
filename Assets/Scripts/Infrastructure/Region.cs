@@ -2,6 +2,7 @@ using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Region : MonoBehaviour, CityInfrastructure
@@ -31,12 +32,14 @@ public class Region : MonoBehaviour, CityInfrastructure
     private RegionController regionController;
     private bool isBusyRotate;
     private AudioSource _audioSource;
+    private AssetManager assetManager;
     
     private readonly float swipeSpeed = 0.25f;
     private readonly float stopRotationForTooCloseToEndDistance = 1f;
 
     private void Start()
     {
+        assetManager = GameManager.Instance.GetAssets();
         _audioSource = GetComponent<AudioSource>();
         if (edgeEffect != null) edgeEffect.SetActive(true);
         _transform = transform;
@@ -219,6 +222,7 @@ public class Region : MonoBehaviour, CityInfrastructure
     }
 
     public bool IsHasVehicles() => currentVehicles.Count > 0;
+    public Vehicle[] GetVehicles() => currentVehicles.ToArray();
 
     public void AddVehicle(Vehicle vehicle)
     {
@@ -265,10 +269,27 @@ public class Region : MonoBehaviour, CityInfrastructure
     }
     private IEnumerator playDestroWithVFX(int index)
     {
+        if (!endBarrier[index].activeSelf)
+        {
+            StartCoroutine(playCarDestroEffect(endBarrier[index].transform.position));
+            yield break;
+        }
+
         endBarrier[index].transform.GetChild(0).gameObject.SetActive(true);
 
         yield return new WaitForSeconds(2);
         endBarrier[index].transform.GetChild(0).gameObject.SetActive(false);
+    }
+
+    private IEnumerator playCarDestroEffect(Vector3 pos)
+    {
+        GameObject g = assetManager.CarDestroEffectPool.GetObject();
+        g.transform.position = pos;
+        g.SetActive(true);
+
+        yield return new WaitForSeconds(1);
+
+        assetManager.CarDestroEffectPool.ReturnObject(g);
     }
 
     private IEnumerator rotatePart(int sign)

@@ -19,6 +19,9 @@ public class AssetManager : MonoBehaviour
     public ObjectPool VanSignPool;
     public ObjectPool AmbulanceSignPool;
 
+    [Header("MISC")]
+    public GameObject CarDestroEffect;
+    public ObjectPool CarDestroEffectPool;
 
     [Header("Vehicles pools")]
     public ObjectPool TaxiPool;

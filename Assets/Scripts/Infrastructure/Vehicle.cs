@@ -29,6 +29,7 @@ public class Vehicle : MonoBehaviour
 
     private ObjectSpawner objectSpawner;
     private Transform sign;
+
     public bool IsWithObjectInside { get; private set; }
 
     public void SetData(RegionController r, Vehicles type, float timeForRide)
@@ -65,7 +66,7 @@ public class Vehicle : MonoBehaviour
     void Update()
     {
         if (!gameManager.IsGameStarted) return;
-
+                
         if (isStart && IsCanMove)
         {
             _timer += Time.deltaTime;
@@ -152,6 +153,7 @@ public class Vehicle : MonoBehaviour
 
     public void MakeSelfDestructionWithVFX()
     {
+        
         if (currentRegion.endBarrier.Length > 0)
         {
             for (int i = 0; i < currentRegion.endBarrier.Length; i++)
@@ -163,6 +165,7 @@ public class Vehicle : MonoBehaviour
                 }
             }
         }
+
         MakeSelfDestruction();
     }
     

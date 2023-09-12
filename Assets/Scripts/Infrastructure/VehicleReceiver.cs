@@ -9,6 +9,7 @@ public class VehicleReceiver : MonoBehaviour, CityInfrastructure
 
     [SerializeField] private GameObject effect;
     [SerializeField] private Transform whatToShake;
+    
     public Vehicles VehicleType;
     
     private Region currentRegion;
@@ -17,8 +18,7 @@ public class VehicleReceiver : MonoBehaviour, CityInfrastructure
     // Start is called before the first frame update
     void Start()
     {
-        //currentRegion = GetComponent<Region>();
-        //currentRegion.OnVehicleAdded = GetVehicle;
+        
         gameManager = GameManager.Instance;
     }
 
@@ -68,9 +68,20 @@ public class VehicleReceiver : MonoBehaviour, CityInfrastructure
         }
 
         whatToShake.DOPunchScale(Vector3.one * 0.3f, 0.3f).SetEase(Ease.InOutBounce);
-        
-            
+
+        StartCoroutine(playCarDestroEffect(vehicle.transform.position));    
         vehicle.MakeSelfDestruction();
+    }
+
+    private IEnumerator playCarDestroEffect(Vector3 pos)
+    {
+        GameObject g = gameManager.GetAssets().CarDestroEffectPool.GetObject();
+        g.transform.position = pos;
+        g.SetActive(true);
+
+        yield return new WaitForSeconds(1);
+
+        gameManager.GetAssets().CarDestroEffectPool.ReturnObject(g);
     }
 
     public CityInfrastructureTypes GetInfrastructureTypes()

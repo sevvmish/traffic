@@ -53,6 +53,7 @@ MonoBehaviour:
   TaxiSignPool: {fileID: 0}
   VanSignPool: {fileID: 0}
   AmbulanceSignPool: {fileID: 0}
+  CarDestroEffect: {fileID: 6896925956443348495, guid: cb28ed2759f031046a28c1bb962d3b20, type: 3}
   TaxiPool: {fileID: 0}
   VanPool: {fileID: 0}
   AmbulancePool: {fileID: 0}

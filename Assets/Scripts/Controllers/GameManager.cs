@@ -99,7 +99,7 @@ public class GameManager : MonoBehaviour
         uiManager = GetComponent<UIManager>();
 
         regionController.SetData(mainCameraBody);
-        InitVehiclesPools();
+        InitPools();
 
         mainCameraBody.position = new Vector3(
             (regionController.xBorder.x + regionController.xBorder.y) / 2,
@@ -128,8 +128,10 @@ public class GameManager : MonoBehaviour
         IsGameStarted = isStarted;
     }
 
-    private void InitVehiclesPools()
+    private void InitPools()
     {
+        assets.CarDestroEffectPool = new ObjectPool(10, GetAssets().CarDestroEffect);
+
         if (TaxiCount > 0)
         {
             assets.TaxiPool = new ObjectPool(10, assets.GetVehicle(Vehicles.taxi), regionController.Location());
