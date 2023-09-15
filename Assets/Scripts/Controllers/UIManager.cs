@@ -28,6 +28,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI vanDataText;
     [SerializeField] private TextMeshProUGUI ambulanceDataText;
 
+
     private GameManager gm;
     private int currentTaxi;
     private int currentVan;
@@ -40,6 +41,9 @@ public class UIManager : MonoBehaviour
     private Vector3 dataShakeAmount = new Vector3(0.4f, 0.6f, 0);
     private Vector2 bigSizeUIFrame = new Vector2(150, 50);
     private Vector2 smallSizeUIFrame = new Vector2(107, 50);
+
+    private List<Transform> textOverHeadList = new List<Transform>();
+    [SerializeField] private GameObject imageTest;
 
     public void SetData(float timeForGame)
     {
@@ -78,6 +82,16 @@ public class UIManager : MonoBehaviour
         currentTaxi = gm.TaxiCurrent;
         currentVan = gm.VanCurrent;
         currentAmbu = gm.AmbulanceCurrent;
+
+        List<CityInfrastructure> l = GameManager.Instance.regionController.GetInfrastructures();
+
+        if (l.Count > 0) 
+        {
+            for (int i = 0; i < l.Count; i++)
+            {
+                textOverHeadList.Add(Instantiate(imageTest).transform);
+            }
+        }
     }
 
     private void winConditionUpdate()
@@ -175,6 +189,22 @@ public class UIManager : MonoBehaviour
                 _timer += Time.deltaTime;
             }
         }
+
+    }
+
+    
+    private void LateUpdate()
+    {
+        Transform mainCamBody = GameManager.Instance.GetCameraBody();
+        if (textOverHeadList.Count > 0)
+        {            
+            for (int i = 0; i < textOverHeadList.Count; i++)
+            {
+                textOverHeadList[i].transform.LookAt(textOverHeadList[i].transform.position + mainCamBody.rotation * Vector3.back,
+                                                     mainCamBody.rotation * Vector3.up);
+            }
+        }
+
     }
 
     private void ShowTimeOnTimer(float _time)

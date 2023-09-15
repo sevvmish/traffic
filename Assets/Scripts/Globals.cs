@@ -9,7 +9,10 @@ public class Globals : MonoBehaviour
     public const float DISTANCE_FOR_OBJECTS = 1.5f;
     public static bool IsShowBorder = true;
 
-    public static float TIME_FOR_RIDE_TAXI = 4f;
-    public static float TIME_FOR_RIDE_AMBULANCE = 4.5f;
-    public static float TIME_FOR_RIDE_VAN = 5f;
+    public const float TIME_FOR_RIDE_TAXI = 4f;
+    public const float TIME_FOR_RIDE_AMBULANCE = 4.5f;
+    public const float TIME_FOR_RIDE_VAN = 5f;
+
+    public static int ScreenWidth = 0;
+    public static int ScreenHeight = 0;
 }

@@ -66,9 +66,12 @@ public class GameManager : MonoBehaviour
     [SerializeField] private AmbientType ambientType;
     [SerializeField] private Ambient ambient;
     [SerializeField] private AssetManager assets;
+    
 
     public SoundController GetSoundUI() => sound;
     public AssetManager GetAssets() => assets;
+    public Camera GetCamera() => mainCamera;
+    public Transform GetCameraBody() => mainCameraBody;
 
     private Transform mainCar;
     private UIManager uiManager;
@@ -85,7 +88,10 @@ public class GameManager : MonoBehaviour
             Instance = this;
         }
 
-        Screen.SetResolution(1200, 600, true);
+        //Screen.SetResolution(1200, 600, true);
+
+
+
         UIManager.BackImageBlack(true, 0);
         UIManager.BackImageBlack(false, 1f);
 
