@@ -5,6 +5,8 @@ using UnityEngine;
 public class VehicleSpawner : MonoBehaviour, CityInfrastructure
 {
     [SerializeField] private Transform EntryPoint;
+    [SerializeField] private TrafficLightsController trafficLights;
+
     public Vehicles _vehicle;
     public float SpawnFrequency = 5f;
     public int Limit = 0;
@@ -45,8 +47,11 @@ public class VehicleSpawner : MonoBehaviour, CityInfrastructure
             }
             else
             {
+
                 _timer += Time.deltaTime;
             }
+
+            if (trafficLights != null) trafficLights.UpdateLighter(_timer, SpawnFrequency);
         }
         
     }

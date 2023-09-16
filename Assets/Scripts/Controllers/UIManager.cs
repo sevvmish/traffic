@@ -42,9 +42,7 @@ public class UIManager : MonoBehaviour
     private Vector2 bigSizeUIFrame = new Vector2(150, 50);
     private Vector2 smallSizeUIFrame = new Vector2(107, 50);
 
-    private List<Transform> textOverHeadList = new List<Transform>();
-    [SerializeField] private GameObject imageTest;
-
+    
     public void SetData(float timeForGame)
     {
         timerTextRect = timerText.GetComponent<RectTransform>();
@@ -82,16 +80,7 @@ public class UIManager : MonoBehaviour
         currentTaxi = gm.TaxiCurrent;
         currentVan = gm.VanCurrent;
         currentAmbu = gm.AmbulanceCurrent;
-
-        List<CityInfrastructure> l = GameManager.Instance.regionController.GetInfrastructures();
-
-        if (l.Count > 0) 
-        {
-            for (int i = 0; i < l.Count; i++)
-            {
-                textOverHeadList.Add(Instantiate(imageTest).transform);
-            }
-        }
+               
     }
 
     private void winConditionUpdate()
@@ -192,7 +181,7 @@ public class UIManager : MonoBehaviour
 
     }
 
-    
+    /*
     private void LateUpdate()
     {
         Transform mainCamBody = GameManager.Instance.GetCameraBody();
@@ -205,7 +194,7 @@ public class UIManager : MonoBehaviour
             }
         }
 
-    }
+    }*/
 
     private void ShowTimeOnTimer(float _time)
     {
