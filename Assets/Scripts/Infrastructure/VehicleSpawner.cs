@@ -45,10 +45,14 @@ public class VehicleSpawner : MonoBehaviour, CityInfrastructure
 
 
             }
-            else
+            else if(_timer <= SpawnFrequency && currentCount < Limit)
             {
 
                 _timer += Time.deltaTime;
+            }
+            else
+            {
+                _timer = 0;
             }
 
             if (trafficLights != null) trafficLights.UpdateLighter(_timer, SpawnFrequency);
@@ -62,7 +66,7 @@ public class VehicleSpawner : MonoBehaviour, CityInfrastructure
         Transform from = null;
         Transform to = null;
         Transform center = null;
-        Region region = regionController.GetClosestRoot(transform.position, 6, out from, out to, out center);
+        Region region = regionController.GetClosestRoot(EntryPoint.position, 2, out from, out to, out center);
 
         if (region == null) return false;
 

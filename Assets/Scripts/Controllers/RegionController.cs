@@ -202,6 +202,7 @@ public class RegionController : MonoBehaviour
                 for (int j = 0; j < r.entrances.Length; j++)
                 {
                     float dist = (position - r.entrances[j].position).magnitude;
+
                     if (dist < distance && dist < minDistance)
                     {
                         minDistance = dist;
@@ -242,13 +243,7 @@ public class RegionController : MonoBehaviour
     public bool IsAnyInfrastructureInRadius(float radius, Transform end)
     {
         for (int j = 0; j < infrastructures.Count; j++)
-        {
-            /*
-            if ((infrastructures[j].GetGameObject().transform.position - end.position).magnitude < radius)
-            {
-                return true;
-            }*/
-
+        {            
             if ((infrastructures[j].GetEntryPoint().position - end.position).magnitude <= radius)
             {
                 return true;
