@@ -12,7 +12,7 @@ public class VehicleReceiver : MonoBehaviour, CityInfrastructure
     
     public Vehicles VehicleType;
     
-    private Region currentRegion;
+    //private Region currentRegion;
     private GameManager gameManager;
 
     // Start is called before the first frame update
@@ -30,14 +30,17 @@ public class VehicleReceiver : MonoBehaviour, CityInfrastructure
             {
                 case Vehicles.taxi:                    
                     gameManager.AddTaxi();
+                    if (vehicle.IsWithObjectInside) gameManager.AddTaxiMan();
                     break;
 
                 case Vehicles.van:
                     gameManager.AddVan();
+                    if (vehicle.IsWithObjectInside) gameManager.AddVanCargo();
                     break;
 
                 case Vehicles.ambulance:
                     gameManager.AddAmbulance();
+                    if (vehicle.IsWithObjectInside) gameManager.AddAmbulanceMan();
                     break;
             }
 
@@ -53,14 +56,17 @@ public class VehicleReceiver : MonoBehaviour, CityInfrastructure
             {
                 case Vehicles.taxi:
                     gameManager.RemoveTaxi();
+                    if (vehicle.IsWithObjectInside) gameManager.RemoveTaxiMan();
                     break;
 
                 case Vehicles.van:
                     gameManager.RemoveVan();
+                    if (vehicle.IsWithObjectInside) gameManager.RemoveVanCargo();
                     break;
 
                 case Vehicles.ambulance:
                     gameManager.RemoveAmbulance();
+                    if (vehicle.IsWithObjectInside) gameManager.RemoveAmbulanceMan();
                     break;
             }
 

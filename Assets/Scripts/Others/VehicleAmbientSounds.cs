@@ -39,7 +39,7 @@ public class VehicleAmbientSounds : MonoBehaviour
             //audioSource.clip = assets.motorSoundLightClip;
             //audioSource.Play();
             //yield return new WaitForSeconds(2f);
-            yield return new WaitForSeconds(UnityEngine.Random.Range(1f, 3f));
+            yield return new WaitForSeconds(UnityEngine.Random.Range(2f, 6f));
             int chanse = UnityEngine.Random.Range(0, 100);
             if (chanse < 40)
             {
@@ -58,7 +58,7 @@ public class VehicleAmbientSounds : MonoBehaviour
             //audioSource.clip = assets.motorSoundHeavyClip;
             //audioSource.Play();
             //yield return new WaitForSeconds(2f);
-            yield return new WaitForSeconds(UnityEngine.Random.Range(1f, 3f));
+            yield return new WaitForSeconds(UnityEngine.Random.Range(2f, 6f));
             int chanse = UnityEngine.Random.Range(0, 100);
             if (chanse < 40)
             {
@@ -76,9 +76,9 @@ public class VehicleAmbientSounds : MonoBehaviour
         while (true)
         {
             int h = 0;
-            yield return new WaitForSeconds(UnityEngine.Random.Range(1f, 2f));
+            yield return new WaitForSeconds(UnityEngine.Random.Range(2f, 4f));
             chanse = UnityEngine.Random.Range(0, 100);
-            if (chanse < 30)
+            if (chanse < 10)
             {
                 audioSource.clip = assets.ambuSirenClip;
                 audioSource.Play();
@@ -89,9 +89,9 @@ public class VehicleAmbientSounds : MonoBehaviour
                 h = 20;
             }
                         
-            yield return new WaitForSeconds(UnityEngine.Random.Range(0.5f, 2f));
+            yield return new WaitForSeconds(UnityEngine.Random.Range(2.5f, 4f));
             chanse = UnityEngine.Random.Range(0, 100);
-            if (chanse < (30 + h))
+            if (chanse < (10 + h))
             {
                 audioSource.clip = assets.specSignalClip;
                 audioSource.Play();

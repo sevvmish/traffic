@@ -15,6 +15,7 @@ public class TownBoat : MonoBehaviour
     [SerializeField] private Transform boat;
     [SerializeField] private GameObject[] lights;
     [SerializeField] private VehicleStopper stopper;
+    [SerializeField] private TrafficLightsController trafficLights;
 
     [SerializeField] private AudioSource boatSound;
 
@@ -30,6 +31,8 @@ public class TownBoat : MonoBehaviour
         rightBridge.localEulerAngles = Vector3.zero;
         boat.gameObject.SetActive(false);
         setLights(false);
+
+        if (trafficLights != null) trafficLights.UpdateLighter(0.2f, 1f);
     }
 
     // Update is called once per frame
@@ -41,10 +44,13 @@ public class TownBoat : MonoBehaviour
             {
                 isBoatActive = true;
                 StartCoroutine(play());
+
+                if (trafficLights != null) trafficLights.UpdateLighter(1f, 1f);
             }
             else
             {
                 _mainTimer += Time.deltaTime;
+                if (trafficLights != null) trafficLights.UpdateLighter(_mainTimer, cooldown);
             }
         }
         else

@@ -54,12 +54,14 @@ MonoBehaviour:
   VanSignPool: {fileID: 0}
   AmbulanceSignPool: {fileID: 0}
   CarDestroEffect: {fileID: 6896925956443348495, guid: cb28ed2759f031046a28c1bb962d3b20, type: 3}
+  CarDestroEffectPool: {fileID: 0}
   TaxiPool: {fileID: 0}
   VanPool: {fileID: 0}
   AmbulancePool: {fileID: 0}
   ErrorClip: {fileID: 8300000, guid: d86f8d6159cfad047b8ca32b7bea6730, type: 3}
   SmallTownAmbient: {fileID: 8300000, guid: a30c55e7c7a2d5e4c8396ac0565f150a, type: 3}
   ForestAmbient: {fileID: 8300000, guid: 1d5ae5c44d65f474388b612de2f9614e, type: 3}
+  DesertAmbient: {fileID: 8300000, guid: defecec9dc93ca64b9512dc589b45ba6, type: 3}
   hornClip: {fileID: 8300000, guid: 4a4b838e45bc8a647822868e8eb55277, type: 3}
   hornDoubleClip: {fileID: 8300000, guid: 901d75526b0c8a742b3a96a42e0ad007, type: 3}
   ambuSirenClip: {fileID: 8300000, guid: 82d5053bc63f3324cac4753e164618a5, type: 3}

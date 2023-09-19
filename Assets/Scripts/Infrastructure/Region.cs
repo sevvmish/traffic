@@ -47,6 +47,11 @@ public class Region : MonoBehaviour, CityInfrastructure
         if (lockEffect != null) lockEffect.SetActive(false);
         if (border != null) border.SetActive(Globals.IsShowBorder);
         setBorderLocked(false);
+
+        if (RotationAngle == 0)
+        {
+            border.transform.GetChild(0).gameObject.SetActive(false);
+        }
     }
 
     private void Update()
@@ -237,7 +242,7 @@ public class Region : MonoBehaviour, CityInfrastructure
 
     public void RotateRegion(int sign)
     {
-        if (isBusyRotate || !IsActive)
+        if (isBusyRotate || !IsActive || RotationAngle == 0)
         {
             playError();
             return;

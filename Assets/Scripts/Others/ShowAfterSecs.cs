@@ -19,6 +19,6 @@ public class ShowAfterSecs : MonoBehaviour
         transform.DOScale(Vector3.one, 0.3f);
         yield return new WaitForSeconds(0.3f);
         transform.DOPunchPosition(Vector3.one, 0.2f).SetEase(Ease.InOutFlash);
-        GameManager.Instance.GetSoundUI().PlayUISound(SoundsUI.pop);
+        SoundController.Instance.PlayUISound(SoundsUI.pop);
     }
 }

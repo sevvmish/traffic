@@ -15,28 +15,40 @@ public class UIManager : MonoBehaviour
     private float allTime;
     private float currentTime;
     private bool isPauseTimer = true;
-    private float _timer;
+    private float _timer = 1f;
     public float GetTimeLeft() => currentTime;
 
     [Header("ui data gameobjects")]
     [SerializeField] private GameObject taxiDataPanel;
     [SerializeField] private GameObject vanDataPanel;
     [SerializeField] private GameObject ambulanceDataPanel;
+    [SerializeField] private GameObject taxiManDataPanel;
+    [SerializeField] private GameObject vanCargoDataPanel;
+    [SerializeField] private GameObject ambulanceManDataPanel;
 
     [Header("ui data texts")]
     [SerializeField] private TextMeshProUGUI taxiDataText;
     [SerializeField] private TextMeshProUGUI vanDataText;
     [SerializeField] private TextMeshProUGUI ambulanceDataText;
+    [SerializeField] private TextMeshProUGUI taxiManDataText;
+    [SerializeField] private TextMeshProUGUI vanCargoDataText;
+    [SerializeField] private TextMeshProUGUI ambulanceManDataText;
 
 
     private GameManager gm;
     private int currentTaxi;
     private int currentVan;
     private int currentAmbu;
+    private int currentTaxiMan;
+    private int currentVanCargo;
+    private int currentAmbuMan;
 
     private RectTransform taxiRect;
     private RectTransform vanRect;
     private RectTransform ambuRect;
+    private RectTransform taxiManRect;
+    private RectTransform vanCargoRect;
+    private RectTransform ambuManRect;
 
     private Vector3 dataShakeAmount = new Vector3(0.4f, 0.6f, 0);
     private Vector2 bigSizeUIFrame = new Vector2(150, 50);
@@ -48,7 +60,7 @@ public class UIManager : MonoBehaviour
         timerTextRect = timerText.GetComponent<RectTransform>();
         timerPanel.SetActive(true);
         allTime = timeForGame;
-        currentTime = timeForGame;
+        currentTime = timeForGame + 0.1f;
         ShowTimeOnTimer(currentTime);
 
         gm = GameManager.Instance;
@@ -56,22 +68,34 @@ public class UIManager : MonoBehaviour
         taxiRect = taxiDataText.GetComponent<RectTransform>();
         vanRect = vanDataText.GetComponent<RectTransform>();
         ambuRect = ambulanceDataText.GetComponent<RectTransform>();
+        taxiManRect = taxiManDataText.GetComponent<RectTransform>();
+        vanCargoRect = vanCargoDataText.GetComponent<RectTransform>();
+        ambuManRect = ambulanceManDataText.GetComponent<RectTransform>();
 
         taxiDataPanel.SetActive(gm.TaxiCount > 0);
         vanDataPanel.SetActive(gm.VanCount > 0);
         ambulanceDataPanel.SetActive(gm.AmbulanceCount > 0);
+        taxiManDataPanel.SetActive(gm.TaxiManCount > 0);
+        vanCargoDataPanel.SetActive(gm.VanCargoCount > 0);
+        ambulanceManDataPanel.SetActive(gm.AmbulanceManCount > 0);
 
-        if (gm.TaxiCount > 9 || gm.VanCount > 9 || gm.AmbulanceCount > 9)
+        if (gm.TaxiCount > 9 || gm.VanCount > 9 || gm.AmbulanceCount > 9 || gm.TaxiManCount > 9 || gm.VanCargoCount > 9 || gm.AmbulanceManCount > 9)
         {
             taxiDataPanel.transform.GetChild(0).GetComponent<RectTransform>().sizeDelta = bigSizeUIFrame;
             vanDataPanel.transform.GetChild(0).GetComponent<RectTransform>().sizeDelta = bigSizeUIFrame;
             ambulanceDataPanel.transform.GetChild(0).GetComponent<RectTransform>().sizeDelta = bigSizeUIFrame;
+            taxiManDataPanel.transform.GetChild(0).GetComponent<RectTransform>().sizeDelta = bigSizeUIFrame;
+            vanCargoDataPanel.transform.GetChild(0).GetComponent<RectTransform>().sizeDelta = bigSizeUIFrame;
+            ambulanceManDataPanel.transform.GetChild(0).GetComponent<RectTransform>().sizeDelta = bigSizeUIFrame;
         }
-        else if(gm.TaxiCount < 10 && gm.VanCount < 10 && gm.AmbulanceCount < 10)
+        else if(gm.TaxiCount < 10 && gm.VanCount < 10 && gm.AmbulanceCount < 10 && gm.TaxiManCount < 10 && gm.VanCargoCount < 10 && gm.AmbulanceManCount < 10)
         {
             taxiDataPanel.transform.GetChild(0).GetComponent<RectTransform>().sizeDelta = smallSizeUIFrame;
             vanDataPanel.transform.GetChild(0).GetComponent<RectTransform>().sizeDelta = smallSizeUIFrame;
             ambulanceDataPanel.transform.GetChild(0).GetComponent<RectTransform>().sizeDelta = smallSizeUIFrame;
+            taxiManDataPanel.transform.GetChild(0).GetComponent<RectTransform>().sizeDelta = smallSizeUIFrame;
+            vanCargoDataPanel.transform.GetChild(0).GetComponent<RectTransform>().sizeDelta = smallSizeUIFrame;
+            ambulanceManDataPanel.transform.GetChild(0).GetComponent<RectTransform>().sizeDelta = smallSizeUIFrame;
         }
 
         winConditionUpdate();
@@ -80,7 +104,9 @@ public class UIManager : MonoBehaviour
         currentTaxi = gm.TaxiCurrent;
         currentVan = gm.VanCurrent;
         currentAmbu = gm.AmbulanceCurrent;
-               
+        currentTaxiMan = gm.TaxiManCurrent;
+        currentVanCargo = gm.VanCargoCurrent;
+        currentAmbuMan = gm.AmbulanceManCurrent;
     }
 
     private void winConditionUpdate()
@@ -88,6 +114,9 @@ public class UIManager : MonoBehaviour
         taxiDataText.text = gm.TaxiCurrent + "/" + gm.TaxiCount;
         vanDataText.text = gm.VanCurrent + "/" + gm.VanCount;
         ambulanceDataText.text = gm.AmbulanceCurrent + "/" + gm.AmbulanceCount;
+        taxiManDataText.text = gm.TaxiManCurrent + "/" + gm.TaxiManCount;
+        vanCargoDataText.text = gm.VanCargoCurrent + "/" + gm.VanCargoCount;
+        ambulanceManDataText.text = gm.AmbulanceManCurrent + "/" + gm.AmbulanceManCount;
 
         if (currentTaxi != gm.TaxiCurrent)
         {
@@ -101,6 +130,20 @@ public class UIManager : MonoBehaviour
             }
             taxiRect.DOPunchScale(dataShakeAmount, 0.2f).SetEase(Ease.InOutFlash);
             currentTaxi = gm.TaxiCurrent;
+        }
+
+        if (currentTaxiMan != gm.TaxiManCurrent)
+        {
+            if (currentTaxiMan < gm.TaxiManCurrent)
+            {
+                StartCoroutine(showColorTMP(Color.white, Color.green, 0.3f, taxiManDataText));
+            }
+            else
+            {
+                StartCoroutine(showColorTMP(Color.white, Color.red, 0.3f, taxiManDataText));
+            }
+            taxiManRect.DOPunchScale(dataShakeAmount, 0.2f).SetEase(Ease.InOutFlash);
+            currentTaxiMan = gm.TaxiManCurrent;
         }
 
         if (currentVan != gm.VanCurrent)
@@ -117,6 +160,20 @@ public class UIManager : MonoBehaviour
             currentVan = gm.VanCurrent;
         }
 
+        if (currentVanCargo != gm.VanCargoCurrent)
+        {
+            if (currentVanCargo < gm.VanCargoCurrent)
+            {
+                StartCoroutine(showColorTMP(Color.white, Color.green, 0.3f, vanCargoDataText));
+            }
+            else
+            {
+                StartCoroutine(showColorTMP(Color.white, Color.red, 0.3f, vanCargoDataText));
+            }
+            vanCargoRect.DOPunchScale(dataShakeAmount, 0.2f).SetEase(Ease.InOutFlash);
+            currentVanCargo = gm.VanCargoCurrent;
+        }
+
         if (currentAmbu != gm.AmbulanceCurrent)
         {
             if (currentAmbu < gm.AmbulanceCurrent)
@@ -129,6 +186,20 @@ public class UIManager : MonoBehaviour
             }
             ambuRect.DOPunchScale(dataShakeAmount, 0.2f).SetEase(Ease.InOutFlash);
             currentAmbu = gm.AmbulanceCurrent;
+        }
+
+        if (currentAmbuMan != gm.AmbulanceManCurrent)
+        {
+            if (currentAmbuMan < gm.AmbulanceManCurrent)
+            {
+                StartCoroutine(showColorTMP(Color.white, Color.green, 0.3f, ambulanceManDataText));
+            }
+            else
+            {
+                StartCoroutine(showColorTMP(Color.white, Color.red, 0.3f, ambulanceManDataText));
+            }
+            ambuManRect.DOPunchScale(dataShakeAmount, 0.2f).SetEase(Ease.InOutFlash);
+            currentAmbuMan = gm.AmbulanceManCurrent;
         }
     }
     private IEnumerator showColorTMP(Color standartColor, Color newColor, float _timer, TextMeshProUGUI tmp)
@@ -181,21 +252,7 @@ public class UIManager : MonoBehaviour
 
     }
 
-    /*
-    private void LateUpdate()
-    {
-        Transform mainCamBody = GameManager.Instance.GetCameraBody();
-        if (textOverHeadList.Count > 0)
-        {            
-            for (int i = 0; i < textOverHeadList.Count; i++)
-            {
-                textOverHeadList[i].transform.LookAt(textOverHeadList[i].transform.position + mainCamBody.rotation * Vector3.back,
-                                                     mainCamBody.rotation * Vector3.up);
-            }
-        }
-
-    }*/
-
+    
     private void ShowTimeOnTimer(float _time)
     {
         if (_time <= 0) 

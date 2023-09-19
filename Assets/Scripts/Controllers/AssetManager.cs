@@ -32,6 +32,7 @@ public class AssetManager : MonoBehaviour
     public AudioClip ErrorClip;
     public AudioClip SmallTownAmbient;
     public AudioClip ForestAmbient;
+    public AudioClip DesertAmbient;
     public AudioClip hornClip;
     public AudioClip hornDoubleClip;
     public AudioClip ambuSirenClip;

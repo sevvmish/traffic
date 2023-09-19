@@ -10,15 +10,22 @@ public class GameManager : MonoBehaviour
     [Header("Win conditions")]
     public float GameTime;
     public bool IsGameStarted { get; private set; }
-
+    //===============================
     public int TaxiCount;
     public int TaxiCurrent { get; private set; }
-
+    public int TaxiManCount;
+    public int TaxiManCurrent { get; private set; }
+    //===============================
     public int VanCount;
     public int VanCurrent { get; private set; }
-    
+    public int VanCargoCount;
+    public int VanCargoCurrent { get; private set; }
+    //===============================
     public int AmbulanceCount;
     public int AmbulanceCurrent { get; private set; }
+    public int AmbulanceManCount;
+    public int AmbulanceManCurrent { get; private set; }
+    
     public Action OnChangedConditionsAmount;
 
     public void AddTaxi() 
@@ -27,32 +34,67 @@ public class GameManager : MonoBehaviour
         TaxiCurrent++;
         OnChangedConditionsAmount?.Invoke();        
     }
-        
+
+    public void AddTaxiMan()
+    {
+        print("add taxi man");
+        TaxiManCurrent++;
+        OnChangedConditionsAmount?.Invoke();
+    }
+
     public void RemoveTaxi()
     {
         print("rem taxi");
         if (TaxiCurrent > 0) TaxiCurrent--;
         OnChangedConditionsAmount?.Invoke();        
     }
+
+    public void RemoveTaxiMan()
+    {
+        print("rem taxi man");
+        if (TaxiManCurrent > 0) TaxiManCurrent--;
+        OnChangedConditionsAmount?.Invoke();
+    }
+
     public void AddVan()
     {
         VanCurrent++;
         OnChangedConditionsAmount?.Invoke();        
+    }
+    public void AddVanCargo()
+    {
+        VanCargoCurrent++;
+        OnChangedConditionsAmount?.Invoke();
     }
     public void RemoveVan()
     {
         if (VanCurrent > 0) VanCurrent--;
         OnChangedConditionsAmount?.Invoke();        
     }
+    public void RemoveVanCargo()
+    {
+        if (VanCargoCurrent > 0) VanCargoCurrent--;
+        OnChangedConditionsAmount?.Invoke();
+    }
     public void AddAmbulance()
     {
         AmbulanceCurrent++;
         OnChangedConditionsAmount?.Invoke();        
     }
+    public void AddAmbulanceMan()
+    {
+        AmbulanceManCurrent++;
+        OnChangedConditionsAmount?.Invoke();
+    }
     public void RemoveAmbulance()
     {
         if (AmbulanceCurrent > 0) AmbulanceCurrent--;
         OnChangedConditionsAmount?.Invoke();        
+    }
+    public void RemoveAmbulanceMan()
+    {
+        if (AmbulanceManCurrent > 0) AmbulanceManCurrent--;
+        OnChangedConditionsAmount?.Invoke();
     }
 
 
@@ -63,7 +105,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Transform mainCameraBody;
     [SerializeField] private Joystick joystick;
     [SerializeField] private SoundController sound;
-    [SerializeField] private AmbientType ambientType;
     [SerializeField] private Ambient ambient;
     [SerializeField] private AssetManager assets;
     
@@ -71,6 +112,7 @@ public class GameManager : MonoBehaviour
     public SoundController GetSoundUI() => sound;
     public AssetManager GetAssets() => assets;
     public Camera GetCamera() => mainCamera;
+    public Ambient GetAmbient() => ambient;
     public Transform GetCameraBody() => mainCameraBody;
 
     private Transform mainCar;
@@ -88,14 +130,14 @@ public class GameManager : MonoBehaviour
             Instance = this;
         }
 
-        //Screen.SetResolution(1200, 600, true);
-
+        Screen.SetResolution(1200, 600, true);
+        GetComponent<LevelGenerator>().InitLevel(Globals.CurrentLevel, this);
 
 
         UIManager.BackImageBlack(true, 0);
         UIManager.BackImageBlack(false, 1f);
 
-        if (TaxiCount == 0 && VanCount == 0 && AmbulanceCount == 0)
+        if (TaxiCount == 0 && VanCount == 0 && AmbulanceCount == 0 && TaxiManCount == 0 && VanCargoCount == 0 && AmbulanceManCount == 0)
         {
             UnityEngine.Debug.LogError("Error in match conditions!");
         }
@@ -113,7 +155,7 @@ public class GameManager : MonoBehaviour
             (regionController.zBorder.x + regionController.zBorder.y) / 2);
 
         inputController.SetData(mainCamera, mainCameraBody, joystick, mainCar, regionController.Location(), regionController);
-        ambient.SetData(ambientType);
+        
         
         uiManager.SetData(GameTime);
 

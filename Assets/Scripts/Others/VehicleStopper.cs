@@ -19,7 +19,7 @@ public class VehicleStopper : MonoBehaviour
 
     private void Update()
     {
-        if (IsActive && currentRegion.IsHasVehicles())
+        if (IsActive && currentRegion != null && currentRegion.IsHasVehicles())
         {
             Vehicle[] vehicles = currentRegion.GetVehicles();
 

@@ -2,12 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class SoundController : MonoBehaviour
-{    
+{
+    public static SoundController Instance { get; private set; }
+
+    [SerializeField] private AssetManager assetManager;
     private AudioSource audioSource;
 
-    private void Start()
+    private void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            Instance = this;
+        }
+
         audioSource = GetComponent<AudioSource>();
     }
 
@@ -17,37 +30,37 @@ public class SoundController : MonoBehaviour
         {
             case SoundsUI.error:
                 audioSource.Stop();
-                audioSource.clip = GameManager.Instance.GetAssets().ErrorClip;
+                audioSource.clip = assetManager.ErrorClip;
                 audioSource.Play();
                 break;
 
             case SoundsUI.positive:
                 audioSource.Stop();
-                audioSource.clip = GameManager.Instance.GetAssets().positiveSoundClip;
+                audioSource.clip = assetManager.positiveSoundClip;
                 audioSource.Play();
                 break;
 
             case SoundsUI.error_big:
                 audioSource.Stop();
-                audioSource.clip = GameManager.Instance.GetAssets().ErrorBiggerClip;
+                audioSource.clip = assetManager.ErrorBiggerClip;
                 audioSource.Play();
                 break;
 
             case SoundsUI.swallow:
                 audioSource.Stop();
-                audioSource.clip = GameManager.Instance.GetAssets().Swallow;
+                audioSource.clip = assetManager.Swallow;
                 audioSource.Play();
                 break;
 
             case SoundsUI.tick:
                 audioSource.Stop();
-                audioSource.clip = GameManager.Instance.GetAssets().Tick;
+                audioSource.clip = assetManager.Tick;
                 audioSource.Play();
                 break;
 
             case SoundsUI.pop:
                 audioSource.Stop();
-                audioSource.clip = GameManager.Instance.GetAssets().Pop;
+                audioSource.clip = assetManager.Pop;
                 audioSource.Play();
                 break;
         }

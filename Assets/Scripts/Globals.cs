@@ -15,4 +15,9 @@ public class Globals : MonoBehaviour
 
     public static int ScreenWidth = 0;
     public static int ScreenHeight = 0;
+
+    public static int CurrentLevel = 1;
+    public static int CurrentStars = 1;
+
+    public static bool IsGameStarted = false;
 }
