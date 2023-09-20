@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Rendering;
 using UnityEngine;
 
 public class LevelGenerator : MonoBehaviour
@@ -56,11 +57,14 @@ public class LevelGenerator : MonoBehaviour
 
     private GameManager gm;
     private int level;
+    private Transform partsLocation;
 
     public void InitLevel(int level, GameManager gm)
     {
+        partsLocation = GameObject.Find("PARTS").transform;
         this.gm = gm;
         this.level = level;
+        resetGameManager();
 
         switch (level)
         {
@@ -87,18 +91,56 @@ public class LevelGenerator : MonoBehaviour
 
     private void level_1()
     {
-        setDesert();
-        int chance = UnityEngine.Random.Range(0, 2);
+        setDesert();        
+        gm.VanCount = 3;
+        gm.GameTime = 120;
+        partsAngle(15);
+        gm.SetScreenFOV(LevelScale.small);
 
-        switch(chance)
+        SetObject_Spawner(VanSpawnDesert, new Vector3(-8.25f, 0, -4.75f), new Vector3(0, 60, 0), "", 11f, 4f);
+        SetObject(VanRecDesert, new Vector3(8.25f, 0, 4.75f), new Vector3(0, -120, 0));
+        SetObject(Straight1Desert, Vector3.zero, new Vector3(0, -60, 0), "tutorial_try1", false);
+        SetObject(Straight1Desert, Vector3.zero, new Vector3(0, 0, 0), "tutorial_try2", true);
+    }
+
+
+    private void SetObject(GameObject obj, Vector3 pos, Vector3 rot)
+    {
+        SetObject(obj, pos, rot, "", true);
+    }
+    private void SetObject(GameObject obj, Vector3 pos, Vector3 rot, string name, bool isRotating)
+    {
+        GameObject g = Instantiate(obj, partsLocation);
+        g.transform.localPosition = pos;
+        g.transform.localEulerAngles = rot;
+        g.name = name;
+
+        if (g.TryGetComponent(out Region r) && !isRotating)
         {
-            case 0:
-
-                break;
-            case 1:
-
-                break;
+            r.RotationAngle = 0;
         }
+    }
+
+    private void SetObject_Spawner(GameObject obj, Vector3 pos, Vector3 rot, string name, float frequency, float delay)
+    {
+        GameObject g = Instantiate(obj, partsLocation);
+        g.transform.localPosition = pos;
+        g.transform.localEulerAngles = rot;
+        g.name = name;
+        g.GetComponent<VehicleSpawner>().SpawnFrequency = frequency;
+        g.GetComponent<VehicleSpawner>().Delay = delay;
+    }
+
+    private void partsAngle(float angle) => partsLocation.eulerAngles = new Vector3(0, angle, 0);
+
+    private void resetGameManager()
+    {
+        gm.TaxiCount = 0;
+        gm.TaxiManCount = 0;
+        gm.VanCount = 0;
+        gm.VanCargoCount = 0;
+        gm.AmbulanceCount = 0;
+        gm.AmbulanceManCount = 0;
     }
 }
 

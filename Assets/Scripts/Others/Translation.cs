@@ -5,7 +5,13 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Translations", menuName = "Languages", order = 1)]
 public class Translation : ScriptableObject
 {
-    
+    public string PlayText;
+    public string PressFirstLevelText_MainMenu;
+    public string Level1_Tutorial;
+    public string Level1_Tutorial_2;
+    public string Level1_Tutorial_3;
+    public string Level1_Tutorial_4;
+    public string Level1_Tutorial_5;
 
     public Translation() { }
 }

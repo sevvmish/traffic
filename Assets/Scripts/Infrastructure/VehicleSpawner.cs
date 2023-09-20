@@ -9,13 +9,14 @@ public class VehicleSpawner : MonoBehaviour, CityInfrastructure
 
     public Vehicles _vehicle;
     public float SpawnFrequency = 5f;
+    public float Delay = 0;
     public int Limit = 0;
     private int currentCount;
         
     private RegionController regionController;
     private AssetManager assetManager;
     private GameManager gameManager;
-    private float _timer;
+    private float _timer, delayTimer;
 
     // Start is called before the first frame update
     void Start()
@@ -32,30 +33,40 @@ public class VehicleSpawner : MonoBehaviour, CityInfrastructure
     {
         if (gameManager.IsGameStarted)
         {
-            if (_timer > SpawnFrequency && currentCount < Limit)
+            if (delayTimer > Delay)
             {
-                if (SpawnVehicle(_vehicle, this.transform.localPosition))
+                if (_timer > SpawnFrequency && currentCount < Limit)
                 {
-                    _timer = 0;
+                    if (SpawnVehicle(_vehicle, this.transform.localPosition))
+                    {
+                        _timer = 0;
+                    }
+                    else
+                    {
+                        _timer -= 0.1f;
+                    }
+
+
+                }
+                else if (_timer <= SpawnFrequency && currentCount < Limit)
+                {
+
+                    _timer += Time.deltaTime;
                 }
                 else
                 {
-                    _timer -= 0.1f;
+                    _timer = 0;
                 }
 
-
-            }
-            else if(_timer <= SpawnFrequency && currentCount < Limit)
-            {
-
-                _timer += Time.deltaTime;
+                if (trafficLights != null) trafficLights.UpdateLighter(_timer, SpawnFrequency);
             }
             else
             {
-                _timer = 0;
+                if (trafficLights != null) trafficLights.UpdateLighter(delayTimer, Delay);
+                delayTimer += Time.deltaTime;
             }
 
-            if (trafficLights != null) trafficLights.UpdateLighter(_timer, SpawnFrequency);
+            
         }
         
     }

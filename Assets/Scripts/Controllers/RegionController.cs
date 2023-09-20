@@ -12,6 +12,8 @@ public class RegionController : MonoBehaviour
     public Vector2 xBorder { get; private set; }
     public Vector2 zBorder { get; private set; }
     public List<CityInfrastructure> GetInfrastructures() => infrastructures;
+    public void RemoveInfrastructure(CityInfrastructure infr) => infrastructures.Remove(infr);
+    public void AddInfrastructure(CityInfrastructure infr) => infrastructures.Add(infr);
 
     private readonly float minDistnaceForConnectionOK = 2f;
 

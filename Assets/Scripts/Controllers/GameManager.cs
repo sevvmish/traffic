@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -131,8 +132,8 @@ public class GameManager : MonoBehaviour
         }
 
         Screen.SetResolution(1200, 600, true);
-        GetComponent<LevelGenerator>().InitLevel(Globals.CurrentLevel, this);
 
+        GetComponent<LevelGenerator>().InitLevel(Globals.CurrentLevel, this);
 
         UIManager.BackImageBlack(true, 0);
         UIManager.BackImageBlack(false, 1f);
@@ -142,12 +143,14 @@ public class GameManager : MonoBehaviour
             UnityEngine.Debug.LogError("Error in match conditions!");
         }
 
+        MainMenu.SetStarsUI();
+
         regionController = GetComponent<RegionController>();
         inputController = GetComponent<InputController>();
         uiManager = GetComponent<UIManager>();
 
         regionController.SetData(mainCameraBody);
-        InitPools();
+        //InitPools();
 
         mainCameraBody.position = new Vector3(
             (regionController.xBorder.x + regionController.xBorder.y) / 2,
@@ -155,9 +158,10 @@ public class GameManager : MonoBehaviour
             (regionController.zBorder.x + regionController.zBorder.y) / 2);
 
         inputController.SetData(mainCamera, mainCameraBody, joystick, mainCar, regionController.Location(), regionController);
-        
-        
+                
         uiManager.SetData(GameTime);
+
+        InitPools();
 
         //start game
         StartCoroutine(gameStartDelay());
@@ -174,6 +178,46 @@ public class GameManager : MonoBehaviour
     {
         uiManager.GameTimerStatus(isStarted);
         IsGameStarted = isStarted;
+    }
+
+    public void SetScreenFOV(LevelScale scale)
+    {
+        switch(scale)
+        {
+            case LevelScale.small:
+                if (Globals.IsMobilePlatform)
+                {
+                    mainCamera.fieldOfView = 55;
+                }
+                else
+                {
+                    mainCamera.fieldOfView = 65;
+                }
+                
+                break;
+
+            case LevelScale.medium:
+                if (Globals.IsMobilePlatform)
+                {
+                    mainCamera.fieldOfView = 65;
+                }
+                else
+                {
+                    mainCamera.fieldOfView = 75;
+                }
+                break;
+
+            case LevelScale.large:
+                if (Globals.IsMobilePlatform)
+                {
+                    mainCamera.fieldOfView = 75;
+                }
+                else
+                {
+                    mainCamera.fieldOfView = 85;
+                }
+                break;
+        }
     }
 
     private void InitPools()
@@ -215,4 +259,11 @@ public class GameManager : MonoBehaviour
 
     }
 
+}
+
+public enum LevelScale
+{
+    small,
+    medium,
+    large
 }

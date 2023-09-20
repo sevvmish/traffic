@@ -13,7 +13,7 @@ public class VehicleStopper : MonoBehaviour
 
     private void Start()
     {
-        assetManager = GameManager.Instance.GetAssets();
+        if (GameManager.Instance != null) assetManager = GameManager.Instance.GetAssets();
         currentRegion = transform.parent.GetComponent<Region>();
     }
 
