@@ -48,6 +48,18 @@ public class MainMenu : MonoBehaviour
         UIManager.BackImageBlack(true, 0);
         UIManager.BackImageBlack(false, 1f);
 
+        if (Globals.IsInitiated)
+        {
+            if (Globals.IsSoundOn)
+            {
+                AudioListener.volume = 1f;
+            }
+            else
+            {
+                AudioListener.volume = 0;
+            }
+        }
+
         starsPanel.SetActive(false);
         press1stLevel.SetActive(false);
         Visual01.SetActive(false);
@@ -65,25 +77,7 @@ public class MainMenu : MonoBehaviour
             if (isVisual1Ended)
             {
                 sound.PlayUISound(SoundsUI.positive);
-                isLevelChosing = true;                
-                starsPanel.SetActive(true);
-                SetStarsUI();
-
-                int lastLevel = 0;
-
-                for (int i = 1; i < Globals.MainPlayerData.Progress1.Length; i++)
-                {
-                    if (i == 0)
-                    {
-                        lastLevel = i;
-                        break;
-                    }
-                }
-
-                if (lastLevel < 11)
-                {
-                    StartCoroutine(playMap01());
-                }                
+                getToLevels();
             }            
         });
     }
@@ -96,7 +90,32 @@ public class MainMenu : MonoBehaviour
         }
         else
         {
-            //
+            
+
+            getToLevels();
+        }
+    }
+
+    private void getToLevels()
+    {
+        isLevelChosing = true;
+        starsPanel.SetActive(true);
+        SetStarsUI();
+
+        int lastLevel = 0;
+
+        for (int i = 1; i < Globals.MainPlayerData.Progress1.Length; i++)
+        {
+            if (i == 0)
+            {
+                lastLevel = i;
+                break;
+            }
+        }
+
+        if (lastLevel < 11)
+        {
+            StartCoroutine(playMap01());
         }
     }
 

@@ -11,6 +11,7 @@ public class InputController : MonoBehaviour
     private Transform location;
     private Joystick joystick;
     private RegionController regionController;
+    private GameManager gm;
 
     private readonly float speed = 30;
 
@@ -20,6 +21,7 @@ public class InputController : MonoBehaviour
 
     public void SetData(Camera camera, Transform cameraT, Joystick j, Transform _car, Transform loc, RegionController r)
     {
+        gm = GameManager.Instance;
         mainCamera = camera;
         cameraTransform = cameraT;
         joystick = j;
@@ -31,7 +33,12 @@ public class InputController : MonoBehaviour
     
     void Update()
     {
-        if (joystick.Direction.magnitude > 0 )
+        if (!gm.IsGameStarted)
+        {
+            return;
+        }
+
+        if (joystick.Direction.magnitude > 0)
         {
             float x = joystick.Direction.x;
             float z = joystick.Direction.y;

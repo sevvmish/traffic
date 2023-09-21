@@ -13,5 +13,10 @@ public class Translation : ScriptableObject
     public string Level1_Tutorial_4;
     public string Level1_Tutorial_5;
 
+    public string SpeedOfGameWinMenu;
+    public string MistakesOfGameWinMenu;
+    public string AccidentsOfGameWinMenu;
+    public string NextOfGameWinMenu;
+
     public Translation() { }
 }

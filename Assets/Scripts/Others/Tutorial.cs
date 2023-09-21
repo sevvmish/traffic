@@ -50,6 +50,7 @@ public class Tutorial : MonoBehaviour
 
     private void Update()
     {
+        if (!gm.IsGameStarted) return;
         _timer += Time.deltaTime;
 
         if (Globals.CurrentLevel == 1 && MainMenu.GetLastLevel() == 1)
@@ -74,7 +75,7 @@ public class Tutorial : MonoBehaviour
                 StartCoroutine(activateDeactivateAfterSecs(4f, level1_tutorial_5, 5f));
             }
 
-            if (_timer > 23 && gm.VanCurrent != 2 && !isLevel1_4)
+            if (_timer > 23 && gm.VanCurrent < 2 && !isLevel1_4)
             {
                 isLevel1_4 = true;
                 level1_tutorial_2.SetActive(false);

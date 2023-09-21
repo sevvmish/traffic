@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
@@ -19,6 +20,7 @@ public class UIManager : MonoBehaviour
     public float GetTimeLeft() => currentTime;
 
     [Header("ui data gameobjects")]
+    [SerializeField] private GameObject dataPanel;
     [SerializeField] private GameObject taxiDataPanel;
     [SerializeField] private GameObject vanDataPanel;
     [SerializeField] private GameObject ambulanceDataPanel;
@@ -34,6 +36,16 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI vanCargoDataText;
     [SerializeField] private TextMeshProUGUI ambulanceManDataText;
 
+    [Header("options menu")]
+    [SerializeField] private GameObject optionsPanel;
+    [SerializeField] private Button optionsButton;
+    [SerializeField] private Button continueButton;
+    [SerializeField] private Button soundButton;
+    [SerializeField] private Button homeButton;
+    [SerializeField] private Sprite soundOnSprite;
+    [SerializeField] private Sprite soundOffSprite;
+
+    
 
     private GameManager gm;
     private int currentTaxi;
@@ -51,14 +63,26 @@ public class UIManager : MonoBehaviour
     private RectTransform ambuManRect;
 
     private Vector3 dataShakeAmount = new Vector3(0.4f, 0.6f, 0);
-    private Vector2 bigSizeUIFrame = new Vector2(150, 50);
-    private Vector2 smallSizeUIFrame = new Vector2(107, 50);
+    private Vector2 bigSizeUIFrame = new Vector2(127, 35);
+    private Vector2 smallSizeUIFrame = new Vector2(95, 35);
 
     
     public void SetData(float timeForGame)
     {
+        dataPanel.SetActive(false);
+        optionsPanel.SetActive(false);
+        optionsButton.gameObject.SetActive(true);
+        if (Globals.IsSoundOn)
+        {
+            soundButton.GetComponent<Image>().sprite = soundOnSprite;
+        }
+        else
+        {
+            soundButton.GetComponent<Image>().sprite = soundOffSprite;
+        }
+
         timerTextRect = timerText.GetComponent<RectTransform>();
-        timerPanel.SetActive(true);
+        timerPanel.SetActive(false);
         allTime = timeForGame;
         currentTime = timeForGame + 0.1f;
         ShowTimeOnTimer(currentTime);
@@ -107,6 +131,62 @@ public class UIManager : MonoBehaviour
         currentTaxiMan = gm.TaxiManCurrent;
         currentVanCargo = gm.VanCargoCurrent;
         currentAmbuMan = gm.AmbulanceManCurrent;
+
+        //options
+        optionsButton.onClick.AddListener(() => 
+        {
+            optionsButton.gameObject.SetActive(false);
+            optionsPanel.SetActive(true);
+            gm.SetGameStatus(false);
+
+            continueButton.transform.localScale = Vector3.zero;
+            soundButton.transform.localScale = Vector3.zero;
+            homeButton.transform.localScale = Vector3.zero;
+
+            continueButton.transform.DOScale(Vector3.one, 0.3f).SetEase(Ease.OutElastic);
+            soundButton.transform.DOScale(Vector3.one, 0.3f).SetEase(Ease.OutElastic);
+            homeButton.transform.DOScale(Vector3.one, 0.3f).SetEase(Ease.OutElastic);
+        });
+
+        continueButton.onClick.AddListener(() =>
+        {
+            optionsButton.gameObject.SetActive(true);
+            optionsPanel.SetActive(false);
+            gm.SetGameStatus(true);            
+        });
+
+        soundButton.onClick.AddListener(() =>
+        {            
+            if (Globals.IsSoundOn)
+            {
+                Globals.IsSoundOn = false;
+                soundButton.GetComponent<Image>().sprite = soundOffSprite;
+                AudioListener.volume = 0;
+            }
+            else
+            {
+                Globals.IsSoundOn = true;
+                soundButton.GetComponent<Image>().sprite = soundOnSprite;
+                AudioListener.volume = 1f;
+            }
+
+            SaveLoadManager.Save();
+        });
+
+        homeButton.onClick.AddListener(() =>
+        {
+            StartCoroutine(loadMenu());
+        });
+    }
+
+    private IEnumerator loadMenu()
+    {
+        SoundController.Instance.PlayUISound(SoundsUI.positive);
+                
+        UIManager.BackImageBlack(true, 1f);
+
+        yield return new WaitForSeconds(1f);
+        SceneManager.LoadScene("menu");
     }
 
     private void winConditionUpdate()
@@ -231,7 +311,12 @@ public class UIManager : MonoBehaviour
         
     }
 
-    public void GameTimerStatus(bool isStart) => isPauseTimer = !isStart;
+    public void GameTimerStatus(bool isStart)
+    {
+        dataPanel.SetActive(isStart);
+        timerPanel.SetActive(isStart);
+        isPauseTimer = !isStart;
+    }
 
     private void Update()
     {
@@ -249,6 +334,8 @@ public class UIManager : MonoBehaviour
                 _timer += Time.deltaTime;
             }
         }
+
+        
 
     }
 

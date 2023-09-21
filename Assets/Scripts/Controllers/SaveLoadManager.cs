@@ -7,10 +7,8 @@ public class SaveLoadManager
     
     private const string ID = "Playerdata28";
 
-    public static void Save(int level, int progress)
-    {
-        Globals.MainPlayerData.Progress1[level] = progress;
-
+    public static void Save()
+    {        
         Globals.MainPlayerData.L = Globals.CurrentLanguage;
         Globals.MainPlayerData.M = Globals.IsMobilePlatform ? 1 : 0;
         Globals.MainPlayerData.S = Globals.IsSoundOn ? 1 : 0;
@@ -32,6 +30,7 @@ public class SaveLoadManager
             Debug.LogError("error saving data, defaults loaded");            
         }        
     }
+
 
     public static void Load()
     {

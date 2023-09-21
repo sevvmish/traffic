@@ -10,8 +10,11 @@ public class GameManager : MonoBehaviour
 
     [Header("Win conditions")]
     public float GameTime;
-    public bool IsGameStarted { get; private set; }
+    public bool IsGameStarted { get; private set; } = false;
     //===============================
+    public int RiddleCount;
+    public int RiddleCurrent;
+
     public int TaxiCount;
     public int TaxiCurrent { get; private set; }
     public int TaxiManCount;
@@ -108,7 +111,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private SoundController sound;
     [SerializeField] private Ambient ambient;
     [SerializeField] private AssetManager assets;
-    
+    [SerializeField] private WinGameMenu winGameMenu;
 
     public SoundController GetSoundUI() => sound;
     public AssetManager GetAssets() => assets;
@@ -138,7 +141,17 @@ public class GameManager : MonoBehaviour
         UIManager.BackImageBlack(true, 0);
         UIManager.BackImageBlack(false, 1f);
 
-        if (TaxiCount == 0 && VanCount == 0 && AmbulanceCount == 0 && TaxiManCount == 0 && VanCargoCount == 0 && AmbulanceManCount == 0)
+        if (Globals.IsSoundOn)
+        {
+            AudioListener.volume = 1f;
+        }
+        else
+        {
+            AudioListener.volume = 0;
+        }
+
+        if (TaxiCount == 0 && VanCount == 0 && AmbulanceCount == 0 && TaxiManCount == 0 
+            && VanCargoCount == 0 && AmbulanceManCount == 0 && RiddleCount == 0)
         {
             UnityEngine.Debug.LogError("Error in match conditions!");
         }
@@ -163,8 +176,33 @@ public class GameManager : MonoBehaviour
 
         InitPools();
 
+        winGameMenu.gameObject.SetActive(false);
+
         //start game
         StartCoroutine(gameStartDelay());
+    }
+
+    
+    private void Update()
+    {
+        if (IsGameStarted && uiManager.GetTimeLeft() <= 0)
+        {
+            Debug.LogError("game lost!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            SetGameStatus(false);
+        }
+
+        if (IsGameStarted && TaxiCount == TaxiCurrent && VanCount == VanCurrent && AmbulanceCount == AmbulanceCurrent && TaxiManCount == TaxiManCurrent
+            && VanCargoCount == VanCargoCurrent && AmbulanceManCount == AmbulanceManCurrent && RiddleCount == RiddleCurrent)
+        {
+            Debug.LogError("game win!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            SetGameStatus(false);
+        }
+
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            SetGameStatus(false);
+            winGameMenu.StartWinGameMenu(0.2f, 2, 3);
+        }
     }
 
     private IEnumerator gameStartDelay()
