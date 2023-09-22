@@ -13,3 +13,16 @@ MonoBehaviour:
   m_Name: english
   m_EditorClassIdentifier: 
   PlayText: PLAY!
+  PressFirstLevelText_MainMenu: 
+  Level1_Tutorial: 
+  Level1_Tutorial_2: 
+  Level1_Tutorial_3: 
+  Level1_Tutorial_4: 
+  Level1_Tutorial_5: 
+  SpeedOfGameWinMenu: 
+  MistakesOfGameWinMenu: 
+  AccidentsOfGameWinMenu: 
+  NextOfGameWinMenu: 
+  WinText: 
+  LoseText: 
+  AllProgressWillBeReset: You are going to reset all game progress. Continue?

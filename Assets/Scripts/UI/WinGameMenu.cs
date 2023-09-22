@@ -38,6 +38,8 @@ public class WinGameMenu : MonoBehaviour
     [SerializeField] private Button nextButton;
     [SerializeField] private TextMeshProUGUI nextText;
 
+    [SerializeField] private TextMeshProUGUI winText;
+
 
     // Start is called before the first frame update
     void Start()
@@ -65,14 +67,17 @@ public class WinGameMenu : MonoBehaviour
         stat1ValueText.text = "";
         stat2ValueText.text = "";
         stat3ValueText.text = "";
+
+        winText.text = lang.WinText;
     }
 
-    public void StartWinGameMenu(float _speed, int mistakes, int accidents)
+    public void StartWinGameMenu()
     {
         gameObject.SetActive(true);
-        StartCoroutine(play(_speed, mistakes, accidents));
+        gameObject.transform.localScale = Vector3.zero;
+        StartCoroutine(play());
     }
-    private IEnumerator play(float _speed, int mistakes, int accidents)
+    private IEnumerator play()
     {
         allStar1.SetActive(false);
         allStar2.SetActive(false);
@@ -88,12 +93,18 @@ public class WinGameMenu : MonoBehaviour
         rewardPanel.SetActive(false);
         nextPanel.SetActive(false);
 
+        stat1ValueText.gameObject.SetActive(false);
+        stat2ValueText.gameObject.SetActive(false);
+        stat3ValueText.gameObject.SetActive(false);
+
         //===========================================
 
         SoundController _sound = SoundController.Instance;
+        GameManager gm = GameManager.Instance;
 
-        
-        gameObject.transform.localScale = Vector3.zero;
+        _sound.PlayUISound(SoundsUI.win);
+        yield return new WaitForSeconds(0.5f);
+                
         gameObject.transform.DOScale(Vector3.one, 0.2f).SetEase(Ease.OutElastic);
         yield return new WaitForSeconds(0.2f);
 
@@ -140,11 +151,192 @@ public class WinGameMenu : MonoBehaviour
         _sound.PlayUISound(SoundsUI.tick);
         yield return new WaitForSeconds(0.2f);
 
-        stat1ValueText.text = _speed.ToString("f0") + "%";
-        stat2ValueText.text = mistakes.ToString();
-        stat3ValueText.text = accidents.ToString();
+        int starAmount = 2;
+
+        if (gm.StarsLimitMistakes > 0 && gm.StarsLimitAccidents > 0)
+        {
+            starAmount = 0;
+        }
+        else if (gm.StarsLimitMistakes > 0 && gm.StarsLimitAccidents <= 0)
+        {
+            starAmount = 1;
+        }
+        else if (gm.StarsLimitAccidents > 0 && gm.StarsLimitMistakes <= 0)
+        {
+            starAmount = 1;
+        }
+        
+
+        Color speedColor = Color.white;
+        Color mistakesColor = Color.white;
+        Color accidentsColor = Color.white;
+
+        if ((gm.GetUI().GetTimeLeft() / gm.GameTime) >= gm.StarsLimitTimer)
+        {
+            starAmount++;
+            speedColor = Color.green;
+        }
+        else
+        {
+            starAmount--;
+            speedColor = Color.red;
+        }
+
+        if (gm.MistakesCurrent > gm.StarsLimitMistakes && gm.StarsLimitMistakes > 0)
+        {
+            starAmount--;
+            mistakesColor = Color.red;
+        }
+        else if(gm.MistakesCurrent <= gm.StarsLimitMistakes && gm.StarsLimitMistakes > 0)
+        {
+            starAmount++;
+            mistakesColor = Color.green;
+        }
+
+        if (gm.AccidentsCurrent > gm.StarsLimitAccidents && gm.StarsLimitAccidents > 0)
+        {
+            starAmount--;
+            accidentsColor = Color.red;
+        }
+        else if(gm.AccidentsCurrent <= gm.StarsLimitAccidents && gm.StarsLimitAccidents > 0)
+        {
+            starAmount++;
+            accidentsColor = Color.green;
+        }
+
+        if (starAmount < 1)
+        {
+            starAmount = 1;
+        }
+        else if (starAmount > 3)
+        {
+            starAmount = 3;
+        }
+
+        stat1ValueText.color = speedColor;
+        stat2ValueText.color = mistakesColor;
+        stat3ValueText.color = accidentsColor;
+
+        stat1ValueText.text = (gm.GetUI().GetTimeLeft() / gm.GameTime * 100).ToString("f0") + "%";
+        stat2ValueText.text = gm.MistakesCurrent.ToString();
+        stat3ValueText.text = gm.AccidentsCurrent.ToString();
+
+        stat1ValueText.gameObject.SetActive(true);
+        stat2ValueText.gameObject.SetActive(true);
+        stat3ValueText.gameObject.SetActive(true);
+
+        stat1ValueText.transform.localScale = Vector3.zero;
+        stat2ValueText.transform.localScale = Vector3.zero;
+        stat3ValueText.transform.localScale = Vector3.zero;
+
+        yield return new WaitForSeconds(0.5f);
+
+        stat1ValueText.transform.DOScale(Vector3.one, 0.3f).SetEase(Ease.OutElastic);
+        _sound.PlayUISound(SoundsUI.tick);
+        yield return new WaitForSeconds(0.5f);
+
+        stat2ValueText.transform.DOScale(Vector3.one, 0.3f).SetEase(Ease.OutElastic);
+        _sound.PlayUISound(SoundsUI.tick);
+        yield return new WaitForSeconds(0.5f);
+
+        stat3ValueText.transform.DOScale(Vector3.one, 0.3f).SetEase(Ease.OutElastic);
+        _sound.PlayUISound(SoundsUI.tick);
+        yield return new WaitForSeconds(0.5f);
+
+        if (starAmount >= 1)
+        {
+            fullStar1.SetActive(true);
+            fullStar1.transform.localScale = Vector3.zero;
+            fullStar1.transform.DOScale(Vector3.one, 0.3f).SetEase(Ease.OutElastic);
+            _sound.PlayUISound(SoundsUI.pop);
+            yield return new WaitForSeconds(0.2f);
+        }
+
+        yield return new WaitForSeconds(0.1f);
+
+        if (starAmount >= 2)
+        {
+            fullStar2.SetActive(true);
+            fullStar2.transform.localScale = Vector3.zero;
+            fullStar2.transform.DOScale(Vector3.one, 0.3f).SetEase(Ease.OutElastic);
+            _sound.PlayUISound(SoundsUI.pop);
+            yield return new WaitForSeconds(0.2f);
+        }
+
+        yield return new WaitForSeconds(0.1f);
+
+        if (starAmount >= 3)
+        {
+            fullStar3.SetActive(true);
+            fullStar3.transform.localScale = Vector3.zero;
+            fullStar3.transform.DOScale(Vector3.one, 0.3f).SetEase(Ease.OutElastic);
+            _sound.PlayUISound(SoundsUI.pop);
+            yield return new WaitForSeconds(0.2f);
+        }
+
+        int currentStars = MainMenu.GetStarsAmount();
+        TextMeshProUGUI starsText = GameObject.Find("StarsAmount").GetComponent<TextMeshProUGUI>();
+
+        if (starAmount >= 1)
+        {
+            RectTransform rect1 = allStar1.GetComponent<RectTransform>();
+            rect1.DOAnchorPos(new Vector2(0, rect1.anchoredPosition.y + 300), 0.4f).SetEase(Ease.InOutSine);
+            allStar1.transform.DOScale(Vector3.zero, 0.4f);
+            _sound.PlayUISound(SoundsUI.swallow);
+            yield return new WaitForSeconds(0.3f);
+            currentStars++;
+            MainMenu.AddStarsUI(1);
+        }
+
+        if (starAmount >= 2)
+        {
+            RectTransform rect2 = allStar2.GetComponent<RectTransform>();
+            rect2.DOAnchorPos(new Vector2(0, rect2.anchoredPosition.y + 300), 0.4f).SetEase(Ease.InOutSine);
+            allStar2.transform.DOScale(Vector3.zero, 0.4f);
+            _sound.PlayUISound(SoundsUI.swallow);
+            yield return new WaitForSeconds(0.3f);
+            currentStars++;
+            MainMenu.AddStarsUI(1);
+        }
+
+        if (starAmount >= 3)
+        {
+            RectTransform rect3 = allStar3.GetComponent<RectTransform>();
+            rect3.DOAnchorPos(new Vector2(0, rect3.anchoredPosition.y + 300), 0.4f).SetEase(Ease.InOutSine);
+            allStar3.transform.DOScale(Vector3.zero, 0.4f);
+            _sound.PlayUISound(SoundsUI.swallow);
+            yield return new WaitForSeconds(0.3f);
+            currentStars++;
+            MainMenu.AddStarsUI(1);
+        }
+
+        yield return new WaitForSeconds(0.5f);
+
+        
+
+        rewardPanel.SetActive(true);
+        nextPanel.SetActive(true);
+
+        if (rewardPanel.activeSelf) StartCoroutine(playShake(starIcon.transform));
 
         //======================================
+
+
+    }
+
+    private IEnumerator playShake(Transform _transform)
+    {
+        while (true)
+        {
+            _transform.DOShakeScale(0.5f, 0.5f, 30).SetEase(Ease.OutQuad);
+            yield return new WaitForSeconds(1f);
+
+            //transform.DOPunchScale(Vector3.one*0.2f, 0.3f).SetEase(Ease.OutQuad);
+            //yield return new WaitForSeconds(0.7f);
+
+            //transform.DOPunchPosition(Vector3.one * 0.2f, 0.3f).SetEase(Ease.OutQuad);
+            //yield return new WaitForSeconds(0.7f);
+        }
 
 
     }

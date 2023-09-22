@@ -63,6 +63,24 @@ public class SoundController : MonoBehaviour
                 audioSource.clip = assetManager.Pop;
                 audioSource.Play();
                 break;
+
+            case SoundsUI.click:
+                audioSource.Stop();
+                audioSource.clip = assetManager.Click;
+                audioSource.Play();
+                break;
+
+            case SoundsUI.win:
+                audioSource.Stop();
+                audioSource.clip = assetManager.Win;
+                audioSource.Play();
+                break;
+
+            case SoundsUI.lose:
+                audioSource.Stop();
+                audioSource.clip = assetManager.Lose;
+                audioSource.Play();
+                break;
         }
     }
 }
@@ -75,5 +93,8 @@ public enum SoundsUI
     error_big,
     swallow,
     tick,
-    pop
+    pop,
+    click,
+    win,
+    lose
 }

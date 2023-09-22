@@ -45,6 +45,9 @@ public class AssetManager : MonoBehaviour
     public AudioClip Swallow;
     public AudioClip Tick;
     public AudioClip Pop;
+    public AudioClip Click;
+    public AudioClip Win;
+    public AudioClip Lose;
 
 
     public GameObject GetVehicle(Vehicles vehicle)

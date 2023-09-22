@@ -36,6 +36,13 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private GameObject starsPanel;
     [SerializeField] private TextMeshProUGUI starsText;
 
+    [Header("reset")]
+    [SerializeField] private GameObject resetPanel;
+    [SerializeField] private TextMeshProUGUI resetText;
+    [SerializeField] private Button resetButton;
+    [SerializeField] private Button resetOK;
+    [SerializeField] private Button resetNO;
+
     private Ray ray;
     private RaycastHit hit;
     
@@ -72,6 +79,10 @@ public class MainMenu : MonoBehaviour
 
         ambient.SetData(AmbientType.forest);
 
+        //==================reset===========================
+        resetPanel.SetActive(false);
+        resetButton.gameObject.SetActive(false);
+
         playButton.onClick.AddListener(() => 
         {
             if (isVisual1Ended)
@@ -79,6 +90,25 @@ public class MainMenu : MonoBehaviour
                 sound.PlayUISound(SoundsUI.positive);
                 getToLevels();
             }            
+        });
+
+        resetButton.onClick.AddListener(() =>
+        {
+            if (resetPanel.activeSelf) return;
+            SoundController.Instance.PlayUISound(SoundsUI.lose);
+
+            resetPanel.SetActive(true);
+        });
+
+        resetOK.onClick.AddListener(() =>
+        {
+            StartCoroutine(playReset());
+        });
+
+        resetNO.onClick.AddListener(() =>
+        {
+            SoundController.Instance.PlayUISound(SoundsUI.error);
+            resetPanel.SetActive(false);
         });
     }
 
@@ -186,12 +216,26 @@ public class MainMenu : MonoBehaviour
         SceneManager.LoadScene("desert");
     }
 
+    private IEnumerator playReset()
+    {
+        Globals.IsInitiated = false;
+
+        SoundController.Instance.PlayUISound(SoundsUI.positive);
+
+        Globals.MainPlayerData = new PlayerData();
+        SaveLoadManager.Save();
+
+        yield return new WaitForSeconds(0.2f);
+        SceneManager.LoadScene("menu");
+    }
+
     private void Localize()
     {
         lang = Localization.GetInstanse(Globals.CurrentLanguage).GetCurrentTranslation();
 
         playButtonText.text = lang.PlayText;
         press1stLevelText.text = lang.PressFirstLevelText_MainMenu;
+        resetText.text = lang.AllProgressWillBeReset;
     }
 
     private IEnumerator stage1()
@@ -199,6 +243,7 @@ public class MainMenu : MonoBehaviour
         Visual01.SetActive(true);
 
         playButton.gameObject.SetActive(true);
+        resetButton.gameObject.SetActive(true);
         playButton.transform.DOPunchPosition(Vector3.one * 50, 0.3f).SetEase(Ease.OutQuad);
         
         mainCameraBody.DOMove(cameraPosition1.position, 1f).SetEase(Ease.OutSine);
@@ -259,6 +304,7 @@ public class MainMenu : MonoBehaviour
         return amount;
     }
 
+    
     public static void SetStarsUI()
     {
         Vector2 size = Vector2.zero;
@@ -280,5 +326,33 @@ public class MainMenu : MonoBehaviour
         }
         
         GameObject.Find("StarsBackImage").GetComponent<RectTransform>().sizeDelta = size;
+    }
+
+    public static void AddStarsUI(int amount)
+    {
+        Vector2 size = Vector2.zero;
+        int stars = GetStarsAmount() + amount;
+
+        Globals.MainPlayerData.Progress1[Globals.CurrentLevel] = stars;
+        SaveLoadManager.Save();
+
+        TextMeshProUGUI startText = GameObject.Find("StarsAmount").GetComponent<TextMeshProUGUI>();
+        startText.text = stars.ToString();
+
+        if (stars > 99)
+        {
+            size = new Vector2(151, 61);
+        }
+        else if (stars > 9)
+        {
+            size = new Vector2(126, 61);
+        }
+        else
+        {
+            size = new Vector2(98, 61);
+        }
+
+        GameObject.Find("StarsBackImage").GetComponent<RectTransform>().sizeDelta = size;
+
     }
 }

@@ -1561,7 +1561,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 489db9cb6c76eef41bd7f63d839d146c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 3f4be9008dd9ee44ca9b7d88b128f3e0, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2139,7 +2139,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 0
   m_TargetDisplay: 0
 --- !u!224 &1830782387
 RectTransform:
@@ -2158,7 +2158,7 @@ RectTransform:
   - {fileID: 1196061209}
   - {fileID: 65734239}
   - {fileID: 1057970183}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1876730325432783716}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -2357,7 +2357,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 489db9cb6c76eef41bd7f63d839d146c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 3f4be9008dd9ee44ca9b7d88b128f3e0, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2535,6 +2535,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 286924890472626957, guid: 7356915c28f423b488c09465d391cc58, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 286924890472626957, guid: 7356915c28f423b488c09465d391cc58, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 286924890472626957, guid: 7356915c28f423b488c09465d391cc58, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 572733231346481016, guid: 7356915c28f423b488c09465d391cc58, type: 3}
       propertyPath: AmbRecDesert
       value: 
@@ -2613,6 +2625,22 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2589337873417442922, guid: 7356915c28f423b488c09465d391cc58, type: 3}
       propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2769320294833872556, guid: 7356915c28f423b488c09465d391cc58, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2769320294833872556, guid: 7356915c28f423b488c09465d391cc58, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2769320294833872556, guid: 7356915c28f423b488c09465d391cc58, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3113448948145811987, guid: 7356915c28f423b488c09465d391cc58, type: 3}
+      propertyPath: m_SizeDelta.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5333028145984885070, guid: 7356915c28f423b488c09465d391cc58, type: 3}
@@ -2745,7 +2773,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 7448970635968564229, guid: 7356915c28f423b488c09465d391cc58, type: 3}
+      insertIndex: 0
+      addedObject: {fileID: 1830782387}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7356915c28f423b488c09465d391cc58, type: 3}
 --- !u!4 &1876730325432783714 stripped
@@ -2758,6 +2789,11 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 2079924907713194402, guid: 7356915c28f423b488c09465d391cc58, type: 3}
   m_PrefabInstance: {fileID: 1876730325432783713}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &1876730325432783716 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7448970635968564229, guid: 7356915c28f423b488c09465d391cc58, type: 3}
+  m_PrefabInstance: {fileID: 1876730325432783713}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -2766,4 +2802,3 @@ SceneRoots:
   - {fileID: 1160234427}
   - {fileID: 3047017}
   - {fileID: 1876730325432783713}
-  - {fileID: 1830782387}

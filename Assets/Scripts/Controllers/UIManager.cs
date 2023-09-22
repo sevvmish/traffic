@@ -45,7 +45,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Sprite soundOnSprite;
     [SerializeField] private Sprite soundOffSprite;
 
-    
+    public void TurnOffForWinStatus() => optionsPanel.SetActive(false);
 
     private GameManager gm;
     private int currentTaxi;
@@ -66,9 +66,12 @@ public class UIManager : MonoBehaviour
     private Vector2 bigSizeUIFrame = new Vector2(127, 35);
     private Vector2 smallSizeUIFrame = new Vector2(95, 35);
 
+
+    private SoundController _sound;
     
     public void SetData(float timeForGame)
     {
+        _sound = SoundController.Instance;
         dataPanel.SetActive(false);
         optionsPanel.SetActive(false);
         optionsButton.gameObject.SetActive(true);
@@ -135,6 +138,7 @@ public class UIManager : MonoBehaviour
         //options
         optionsButton.onClick.AddListener(() => 
         {
+            _sound.PlayUISound(SoundsUI.click);
             optionsButton.gameObject.SetActive(false);
             optionsPanel.SetActive(true);
             gm.SetGameStatus(false);
@@ -150,6 +154,7 @@ public class UIManager : MonoBehaviour
 
         continueButton.onClick.AddListener(() =>
         {
+            _sound.PlayUISound(SoundsUI.click);
             optionsButton.gameObject.SetActive(true);
             optionsPanel.SetActive(false);
             gm.SetGameStatus(true);            
@@ -165,6 +170,7 @@ public class UIManager : MonoBehaviour
             }
             else
             {
+                _sound.PlayUISound(SoundsUI.click);
                 Globals.IsSoundOn = true;
                 soundButton.GetComponent<Image>().sprite = soundOnSprite;
                 AudioListener.volume = 1f;
@@ -312,7 +318,7 @@ public class UIManager : MonoBehaviour
     }
 
     public void GameTimerStatus(bool isStart)
-    {
+    {        
         dataPanel.SetActive(isStart);
         timerPanel.SetActive(isStart);
         isPauseTimer = !isStart;
@@ -362,7 +368,7 @@ public class UIManager : MonoBehaviour
             int mins = (int)_time / 60;
             string minsText = mins < 10 ? $"0{mins}" : $"{mins}";
 
-            float sec = _time - 60;
+            float sec = _time - mins * 60;
             string secText = sec < 10 ? $"0{(int)sec}" : $"{(int)sec}";
             
             timerText.text = $"{minsText}:{secText}";

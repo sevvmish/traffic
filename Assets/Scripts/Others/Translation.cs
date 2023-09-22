@@ -18,5 +18,10 @@ public class Translation : ScriptableObject
     public string AccidentsOfGameWinMenu;
     public string NextOfGameWinMenu;
 
+    public string WinText;
+    public string LoseText;
+
+    public string AllProgressWillBeReset;
+
     public Translation() { }
 }

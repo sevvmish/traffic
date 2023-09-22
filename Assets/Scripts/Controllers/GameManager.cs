@@ -10,6 +10,15 @@ public class GameManager : MonoBehaviour
 
     [Header("Win conditions")]
     public float GameTime;
+
+    public float StarsLimitTimer;
+    public int StarsLimitMistakes;
+    public int StarsLimitAccidents;
+
+    //===============================================
+    public int MistakesCurrent;
+    public int AccidentsCurrent;
+
     public bool IsGameStarted { get; private set; } = false;
     //===============================
     public int RiddleCount;
@@ -37,6 +46,16 @@ public class GameManager : MonoBehaviour
         print("add taxi");
         TaxiCurrent++;
         OnChangedConditionsAmount?.Invoke();        
+    }
+
+    public void AddMistake()
+    {
+        MistakesCurrent++;
+    }
+
+    public void AddAccident()
+    {
+        AccidentsCurrent++;
     }
 
     public void AddTaxiMan()
@@ -118,6 +137,7 @@ public class GameManager : MonoBehaviour
     public Camera GetCamera() => mainCamera;
     public Ambient GetAmbient() => ambient;
     public Transform GetCameraBody() => mainCameraBody;
+    public UIManager GetUI() => GetComponent<UIManager>();
 
     private Transform mainCar;
     private UIManager uiManager;
@@ -195,14 +215,22 @@ public class GameManager : MonoBehaviour
             && VanCargoCount == VanCargoCurrent && AmbulanceManCount == AmbulanceManCurrent && RiddleCount == RiddleCurrent)
         {
             Debug.LogError("game win!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-            SetGameStatus(false);
+
+            handleWinCondition();
         }
 
         if (Input.GetKeyDown(KeyCode.D))
         {
             SetGameStatus(false);
-            winGameMenu.StartWinGameMenu(0.2f, 2, 3);
+            winGameMenu.StartWinGameMenu();
         }
+    }
+
+    private void handleWinCondition()
+    {
+        SetGameStatus(false);
+        winGameMenu.StartWinGameMenu();
+        uiManager.TurnOffForWinStatus();
     }
 
     private IEnumerator gameStartDelay()
@@ -213,7 +241,7 @@ public class GameManager : MonoBehaviour
     }
 
     public void SetGameStatus(bool isStarted)
-    {
+    {        
         uiManager.GameTimerStatus(isStarted);
         IsGameStarted = isStarted;
     }
