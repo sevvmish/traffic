@@ -40,6 +40,7 @@ public class GameManager : MonoBehaviour
     public int AmbulanceManCurrent { get; private set; }
     
     public Action OnChangedConditionsAmount;
+    public bool IsSecondsAddedReward { get; private set; }
 
     public void AddTaxi() 
     {
@@ -131,6 +132,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Ambient ambient;
     [SerializeField] private AssetManager assets;
     [SerializeField] private WinGameMenu winGameMenu;
+    [SerializeField] private LoseGameMenu loseGameMenu;
 
     public SoundController GetSoundUI() => sound;
     public AssetManager GetAssets() => assets;
@@ -208,7 +210,7 @@ public class GameManager : MonoBehaviour
         if (IsGameStarted && uiManager.GetTimeLeft() <= 0)
         {
             Debug.LogError("game lost!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-            SetGameStatus(false);
+            StartCoroutine(handleLoseCondition());
         }
 
         if (IsGameStarted && TaxiCount == TaxiCurrent && VanCount == VanCurrent && AmbulanceCount == AmbulanceCurrent && TaxiManCount == TaxiManCurrent
@@ -216,21 +218,49 @@ public class GameManager : MonoBehaviour
         {
             Debug.LogError("game win!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
-            handleWinCondition();
+            StartCoroutine(handleWinCondition());
         }
 
         if (Input.GetKeyDown(KeyCode.D))
         {
-            SetGameStatus(false);
-            winGameMenu.StartWinGameMenu();
+            AddSecondsAndContinue(30);
+            loseGameMenu.gameObject.SetActive(false);
         }
     }
 
-    private void handleWinCondition()
+    public void AddSecondsAndContinue(float seconds)
     {
+        if (IsSecondsAddedReward) throw new System.NotImplementedException();
+
+        IsSecondsAddedReward = true;
+        uiManager.AddSeconds(seconds);
+        SetGameStatus(true);
+        uiManager.TurnOnOptions();
+    }
+
+
+    private IEnumerator handleWinCondition()
+    {
+        SoundController.Instance.PlayUISound(SoundsUI.win);
         SetGameStatus(false);
+        yield return new WaitForSeconds(1);
+
+        
+        regionController.Location().gameObject.SetActive(false);
         winGameMenu.StartWinGameMenu();
-        uiManager.TurnOffForWinStatus();
+        uiManager.TurnOffOptions();
+    }
+
+    private IEnumerator handleLoseCondition()
+    {
+        SoundController.Instance.PlayUISound(SoundsUI.lose);
+        SetGameStatus(false);
+        yield return new WaitForSeconds(1);
+
+
+        //regionController.Location().gameObject.SetActive(false);
+        loseGameMenu.StartLoseGameMenu();
+        uiManager.TurnOffOptions();
     }
 
     private IEnumerator gameStartDelay()

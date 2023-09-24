@@ -126,6 +126,7 @@ public class MainMenu : MonoBehaviour
         }
     }
 
+    
     private void getToLevels()
     {
         isLevelChosing = true;
@@ -213,7 +214,16 @@ public class MainMenu : MonoBehaviour
         UIManager.BackImageBlack(true, 1f);
 
         yield return new WaitForSeconds(1f);
-        SceneManager.LoadScene("desert");
+        SceneManager.LoadScene(GetLevelName(level));
+    }
+    public static string GetLevelName(int level)
+    {
+        if (level < 11)
+        {
+            return "desert";
+        }
+
+        return "";
     }
 
     private IEnumerator playReset()

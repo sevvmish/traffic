@@ -45,8 +45,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Sprite soundOnSprite;
     [SerializeField] private Sprite soundOffSprite;
 
-    public void TurnOffForWinStatus() => optionsPanel.SetActive(false);
-
+    
     private GameManager gm;
     private int currentTaxi;
     private int currentVan;
@@ -183,6 +182,24 @@ public class UIManager : MonoBehaviour
         {
             StartCoroutine(loadMenu());
         });
+    }
+
+    public void TurnOffOptions()
+    {
+        optionsPanel.SetActive(false);
+        optionsButton.gameObject.SetActive(false);
+    }
+
+    public void TurnOnOptions()
+    {
+        optionsPanel.SetActive(false);
+        optionsButton.gameObject.SetActive(true);
+    }
+
+    public void AddSeconds(float seconds)
+    {
+        allTime += seconds;
+        currentTime += seconds + 0.1f;
     }
 
     private IEnumerator loadMenu()

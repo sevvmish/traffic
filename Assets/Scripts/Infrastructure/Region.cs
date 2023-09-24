@@ -50,7 +50,8 @@ public class Region : MonoBehaviour, CityInfrastructure
 
         if (RotationAngle == 0)
         {
-            border.transform.GetChild(0).gameObject.SetActive(false);
+            //border.transform.GetChild(0).gameObject.SetActive(false);
+            border.transform.GetChild(0).GetComponent<MeshRenderer>().material = whenBlocked;
         }
     }
 

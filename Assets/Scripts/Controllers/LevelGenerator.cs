@@ -93,7 +93,7 @@ public class LevelGenerator : MonoBehaviour
     {
         setDesert();        
         gm.VanCount = 3;
-        gm.GameTime = 120;
+        gm.GameTime = 30;
         partsAngle(15);
         gm.SetScreenFOV(LevelScale.small);
 

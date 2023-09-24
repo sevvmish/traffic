@@ -16,6 +16,9 @@ public class Globals : MonoBehaviour
     public static DateTime TimeWhenLastInterstitialWas;
     public static DateTime TimeWhenLastRewardedWas;
 
+    public const float REW_COOLDOWN = 65f;
+    public const float INTERST_COOLDOWN = 65f;
+
     public const float TIME_FOR_ACCIDENT = 3f;
     public const float DISTANCE_FOR_ACCIDENT = 1.25f;
     public const float DISTANCE_FOR_OBJECTS = 1.5f;

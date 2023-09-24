@@ -1,4 +1,5 @@
 using DG.Tweening;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -45,21 +46,7 @@ public class WinGameMenu : MonoBehaviour
     void Start()
     {
         Translation lang = Localization.GetInstanse(Globals.CurrentLanguage).GetCurrentTranslation();
-        /*
-        allStar1.SetActive(false);
-        allStar2.SetActive(false);
-        allStar3.SetActive(false);
-        fullStar1.SetActive(false); 
-        fullStar2.SetActive(false);
-        fullStar3.SetActive(false);
-
-        stat1.SetActive(false);
-        stat2.SetActive(false);
-        stat3.SetActive(false);
-
-        rewardPanel.SetActive(false);
-        nextPanel.SetActive(false);
-        */
+        
         stat1Text.text = lang.SpeedOfGameWinMenu;
         stat2Text.text = lang.MistakesOfGameWinMenu;
         stat3Text.text = lang.AccidentsOfGameWinMenu;
@@ -102,11 +89,11 @@ public class WinGameMenu : MonoBehaviour
         SoundController _sound = SoundController.Instance;
         GameManager gm = GameManager.Instance;
 
-        _sound.PlayUISound(SoundsUI.win);
-        yield return new WaitForSeconds(0.5f);
+        
+        
                 
         gameObject.transform.DOScale(Vector3.one, 0.2f).SetEase(Ease.OutElastic);
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.1f);
 
         allStar1.SetActive(true);
         allStar2.SetActive(true);
@@ -116,17 +103,17 @@ public class WinGameMenu : MonoBehaviour
         allStar2.transform.localScale = Vector3.zero;
         allStar3.transform.localScale = Vector3.zero;
 
-        allStar1.transform.DOScale(Vector3.one, 0.3f).SetEase(Ease.OutElastic);
+        allStar1.transform.DOScale(Vector3.one, 0.2f).SetEase(Ease.OutElastic);
         _sound.PlayUISound(SoundsUI.pop);
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.1f);
         
-        allStar2.transform.DOScale(Vector3.one, 0.3f).SetEase(Ease.OutElastic);
+        allStar2.transform.DOScale(Vector3.one, 0.2f).SetEase(Ease.OutElastic);
         _sound.PlayUISound(SoundsUI.pop);
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.1f);
         
-        allStar3.transform.DOScale(Vector3.one, 0.3f).SetEase(Ease.OutElastic);
+        allStar3.transform.DOScale(Vector3.one, 0.2f).SetEase(Ease.OutElastic);
         _sound.PlayUISound(SoundsUI.pop);
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.1f);
 
 
         //======================================
@@ -279,9 +266,9 @@ public class WinGameMenu : MonoBehaviour
 
         if (starAmount >= 1)
         {
-            RectTransform rect1 = allStar1.GetComponent<RectTransform>();
-            rect1.DOAnchorPos(new Vector2(0, rect1.anchoredPosition.y + 300), 0.4f).SetEase(Ease.InOutSine);
-            allStar1.transform.DOScale(Vector3.zero, 0.4f);
+            RectTransform rect1 = fullStar1.GetComponent<RectTransform>();
+            rect1.DOAnchorPos(new Vector2(120 * 5, 200 * 5), 0.5f).SetEase(Ease.InOutSine);
+            allStar1.transform.DOScale(Vector3.one * 0.5f, 0.5f);
             _sound.PlayUISound(SoundsUI.swallow);
             yield return new WaitForSeconds(0.3f);
             currentStars++;
@@ -290,9 +277,9 @@ public class WinGameMenu : MonoBehaviour
 
         if (starAmount >= 2)
         {
-            RectTransform rect2 = allStar2.GetComponent<RectTransform>();
-            rect2.DOAnchorPos(new Vector2(0, rect2.anchoredPosition.y + 300), 0.4f).SetEase(Ease.InOutSine);
-            allStar2.transform.DOScale(Vector3.zero, 0.4f);
+            RectTransform rect2 = fullStar2.GetComponent<RectTransform>();
+            rect2.DOAnchorPos(new Vector2(0, 200 * 5), 0.5f).SetEase(Ease.InOutSine);
+            allStar2.transform.DOScale(Vector3.one * 0.5f, 0.5f);
             _sound.PlayUISound(SoundsUI.swallow);
             yield return new WaitForSeconds(0.3f);
             currentStars++;
@@ -301,9 +288,9 @@ public class WinGameMenu : MonoBehaviour
 
         if (starAmount >= 3)
         {
-            RectTransform rect3 = allStar3.GetComponent<RectTransform>();
-            rect3.DOAnchorPos(new Vector2(0, rect3.anchoredPosition.y + 300), 0.4f).SetEase(Ease.InOutSine);
-            allStar3.transform.DOScale(Vector3.zero, 0.4f);
+            RectTransform rect3 = fullStar3.GetComponent<RectTransform>();
+            rect3.DOAnchorPos(new Vector2(-120 * 5, 200 * 5), 0.5f).SetEase(Ease.InOutSine);
+            allStar3.transform.DOScale(Vector3.one * 0.5f, 0.5f);
             _sound.PlayUISound(SoundsUI.swallow);
             yield return new WaitForSeconds(0.3f);
             currentStars++;
@@ -312,10 +299,16 @@ public class WinGameMenu : MonoBehaviour
 
         yield return new WaitForSeconds(0.5f);
 
-        
-
-        rewardPanel.SetActive(true);
+        if ((DateTime.Now - Globals.TimeWhenLastRewardedWas).TotalSeconds > Globals.REW_COOLDOWN && starAmount < 3)
+        {
+            rewardPanel.SetActive(true);
+            rewardPanel.transform.localScale = Vector3.zero;
+            rewardPanel.transform.DOScale(Vector3.one, 0.2f).SetEase(Ease.OutElastic);
+        }
+                
         nextPanel.SetActive(true);
+        nextPanel.transform.localScale = Vector3.zero;
+        nextPanel.transform.DOScale(Vector3.one, 0.2f).SetEase(Ease.OutElastic);
 
         if (rewardPanel.activeSelf) StartCoroutine(playShake(starIcon.transform));
 

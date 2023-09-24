@@ -21,6 +21,9 @@ public class Translation : ScriptableObject
     public string WinText;
     public string LoseText;
 
+    public string GetMoreTextReward;
+    public string SecondsText;
+
     public string AllProgressWillBeReset;
 
     public Translation() { }
