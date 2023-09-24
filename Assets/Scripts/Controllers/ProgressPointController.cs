@@ -74,6 +74,9 @@ public class ProgressPointController : MonoBehaviour
 
             for (int i = 0; i < 3; i++)
             {
+                fullStars[i].SetActive(false);
+                emptyStars[i].SetActive(false);
+
                 if (stars > i)
                 {
                     fullStars[i].SetActive(true);
@@ -106,30 +109,11 @@ public class ProgressPointController : MonoBehaviour
 
     public static int StarsLimit(int level)
     {
-        switch(level)
-        {
-            case 0:
-                break;
+        int[] data = new int[] { 0, 
+            0, 0, 0, 7, 8, 11, 13, 14, 17, 20   //1 - 10 lvls
+        }; 
 
-            case 1:
-                return 0;
-
-            case 2:
-                return 0;
-
-            case 3:
-                return 0;
-
-            case 4:
-                return 7;
-
-            case 5:
-                return 8;
-
-            case 6:
-                return 9;
-        }
-
-        return 0;
+        return data[level];
+       
     }
 }

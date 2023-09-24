@@ -180,7 +180,7 @@ public class UIManager : MonoBehaviour
 
         homeButton.onClick.AddListener(() =>
         {
-            StartCoroutine(loadMenu());
+            gm.BackToMainMenu(true);
         });
     }
 
@@ -202,15 +202,7 @@ public class UIManager : MonoBehaviour
         currentTime += seconds + 0.1f;
     }
 
-    private IEnumerator loadMenu()
-    {
-        SoundController.Instance.PlayUISound(SoundsUI.positive);
-                
-        UIManager.BackImageBlack(true, 1f);
-
-        yield return new WaitForSeconds(1f);
-        SceneManager.LoadScene("menu");
-    }
+    
 
     private void winConditionUpdate()
     {        

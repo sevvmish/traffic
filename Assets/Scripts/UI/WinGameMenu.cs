@@ -56,6 +56,16 @@ public class WinGameMenu : MonoBehaviour
         stat3ValueText.text = "";
 
         winText.text = lang.WinText;
+
+        nextButton.onClick.AddListener(() => 
+        {
+            GameManager.Instance.BackToMainMenu(false);
+        });
+
+        rewardButton.onClick.AddListener(() =>
+        {
+            GameManager.Instance.PLayRewardedPlusStar();
+        });
     }
 
     public void StartWinGameMenu()
@@ -89,8 +99,7 @@ public class WinGameMenu : MonoBehaviour
         SoundController _sound = SoundController.Instance;
         GameManager gm = GameManager.Instance;
 
-        
-        
+        gm.regionController.Location().gameObject.SetActive(false);
                 
         gameObject.transform.DOScale(Vector3.one, 0.2f).SetEase(Ease.OutElastic);
         yield return new WaitForSeconds(0.1f);
@@ -138,8 +147,8 @@ public class WinGameMenu : MonoBehaviour
         _sound.PlayUISound(SoundsUI.tick);
         yield return new WaitForSeconds(0.2f);
 
-        int starAmount = 2;
-
+        int starAmount = 3;
+                
         if (gm.StarsLimitMistakes > 0 && gm.StarsLimitAccidents > 0)
         {
             starAmount = 0;
@@ -299,7 +308,7 @@ public class WinGameMenu : MonoBehaviour
 
         yield return new WaitForSeconds(0.5f);
 
-        if ((DateTime.Now - Globals.TimeWhenLastRewardedWas).TotalSeconds > Globals.REW_COOLDOWN && starAmount < 3)
+        if (Globals.CurrentLevel > 1 && (DateTime.Now - Globals.TimeWhenLastRewardedWas).TotalSeconds > Globals.REWARDED_COOLDOWN && starAmount < 3)
         {
             rewardPanel.SetActive(true);
             rewardPanel.transform.localScale = Vector3.zero;

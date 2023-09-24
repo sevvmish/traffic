@@ -71,6 +71,46 @@ public class LevelGenerator : MonoBehaviour
             case 1:
                 level_1();
                 break;
+
+            case 2:
+                level_2();
+                break;
+
+            case 3:
+                level_3();
+                break;
+
+            case 4:
+                level_4();
+                break;
+
+            case 5:
+                level_5();
+                break;
+
+            case 6:
+                level_6();
+                break;
+
+            case 7:
+
+                break;
+
+            case 8:
+
+                break;
+
+            case 9:
+
+                break;
+
+            case 10:
+
+                break;
+
+            case 11:
+
+                break;
         }
     }
 
@@ -93,14 +133,97 @@ public class LevelGenerator : MonoBehaviour
     {
         setDesert();        
         gm.VanCount = 3;
-        gm.GameTime = 30;
+        gm.GameTime = 60;
         partsAngle(15);
         gm.SetScreenFOV(LevelScale.small);
 
-        SetObject_Spawner(VanSpawnDesert, new Vector3(-8.25f, 0, -4.75f), new Vector3(0, 60, 0), "", 11f, 4f);
+        SetObject_Spawner(VanSpawnDesert, new Vector3(-8.25f, 0, -4.75f), new Vector3(0, 60, 0), "", 11f, 4f, 0);
         SetObject(VanRecDesert, new Vector3(8.25f, 0, 4.75f), new Vector3(0, -120, 0));
         SetObject(Straight1Desert, Vector3.zero, new Vector3(0, -60, 0), "tutorial_try1", false);
         SetObject(Straight1Desert, Vector3.zero, new Vector3(0, 0, 0), "tutorial_try2", true);
+    }
+
+    private void level_2()
+    {
+        setDesert();
+        gm.VanCount = 3;
+        gm.GameTime = 30;
+        gm.StarsLimitTimer = 0.25f;
+        gm.StarsLimitMistakes = 0;
+        gm.StarsLimitAccidents = 0;
+        partsAngle(-5);
+        gm.SetScreenFOV(LevelScale.small);
+
+        SetObject_Spawner(VanSpawnDesert, new Vector3(-8.25f, 0, 4.75f), new Vector3(0, 120, 0), "", 6f, 1f, 0);
+        SetObject(VanRecDesert, new Vector3(8.25f, 0, -4.75f), new Vector3(0, -60, 0));
+        SetObject(NonStraight1Desert, Vector3.zero, new Vector3(0, 60, 0));
+    }
+
+    private void level_3()
+    {
+        setDesert();
+        gm.VanCount = 2;
+        gm.GameTime = 30;
+        gm.StarsLimitTimer = 0.45f;
+        gm.StarsLimitMistakes = 0;
+        gm.StarsLimitAccidents = 0;
+        partsAngle(5);
+        gm.SetScreenFOV(LevelScale.small);
+
+        SetObject_Spawner(VanSpawnDesert, new Vector3(8.25f, 0, 4.75f), new Vector3(0, 240, 0), "", 7f, 3f, 0);
+        SetObject(VanRecDesert, new Vector3(-8.25f, 0, -4.75f), new Vector3(0, 60, 0));
+        SetObject(NonStraight2Desert, Vector3.zero, new Vector3(0, 60, 0));
+    }
+
+    private void level_4()
+    {
+        setDesert();
+        gm.VanCount = 3;
+        gm.GameTime = 30;
+        gm.StarsLimitTimer = 0.25f;
+        gm.StarsLimitMistakes = 0;
+        gm.StarsLimitAccidents = 0;
+        partsAngle(5);
+        gm.SetScreenFOV(LevelScale.small);
+
+        SetObject_Spawner(VanSpawnDesert, new Vector3(-8.25f, 0, -4.75f), new Vector3(0, 60, 0), "", 5f, 3f, 0);
+        SetObject(VanRecDesert, new Vector3(0, 0, 9.5f), new Vector3(0, 180, 0));
+        SetObject(VanRecDesert, new Vector3(8.25f, 0, -4.75f), new Vector3(0, 300, 0));
+        SetObject(NonStraight2Desert, Vector3.zero, new Vector3(0, 120, 0));
+    }
+
+    private void level_5()
+    {
+        setDesert();
+        gm.VanCount = 5;
+        gm.GameTime = 30;
+        gm.StarsLimitTimer = 0.2f;
+        gm.StarsLimitMistakes = 0;
+        gm.StarsLimitAccidents = 0;
+        partsAngle(0);
+        gm.SetScreenFOV(LevelScale.small);
+
+        SetObject_Spawner(VanSpawnDesert, new Vector3(8.25f, 0, -4.75f), new Vector3(0, 300, 0), "", 3f, 3f, 0);
+        SetObject_Spawner(VanSpawnDesert, new Vector3(-8.25f, 0, -4.75f), new Vector3(0, 60, 0), "", 3f, 3f, 0);
+        SetObject(VanRecDesert, new Vector3(0, 0, 9.5f), new Vector3(0, 180, 0));
+        SetObject(Double1Desert, Vector3.zero, new Vector3(0, 0, 0));
+    }
+
+    private void level_6()
+    {
+        setDesert();
+        gm.VanCount = 5;
+        gm.GameTime = 30;
+        gm.StarsLimitTimer = 0.25f;
+        gm.StarsLimitMistakes = 0;
+        gm.StarsLimitAccidents = 0;
+        partsAngle(0);
+        gm.SetScreenFOV(LevelScale.small);
+
+        SetObject_Spawner(VanSpawnDesert, new Vector3(8.25f, 0, -4.75f), new Vector3(0, 300, 0), "", 4f, 2f, 0);
+        SetObject_Spawner(VanSpawnDesert, new Vector3(-8.25f, 0, -4.75f), new Vector3(0, 60, 0), "", 4f, 4f, 0);        
+        SetObject(VanRecDesert, new Vector3(0, 0, 9.5f), new Vector3(0, 180, 0));
+        SetObject(Straight2Desert, Vector3.zero, new Vector3(0, 0, 0));
     }
 
 
@@ -121,7 +244,7 @@ public class LevelGenerator : MonoBehaviour
         }
     }
 
-    private void SetObject_Spawner(GameObject obj, Vector3 pos, Vector3 rot, string name, float frequency, float delay)
+    private void SetObject_Spawner(GameObject obj, Vector3 pos, Vector3 rot, string name, float frequency, float delay, int limit)
     {
         GameObject g = Instantiate(obj, partsLocation);
         g.transform.localPosition = pos;
@@ -129,6 +252,7 @@ public class LevelGenerator : MonoBehaviour
         g.name = name;
         g.GetComponent<VehicleSpawner>().SpawnFrequency = frequency;
         g.GetComponent<VehicleSpawner>().Delay = delay;
+        g.GetComponent<VehicleSpawner>().Limit = limit;
     }
 
     private void partsAngle(float angle) => partsLocation.eulerAngles = new Vector3(0, angle, 0);

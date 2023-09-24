@@ -1,8 +1,11 @@
+using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using YG;
 
 public class GameManager : MonoBehaviour
 {
@@ -131,8 +134,13 @@ public class GameManager : MonoBehaviour
     [SerializeField] private SoundController sound;
     [SerializeField] private Ambient ambient;
     [SerializeField] private AssetManager assets;
+
+    [Header("end menues and adv")]
     [SerializeField] private WinGameMenu winGameMenu;
     [SerializeField] private LoseGameMenu loseGameMenu;
+    [SerializeField] private Rewarded rewarded;
+    [SerializeField] private Interstitial interstitial;
+    [SerializeField] private PlusStarMenu plusStarMenu;
 
     public SoundController GetSoundUI() => sound;
     public AssetManager GetAssets() => assets;
@@ -157,6 +165,16 @@ public class GameManager : MonoBehaviour
         }
 
         Screen.SetResolution(1200, 600, true);
+
+        //=====TO DELETE======
+        //Globals.CurrentLevel = 5;
+        //Globals.MainPlayerData = new PlayerData();
+        //====================
+
+        if (YandexGame.EnvironmentData.isDesktop)
+        {
+            YandexGame.StickyAdActivity(true);            
+        }
 
         GetComponent<LevelGenerator>().InitLevel(Globals.CurrentLevel, this);
 
@@ -223,7 +241,7 @@ public class GameManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.D))
         {
-            AddSecondsAndContinue(30);
+            plusStarMenu.StartPlusStar();
             loseGameMenu.gameObject.SetActive(false);
         }
     }
@@ -231,11 +249,39 @@ public class GameManager : MonoBehaviour
     public void AddSecondsAndContinue(float seconds)
     {
         if (IsSecondsAddedReward) throw new System.NotImplementedException();
+                
+        IsSecondsAddedReward = true;
+        uiManager.AddSeconds(seconds);
+        SetGameStatus(true);
+        uiManager.TurnOnOptions();
+    }
+
+    public void AddSecondsAndContinue()
+    {
+        if (IsSecondsAddedReward) throw new System.NotImplementedException();
+
+        float seconds = HowManySecondsToAddForRewarded(Globals.CurrentLevel);
 
         IsSecondsAddedReward = true;
         uiManager.AddSeconds(seconds);
         SetGameStatus(true);
         uiManager.TurnOnOptions();
+    }
+
+    public void PLayRewardedPlusStar()
+    {
+        winGameMenu.gameObject.SetActive(false);
+        rewarded.OnRewardedEndedOK = plusStarMenu.StartPlusStar;
+        rewarded.OnError = backToLevels;
+        rewarded.ShowRewardedVideo();
+    }
+
+    public void PLayRewardedAddSeconds()
+    {
+        loseGameMenu.gameObject.SetActive(false);
+        rewarded.OnRewardedEndedOK = AddSecondsAndContinue;
+        rewarded.OnError = RestartLevel;
+        rewarded.ShowRewardedVideo();
     }
 
 
@@ -276,6 +322,66 @@ public class GameManager : MonoBehaviour
         IsGameStarted = isStarted;
     }
 
+    public void RestartLevel()
+    {
+        StartCoroutine(restartLevel());
+    }
+    private IEnumerator restartLevel()
+    {
+        SoundController.Instance.PlayUISound(SoundsUI.positive);
+
+        UIManager.BackImageBlack(true, 1f);
+
+        yield return new WaitForSeconds(1f);
+        SceneManager.LoadScene(MainMenu.GetLevelName(Globals.CurrentLevel));
+    }
+
+    private void backToLevels()
+    {
+        if (Globals.CurrentLevel > 1 
+            && (DateTime.Now - Globals.TimeWhenLastInterstitialWas).TotalSeconds > Globals.INTERSTITIAL_COOLDOWN 
+            /*&& (DateTime.Now - Globals.TimeWhenLastRewardedWas).TotalSeconds > (Globals.REWARDED_COOLDOWN/2)*/)
+        {
+
+            UIManager.BackImageBlack(true, 0f);
+            interstitial.OnEnded = backToLevels;
+            interstitial.ShowInterstitialVideo();
+        }
+        else
+        {
+            BackToMainMenu(false);
+        }        
+    }
+        
+
+
+
+    public void BackToMainMenu(bool isMainScreenOn)
+    {
+        if (Globals.CurrentLevel > 1 && !isMainScreenOn
+            && (DateTime.Now - Globals.TimeWhenLastInterstitialWas).TotalSeconds > Globals.INTERSTITIAL_COOLDOWN
+            /*&& (DateTime.Now - Globals.TimeWhenLastRewardedWas).TotalSeconds > (Globals.REWARDED_COOLDOWN/2)*/)
+        {
+            UIManager.BackImageBlack(true, 0f);
+            interstitial.OnEnded = backToLevels;
+            interstitial.ShowInterstitialVideo();
+            return;
+        }
+        
+        StartCoroutine(loadMenu(isMainScreenOn));
+    }
+    private IEnumerator loadMenu(bool isMainScreenOn)
+    {
+        SoundController.Instance.PlayUISound(SoundsUI.positive);
+        Globals.IsMainScreen = isMainScreenOn;
+
+        UIManager.BackImageBlack(true, 1f);
+
+        yield return new WaitForSeconds(1f);
+        SceneManager.LoadScene("menu");
+    }
+
+    
     public void SetScreenFOV(LevelScale scale)
     {
         switch(scale)
@@ -327,8 +433,8 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            assets.TaxiPool = new ObjectPool(1, assets.GetVehicle(Vehicles.taxi), regionController.Location());
-            assets.TaxiSignPool = new ObjectPool(1, assets.TaxiSign);
+            //assets.TaxiPool = new ObjectPool(1, assets.GetVehicle(Vehicles.taxi), regionController.Location());
+            //assets.TaxiSignPool = new ObjectPool(1, assets.TaxiSign);
         }
 
         if (VanCount > 0)
@@ -338,8 +444,8 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            assets.VanPool = new ObjectPool(1, assets.GetVehicle(Vehicles.van), regionController.Location());
-            assets.VanSignPool = new ObjectPool(1, assets.VanSign);
+            //assets.VanPool = new ObjectPool(1, assets.GetVehicle(Vehicles.van), regionController.Location());
+            //assets.VanSignPool = new ObjectPool(1, assets.VanSign);
         }
 
         if (AmbulanceCount > 0)
@@ -349,12 +455,18 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            assets.AmbulancePool = new ObjectPool(1, assets.GetVehicle(Vehicles.ambulance), regionController.Location());
-            assets.AmbulanceSignPool = new ObjectPool(1, assets.AmbulanceSign);
+            //assets.AmbulancePool = new ObjectPool(1, assets.GetVehicle(Vehicles.ambulance), regionController.Location());
+            //assets.AmbulanceSignPool = new ObjectPool(1, assets.AmbulanceSign);
         }
 
     }
 
+    public static float HowManySecondsToAddForRewarded(int level)
+    {
+        return (int)(Instance.GameTime * Globals.HOW_MANY_SEC_ADD_FOR_REWARD_KOEFF);
+    }
+
+    
 }
 
 public enum LevelScale

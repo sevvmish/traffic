@@ -1,8 +1,6 @@
 using DG.Tweening;
-using DG.Tweening.Core.Easing;
 using System.Collections;
 using System.Collections.Generic;
-using System.Threading;
 using UnityEngine;
 
 public class Vehicle : MonoBehaviour
@@ -18,6 +16,9 @@ public class Vehicle : MonoBehaviour
     public RegionController regionController { get; private set; }
     public Vehicles vehicleType { get; private set; }
     public float TimeForRide { get; private set; } = 3f;
+
+    //public Transform forwardPoint;
+    //public float VehicleRadius;
 
     private bool isStart;
     private float _timer;
@@ -69,28 +70,38 @@ public class Vehicle : MonoBehaviour
                 
         if (isStart && IsCanMove)
         {
-            _timer += Time.deltaTime;
-
-            if (!isCenterReached)
-            {                
-                transform.position = Vector3.Lerp(from.position, center.position, _timer / (TimeForRide/2f));
-                transform.LookAt(center);
-                if (_timer / (TimeForRide / 2f) >= 1f )
+            /*
+            //check same transport
+            Vehicle[] vehicles = currentRegion.GetVehicles();
+            if (vehicles.Length > 1)
+            {
+                bool isOthers = false;
+                for (int i = 0; i < vehicles.Length; i++)
                 {
-                    isCenterReached = true;
-                    _timer = 0;
+                    if (vehicles[i] == this || vehicles[i].vehicleType != vehicleType) continue;
+
+                    if ((forwardPoint.position - vehicles[i].transform.position).magnitude < VehicleRadius)
+                    {
+                        isOthers = true;
+                        break;
+                    }
+                }
+
+                if (!isOthers)
+                {
+                    standartMoving();
                 }
             }
             else
             {
-                transform.position = Vector3.Lerp(center.position, to.position, _timer / (TimeForRide / 2f));
-                transform.LookAt(to);
-            }
+                standartMoving();
+            }*/
 
+            standartMoving();
 
+            //destro if nothing
             float dist = (transform.position - prevPosition).magnitude;
-
-            if (dist <= 0) MakeSelfDestruction();
+            //if (dist <= 0) MakeSelfDestruction();
             prevPosition = transform.position;
         }
 
@@ -116,6 +127,28 @@ public class Vehicle : MonoBehaviour
         }
 
 
+    }
+
+    private void standartMoving()
+    {
+        //standart moving
+        _timer += Time.deltaTime;
+
+        if (!isCenterReached)
+        {
+            transform.position = Vector3.Lerp(from.position, center.position, _timer / (TimeForRide / 2f));
+            transform.LookAt(center);
+            if (_timer / (TimeForRide / 2f) >= 1f)
+            {
+                isCenterReached = true;
+                _timer = 0;
+            }
+        }
+        else
+        {
+            transform.position = Vector3.Lerp(center.position, to.position, _timer / (TimeForRide / 2f));
+            transform.LookAt(to);
+        }
     }
 
     public void SetMove(bool isMove)

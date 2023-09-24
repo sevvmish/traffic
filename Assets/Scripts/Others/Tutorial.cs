@@ -19,6 +19,12 @@ public class Tutorial : MonoBehaviour
     [SerializeField] private GameObject level1_tutorial_5;
     [SerializeField] private TextMeshProUGUI level1_tutorial_text_5;
 
+    [Header("level5")]
+    [SerializeField] private GameObject level5_tutorial;
+    [SerializeField] private TextMeshProUGUI level5_tutorial_text;
+    [SerializeField] private GameObject level5_tutorial_1;
+    [SerializeField] private TextMeshProUGUI level5_tutorial_text_1;
+
     private bool isLevel1_1, isLevel1_2, isLevel1_4, isEndLevel1;
     private float _timer;
     private GameManager gm;
@@ -34,6 +40,7 @@ public class Tutorial : MonoBehaviour
         level1_tutorial_3.SetActive(false);
         level1_tutorial_4.SetActive(false);
         level1_tutorial_5.SetActive(false);
+        level5_tutorial.SetActive(false);
 
         if (Globals.CurrentLevel == 1 && MainMenu.GetLastLevel() == 1)
         {
@@ -44,7 +51,15 @@ public class Tutorial : MonoBehaviour
             level1_tutorial_text_5.text = lang.Level1_Tutorial_5;
             new_region = GameObject.Find("tutorial_try2");
             new_region.SetActive(false);
-            StartCoroutine(activateAfterSecs(1, level1_tutorial));
+            StartCoroutine(activateAfterSecs(1, level1_tutorial));            
+        }
+
+        if (Globals.CurrentLevel == 5 && MainMenu.GetLastLevel() == 5)
+        {
+            level5_tutorial_text.text = lang.Level5_Tutorial;
+            level5_tutorial_text_1.text = lang.Level5_Tutorial_1;
+            StartCoroutine(activateAfterSecs(1, level5_tutorial));
+            StartCoroutine(activateDeactivateAfterSecs(10f, level5_tutorial_1, 6f));
         }
     }
 
@@ -90,6 +105,8 @@ public class Tutorial : MonoBehaviour
                 level1_tutorial_5.SetActive(false);
             }
         }
+
+        
     }
 
     private IEnumerator activateAfterSecs(float delay, GameObject obj)

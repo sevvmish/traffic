@@ -120,9 +120,23 @@ public class MainMenu : MonoBehaviour
         }
         else
         {
-            
+            if (YandexGame.EnvironmentData.isDesktop)
+            {
+                YandexGame.StickyAdActivity(false);
+            }
 
-            getToLevels();
+            resetButton.gameObject.SetActive(true);
+
+            if (Globals.IsMainScreen)
+            {
+                StartCoroutine(stage1());
+            }
+            else
+            {
+                getToLevels();
+            }
+
+            
         }
     }
 
@@ -164,7 +178,7 @@ public class MainMenu : MonoBehaviour
 
             Globals.IsMobilePlatform = YandexGame.EnvironmentData.isMobile;
             print("platform mobile: " + Globals.IsMobilePlatform);
-
+            
             if (Globals.MainPlayerData.S == 1)
             {
                 Globals.IsSoundOn = true;
@@ -187,6 +201,8 @@ public class MainMenu : MonoBehaviour
 
             Localize();
             playButton.gameObject.SetActive(true);
+
+            
         }
 
         if (Input.GetMouseButtonDown(0) && isLevelChosing)
@@ -197,7 +213,7 @@ public class MainMenu : MonoBehaviour
             {
                 if (hit.collider.TryGetComponent(out ProgressPointController progressPoint))
                 {
-                    if (progressPoint.IsActivated && Globals.CurrentStars >= progressPoint.CurrentLimit)
+                    if (progressPoint.IsActivated && GetStarsAmount() >= progressPoint.CurrentLimit)
                     {
                         StartCoroutine(startLevel(progressPoint.CurrentLevel));
                     }
@@ -209,6 +225,8 @@ public class MainMenu : MonoBehaviour
     private IEnumerator startLevel(int level)
     {
         SoundController.Instance.PlayUISound(SoundsUI.positive);
+
+        Globals.IsMainScreen = false;
 
         Globals.CurrentLevel = level;        
         UIManager.BackImageBlack(true, 1f);
@@ -341,13 +359,14 @@ public class MainMenu : MonoBehaviour
     public static void AddStarsUI(int amount)
     {
         Vector2 size = Vector2.zero;
-        int stars = GetStarsAmount() + amount;
 
+        int stars = Globals.MainPlayerData.Progress1[Globals.CurrentLevel] + amount;
+        
         Globals.MainPlayerData.Progress1[Globals.CurrentLevel] = stars;
         SaveLoadManager.Save();
 
         TextMeshProUGUI startText = GameObject.Find("StarsAmount").GetComponent<TextMeshProUGUI>();
-        startText.text = stars.ToString();
+        startText.text = GetStarsAmount().ToString();
 
         if (stars > 99)
         {

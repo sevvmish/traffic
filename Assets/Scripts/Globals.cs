@@ -6,18 +6,22 @@ using UnityEngine;
 public class Globals : MonoBehaviour
 {
     public static PlayerData MainPlayerData;
-    public static int CurrentStars;
-    public static int CurrentLevel;
-    public static string CurrentLanguage;
-    public static bool IsMobilePlatform;
-    public static bool IsSoundOn;
+    public static int CurrentStars = 0;
+    public static int CurrentLevel = 2;
+    public static string CurrentLanguage = "ru";
+    public static bool IsMobilePlatform = false;
+    public static bool IsSoundOn = true;
     public static bool IsInitiated = false;
     public static DateTime TimeWhenStartedPlaying;
     public static DateTime TimeWhenLastInterstitialWas;
     public static DateTime TimeWhenLastRewardedWas;
 
-    public const float REW_COOLDOWN = 65f;
-    public const float INTERST_COOLDOWN = 65f;
+    public static bool IsMainScreen = true;
+
+    public const float REWARDED_COOLDOWN = 65f;
+    public const float INTERSTITIAL_COOLDOWN = 65f;
+
+    public const float HOW_MANY_SEC_ADD_FOR_REWARD_KOEFF = 0.2f;
 
     public const float TIME_FOR_ACCIDENT = 3f;
     public const float DISTANCE_FOR_ACCIDENT = 1.25f;

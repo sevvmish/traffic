@@ -23,7 +23,12 @@ public class LoseGameMenu : MonoBehaviour
         
         restartButton.onClick.AddListener(() => 
         {
-            StartCoroutine(restartLevel());
+            GameManager.Instance.RestartLevel();
+        });
+
+        rewardButton.onClick.AddListener(() =>
+        {
+            GameManager.Instance.PLayRewardedAddSeconds();
         });
     }
 
@@ -49,9 +54,10 @@ public class LoseGameMenu : MonoBehaviour
         gameObject.transform.DOScale(Vector3.one, 0.2f).SetEase(Ease.OutElastic);
         yield return new WaitForSeconds(0.1f);
 
-        if ((DateTime.Now - Globals.TimeWhenLastRewardedWas).TotalSeconds > 2/*Globals.REW_COOLDOWN*/)
+        if (Globals.CurrentLevel > 1 && (DateTime.Now - Globals.TimeWhenLastRewardedWas).TotalSeconds > Globals.REWARDED_COOLDOWN && !gm.IsSecondsAddedReward)
         {
-            float secondsToAdd = 30;
+            float secondsToAdd = GameManager.HowManySecondsToAddForRewarded(Globals.CurrentLevel);
+
             rewardPanel.SetActive(true);
             rewardPanel.transform.localScale = Vector3.zero;
             rewardPanel.transform.DOScale(Vector3.one, 0.2f).SetEase(Ease.OutElastic);
@@ -62,7 +68,15 @@ public class LoseGameMenu : MonoBehaviour
         restartPanel.transform.localScale = Vector3.zero;
         restartPanel.transform.DOScale(Vector3.one, 0.2f).SetEase(Ease.OutElastic);
 
-        if (rewardPanel.activeSelf) StartCoroutine(playShake(rewardIcon.transform));
+        if (rewardPanel.activeSelf)
+        {
+            StartCoroutine(playShake(rewardIcon.transform));
+        }
+        else
+        {
+            gm.regionController.Location().gameObject.SetActive(false);
+        }
+        
 
         //======================================
     }
@@ -76,13 +90,5 @@ public class LoseGameMenu : MonoBehaviour
         }
     }
 
-    private IEnumerator restartLevel()
-    {
-        SoundController.Instance.PlayUISound(SoundsUI.positive);
-
-        UIManager.BackImageBlack(true, 1f);
-
-        yield return new WaitForSeconds(1f);
-        SceneManager.LoadScene(MainMenu.GetLevelName(Globals.CurrentLevel));
-    }
+    
 }
