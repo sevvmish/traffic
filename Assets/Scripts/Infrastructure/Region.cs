@@ -15,6 +15,9 @@ public class Region : MonoBehaviour, CityInfrastructure
     public Transform[] centers = new Transform[0];
     public GameObject[] endBarrier = new GameObject[0];
     public Transform[] ObjectPlaces = new Transform[0];
+
+    public GameObject[] unconnectedRoads = new GameObject[0];
+
     public bool IsActive { get; private set; }
     public bool IsBusyRotate { get => isBusyRotate; }
     public Action<Vehicle> OnVehicleAdded;
@@ -54,6 +57,7 @@ public class Region : MonoBehaviour, CityInfrastructure
             border.transform.GetChild(0).GetComponent<MeshRenderer>().material = whenBlocked;
         }
     }
+
 
     private void Update()
     {
@@ -225,6 +229,31 @@ public class Region : MonoBehaviour, CityInfrastructure
             }
                      
         }
+
+        if (unconnectedRoads.Length > 0)
+        {
+            if (endBarrier[0].activeSelf && endBarrier[1].activeSelf)
+            {
+                unconnectedRoads[0].SetActive(true);
+            }
+            else
+            {
+                unconnectedRoads[0].SetActive(false);
+            }
+        }
+
+        if (unconnectedRoads.Length > 1)
+        {
+            if (endBarrier[2].activeSelf && endBarrier[3].activeSelf)
+            {
+                unconnectedRoads[1].SetActive(true);
+            }
+            else
+            {
+                unconnectedRoads[1].SetActive(false);
+            }
+        }
+
     }
 
     public bool IsHasVehicles() => currentVehicles.Count > 0;

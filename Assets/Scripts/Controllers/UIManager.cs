@@ -42,6 +42,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Button continueButton;
     [SerializeField] private Button soundButton;
     [SerializeField] private Button homeButton;
+    [SerializeField] private Button restartButton;
     [SerializeField] private Sprite soundOnSprite;
     [SerializeField] private Sprite soundOffSprite;
 
@@ -181,6 +182,11 @@ public class UIManager : MonoBehaviour
         homeButton.onClick.AddListener(() =>
         {
             gm.BackToMainMenu(true);
+        });
+
+        restartButton.onClick.AddListener(() =>
+        {
+            gm.RestartLevel();
         });
     }
 

@@ -68,6 +68,19 @@ public class ProgressPointController : MonoBehaviour
                 limitText.text = "";
             }
 
+            if (CurrentLimit > MainMenu.GetStarsAmount())
+            {
+                limitText.color = Color.red;
+            }
+            else if (CurrentLimit == MainMenu.GetStarsAmount())
+            {
+                limitText.color = Color.grey;
+            }
+            else
+            {
+                limitText.color = Color.green;
+            }
+
             baseCapsule.GetComponent<MeshRenderer>().material = active;
 
             int stars = Globals.MainPlayerData.Progress1[CurrentLevel];
@@ -110,7 +123,7 @@ public class ProgressPointController : MonoBehaviour
     public static int StarsLimit(int level)
     {
         int[] data = new int[] { 0, 
-            0, 0, 0, 7, 8, 11, 13, 14, 17, 20   //1 - 10 lvls
+            0, 0, 0, 7, 10, 13, 16, 19, 22, 25   //1 - 10 lvls
         }; 
 
         return data[level];

@@ -27,6 +27,8 @@ public class Translation : ScriptableObject
     public string GetMoreTextReward;
     public string SecondsText;
 
+    public string GetMoreStars;
+
     public string AllProgressWillBeReset;
 
     public Translation() { }

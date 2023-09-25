@@ -17,6 +17,7 @@ public class Globals : MonoBehaviour
     public static DateTime TimeWhenLastRewardedWas;
 
     public static bool IsMainScreen = true;
+    public static bool IsInfoActive;
 
     public const float REWARDED_COOLDOWN = 65f;
     public const float INTERSTITIAL_COOLDOWN = 65f;

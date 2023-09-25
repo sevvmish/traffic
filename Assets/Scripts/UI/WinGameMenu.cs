@@ -17,6 +17,10 @@ public class WinGameMenu : MonoBehaviour
     [SerializeField] private GameObject fullStar2;
     [SerializeField] private GameObject fullStar3;
 
+    [SerializeField] private GameObject doneStar1;
+    [SerializeField] private GameObject doneStar2;
+    [SerializeField] private GameObject doneStar3;
+
     [Header("STATISTICS")]
     [SerializeField] private GameObject stat1;
     [SerializeField] private TextMeshProUGUI stat1Text;
@@ -82,6 +86,9 @@ public class WinGameMenu : MonoBehaviour
         fullStar1.SetActive(false);
         fullStar2.SetActive(false);
         fullStar3.SetActive(false);
+        doneStar1.SetActive(false);
+        doneStar2.SetActive(false);
+        doneStar3.SetActive(false);
 
         stat1.SetActive(false);
         stat2.SetActive(false);
@@ -214,8 +221,8 @@ public class WinGameMenu : MonoBehaviour
         stat3ValueText.color = accidentsColor;
 
         stat1ValueText.text = (gm.GetUI().GetTimeLeft() / gm.GameTime * 100).ToString("f0") + "%";
-        stat2ValueText.text = gm.MistakesCurrent.ToString();
-        stat3ValueText.text = gm.AccidentsCurrent.ToString();
+        stat2ValueText.text = gm.MistakesCurrent == 0 ? "-" : gm.MistakesCurrent.ToString();
+        stat3ValueText.text = gm.AccidentsCurrent == 0 ? "-" : gm.AccidentsCurrent.ToString();
 
         stat1ValueText.gameObject.SetActive(true);
         stat2ValueText.gameObject.SetActive(true);
@@ -239,6 +246,8 @@ public class WinGameMenu : MonoBehaviour
         _sound.PlayUISound(SoundsUI.tick);
         yield return new WaitForSeconds(0.5f);
 
+        int allreadyReceivedStars = Globals.MainPlayerData.Progress1[Globals.CurrentLevel];
+
         if (starAmount >= 1)
         {
             fullStar1.SetActive(true);
@@ -246,6 +255,7 @@ public class WinGameMenu : MonoBehaviour
             fullStar1.transform.DOScale(Vector3.one, 0.3f).SetEase(Ease.OutElastic);
             _sound.PlayUISound(SoundsUI.pop);
             yield return new WaitForSeconds(0.2f);
+            if (allreadyReceivedStars>=1) doneStar1.SetActive(true);
         }
 
         yield return new WaitForSeconds(0.1f);
@@ -257,6 +267,7 @@ public class WinGameMenu : MonoBehaviour
             fullStar2.transform.DOScale(Vector3.one, 0.3f).SetEase(Ease.OutElastic);
             _sound.PlayUISound(SoundsUI.pop);
             yield return new WaitForSeconds(0.2f);
+            if (allreadyReceivedStars >= 2) doneStar2.SetActive(true);
         }
 
         yield return new WaitForSeconds(0.1f);
@@ -268,12 +279,13 @@ public class WinGameMenu : MonoBehaviour
             fullStar3.transform.DOScale(Vector3.one, 0.3f).SetEase(Ease.OutElastic);
             _sound.PlayUISound(SoundsUI.pop);
             yield return new WaitForSeconds(0.2f);
+            if (allreadyReceivedStars >= 3) doneStar3.SetActive(true);
         }
 
         int currentStars = MainMenu.GetStarsAmount();
         TextMeshProUGUI starsText = GameObject.Find("StarsAmount").GetComponent<TextMeshProUGUI>();
 
-        if (starAmount >= 1)
+        if (starAmount >= 1 && allreadyReceivedStars < 1)
         {
             RectTransform rect1 = fullStar1.GetComponent<RectTransform>();
             rect1.DOAnchorPos(new Vector2(120 * 5, 200 * 5), 0.5f).SetEase(Ease.InOutSine);
@@ -284,7 +296,7 @@ public class WinGameMenu : MonoBehaviour
             MainMenu.AddStarsUI(1);
         }
 
-        if (starAmount >= 2)
+        if (starAmount >= 2 && allreadyReceivedStars < 2)
         {
             RectTransform rect2 = fullStar2.GetComponent<RectTransform>();
             rect2.DOAnchorPos(new Vector2(0, 200 * 5), 0.5f).SetEase(Ease.InOutSine);
@@ -295,7 +307,7 @@ public class WinGameMenu : MonoBehaviour
             MainMenu.AddStarsUI(1);
         }
 
-        if (starAmount >= 3)
+        if (starAmount >= 3 && allreadyReceivedStars < 3)
         {
             RectTransform rect3 = fullStar3.GetComponent<RectTransform>();
             rect3.DOAnchorPos(new Vector2(-120 * 5, 200 * 5), 0.5f).SetEase(Ease.InOutSine);

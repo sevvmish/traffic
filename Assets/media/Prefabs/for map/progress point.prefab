@@ -357,8 +357,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294901760
-  m_fontColor: {r: 0, g: 0, b: 1, a: 1}
+    rgba: 4289571350
+  m_fontColor: {r: 0.086507656, g: 0.66623455, b: 0.6792453, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -572,6 +572,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CurrentLevel: 0
+  CurrentLimit: 0
   fullStars:
   - {fileID: 1576405999288262188}
   - {fileID: 5173444722390676677}
@@ -964,8 +965,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278308827
-  m_fontColor: {r: 0.8584906, g: 0.8109166, b: 0.0040494935, a: 1}
+    rgba: 4278190080
+  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:

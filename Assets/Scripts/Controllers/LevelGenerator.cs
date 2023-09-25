@@ -93,19 +93,19 @@ public class LevelGenerator : MonoBehaviour
                 break;
 
             case 7:
-
+                level_7();
                 break;
 
             case 8:
-
+                level_8();
                 break;
 
             case 9:
-
+                level_9();
                 break;
 
             case 10:
-
+                level_10();
                 break;
 
             case 11:
@@ -180,7 +180,7 @@ public class LevelGenerator : MonoBehaviour
         setDesert();
         gm.VanCount = 3;
         gm.GameTime = 30;
-        gm.StarsLimitTimer = 0.25f;
+        gm.StarsLimitTimer = 0.31f;
         gm.StarsLimitMistakes = 0;
         gm.StarsLimitAccidents = 0;
         partsAngle(5);
@@ -224,6 +224,77 @@ public class LevelGenerator : MonoBehaviour
         SetObject_Spawner(VanSpawnDesert, new Vector3(-8.25f, 0, -4.75f), new Vector3(0, 60, 0), "", 4f, 4f, 0);        
         SetObject(VanRecDesert, new Vector3(0, 0, 9.5f), new Vector3(0, 180, 0));
         SetObject(Straight2Desert, Vector3.zero, new Vector3(0, 0, 0));
+    }
+
+    private void level_7()
+    {
+        setDesert();
+        gm.TaxiCount = 3;
+        gm.GameTime = 30;
+        gm.StarsLimitTimer = 0.2f;
+        gm.StarsLimitMistakes = 0;
+        gm.StarsLimitAccidents = 0;
+        partsAngle(10);
+        gm.SetScreenFOV(LevelScale.small);
+
+        SetObject_Spawner(TaxiSpawnDesert, new Vector3(-8.25f, 0, -4.75f), new Vector3(0, 60, 0), "", 4f, 3f, 0);
+        SetObject(TaxiRecDesert, new Vector3(16.5f, 0, 9.5f), new Vector3(0, 120, 0));
+        SetObject(NonStraight1Desert, Vector3.zero, new Vector3(0, 0, 0));
+        SetObject(Straight2Desert, new Vector3(8.25f, 0, 4.75f), new Vector3(0, 0, 0));
+    }
+
+    private void level_8()
+    {
+        setDesert();
+        gm.TaxiCount = 3;
+        gm.GameTime = 40;
+        gm.StarsLimitTimer = 0.35f;
+        gm.StarsLimitMistakes = 0;
+        gm.StarsLimitAccidents = 0;
+        partsAngle(10);
+        gm.SetScreenFOV(LevelScale.small);
+
+        SetObject_Spawner(TaxiSpawnDesert, new Vector3(16.5f, 0, 9.5f), new Vector3(0, -120, 0), "", 4f, 3f, 0);
+        SetObject(TaxiRecDesert, new Vector3(-8.25f, 0, -4.75f), new Vector3(0, 300, 0));
+        SetObject(NonStraight1Desert, Vector3.zero, new Vector3(0, 0, 0));
+        SetObject(NonStraight1Desert, new Vector3(8.25f, 0, 4.75f), new Vector3(0, 180, 0));
+    }
+
+    private void level_9()
+    {
+        setDesert();
+        gm.TaxiCount = 5;
+        gm.GameTime = 40;
+        gm.StarsLimitTimer = 0.3f;
+        gm.StarsLimitMistakes = 0;
+        gm.StarsLimitAccidents = 0;
+        partsAngle(-8);
+        gm.SetScreenFOV(LevelScale.small);
+
+        SetObject_Spawner(TaxiSpawnDesert, new Vector3(8.25f, 0, 4.75f), new Vector3(0, -120, 0), "", 6f, 3f, 0);
+        SetObject_Spawner(TaxiSpawnDesert, new Vector3(-8.25f, 0, -4.75f), new Vector3(0, 60, 0), "", 6f, 5f, 0);
+        SetObject(TaxiRecDesert, new Vector3(16.5f, 0, 0), new Vector3(0, 120, 0));
+        SetObject(NonStraight1Desert, Vector3.zero, new Vector3(0, 0, 0));
+        SetObject(NonStraight1Desert, new Vector3(8.25f, 0, -4.75f), new Vector3(0, 180, 0));
+    }
+
+    private void level_10()
+    {
+        setDesert();
+        gm.TaxiCount = 5;
+        gm.GameTime = 40;
+        gm.StarsLimitTimer = 0.33f;
+        gm.StarsLimitMistakes = 0;
+        gm.StarsLimitAccidents = 0;
+        partsAngle(65);
+        gm.SetScreenFOV(LevelScale.small);
+
+        SetObject_Spawner(TaxiSpawnDesert, new Vector3(8.25f, 0, 4.75f), new Vector3(0, -120, 0), "", 6f, 2f, 0);
+        SetObject_Spawner(TaxiSpawnDesert, new Vector3(-8.25f, 0, 4.75f), new Vector3(0, 120, 0), "", 6f, 6f, 0);
+        SetObject(TaxiRecDesert, new Vector3(-8.25f, 0, -4.75f), new Vector3(0, 0, 0));
+        SetObject(TaxiRecDesert, new Vector3(8.25f, 0, -4.75f), new Vector3(0, 120, 0));
+        SetObject(NonStraight2Desert, Vector3.zero, new Vector3(0, 60, 0));
+        SetObject(Double1Desert, new Vector3(0, 0, -9.5f), new Vector3(0, 0, 0));
     }
 
 

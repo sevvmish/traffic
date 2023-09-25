@@ -152,6 +152,7 @@ public class GameManager : MonoBehaviour
     private Transform mainCar;
     private UIManager uiManager;
     private InputController inputController;
+    private bool isAfterAdv;
 
     void Awake()
     {
@@ -165,9 +166,10 @@ public class GameManager : MonoBehaviour
         }
 
         Screen.SetResolution(1200, 600, true);
+        Globals.IsInfoActive = false;
 
         //=====TO DELETE======
-        //Globals.CurrentLevel = 5;
+        //Globals.CurrentLevel = 10;
         //Globals.MainPlayerData = new PlayerData();
         //====================
 
@@ -217,6 +219,9 @@ public class GameManager : MonoBehaviour
         InitPools();
 
         winGameMenu.gameObject.SetActive(false);
+        loseGameMenu.gameObject.SetActive(false);
+
+        regionController.UpdateAll();
 
         //start game
         StartCoroutine(gameStartDelay());
@@ -324,11 +329,23 @@ public class GameManager : MonoBehaviour
 
     public void RestartLevel()
     {
-        StartCoroutine(restartLevel());
+        if (Globals.CurrentLevel > 1
+            && (DateTime.Now - Globals.TimeWhenLastInterstitialWas).TotalSeconds > Globals.INTERSTITIAL_COOLDOWN
+            && (DateTime.Now - Globals.TimeWhenLastRewardedWas).TotalSeconds > (Globals.REWARDED_COOLDOWN / 2))
+        {
+            isAfterAdv = true;
+            UIManager.BackImageBlack(true, 0f);
+            interstitial.OnEnded = RestartLevel;
+            interstitial.ShowInterstitialVideo();
+        }
+        else
+        {
+            StartCoroutine(restartLevel());
+        }        
     }
     private IEnumerator restartLevel()
     {
-        SoundController.Instance.PlayUISound(SoundsUI.positive);
+        if (!isAfterAdv) SoundController.Instance.PlayUISound(SoundsUI.positive);
 
         UIManager.BackImageBlack(true, 1f);
 
@@ -340,9 +357,9 @@ public class GameManager : MonoBehaviour
     {
         if (Globals.CurrentLevel > 1 
             && (DateTime.Now - Globals.TimeWhenLastInterstitialWas).TotalSeconds > Globals.INTERSTITIAL_COOLDOWN 
-            /*&& (DateTime.Now - Globals.TimeWhenLastRewardedWas).TotalSeconds > (Globals.REWARDED_COOLDOWN/2)*/)
+            && (DateTime.Now - Globals.TimeWhenLastRewardedWas).TotalSeconds > (Globals.REWARDED_COOLDOWN/2))
         {
-
+            isAfterAdv = true;
             UIManager.BackImageBlack(true, 0f);
             interstitial.OnEnded = backToLevels;
             interstitial.ShowInterstitialVideo();
@@ -360,8 +377,9 @@ public class GameManager : MonoBehaviour
     {
         if (Globals.CurrentLevel > 1 && !isMainScreenOn
             && (DateTime.Now - Globals.TimeWhenLastInterstitialWas).TotalSeconds > Globals.INTERSTITIAL_COOLDOWN
-            /*&& (DateTime.Now - Globals.TimeWhenLastRewardedWas).TotalSeconds > (Globals.REWARDED_COOLDOWN/2)*/)
+            && (DateTime.Now - Globals.TimeWhenLastRewardedWas).TotalSeconds > (Globals.REWARDED_COOLDOWN/2))
         {
+            isAfterAdv = true;
             UIManager.BackImageBlack(true, 0f);
             interstitial.OnEnded = backToLevels;
             interstitial.ShowInterstitialVideo();
@@ -372,7 +390,7 @@ public class GameManager : MonoBehaviour
     }
     private IEnumerator loadMenu(bool isMainScreenOn)
     {
-        SoundController.Instance.PlayUISound(SoundsUI.positive);
+        if (!isAfterAdv) SoundController.Instance.PlayUISound(SoundsUI.positive);
         Globals.IsMainScreen = isMainScreenOn;
 
         UIManager.BackImageBlack(true, 1f);

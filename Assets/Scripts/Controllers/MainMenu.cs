@@ -35,6 +35,8 @@ public class MainMenu : MonoBehaviour
     [Header("stars")]
     [SerializeField] private GameObject starsPanel;
     [SerializeField] private TextMeshProUGUI starsText;
+    [SerializeField] private GameObject getMoreStarsInfo;
+    [SerializeField] private TextMeshProUGUI getMoreStarsInfoText;
 
     [Header("reset")]
     [SerializeField] private GameObject resetPanel;
@@ -71,8 +73,10 @@ public class MainMenu : MonoBehaviour
         press1stLevel.SetActive(false);
         Visual01.SetActive(false);
         Map01.SetActive(false);
+        getMoreStarsInfo.SetActive(false);
 
-        
+
+
         mainCameraBody.position = Vector3.zero;
         mainCameraBody.rotation = Quaternion.identity;
         playButton.gameObject.SetActive(false);
@@ -211,11 +215,19 @@ public class MainMenu : MonoBehaviour
 
             if (Physics.Raycast(ray, out hit, 50))
             {
-                if (hit.collider.TryGetComponent(out ProgressPointController progressPoint))
+                if (hit.collider.TryGetComponent(out ProgressPointController progressPoint) && !Globals.IsInfoActive)
                 {
                     if (progressPoint.IsActivated && GetStarsAmount() >= progressPoint.CurrentLimit)
                     {
                         StartCoroutine(startLevel(progressPoint.CurrentLevel));
+                    }
+                    else if (progressPoint.IsActivated && GetStarsAmount() < progressPoint.CurrentLimit)
+                    {
+                        if (!getMoreStarsInfo.activeSelf)
+                        {
+                            SoundController.Instance.PlayUISound(SoundsUI.error);
+                            getMoreStarsInfo.SetActive(true);
+                        }
                     }
                 }
             }
@@ -264,6 +276,7 @@ public class MainMenu : MonoBehaviour
         playButtonText.text = lang.PlayText;
         press1stLevelText.text = lang.PressFirstLevelText_MainMenu;
         resetText.text = lang.AllProgressWillBeReset;
+        getMoreStarsInfoText.text = lang.GetMoreStars;
     }
 
     private IEnumerator stage1()
@@ -365,8 +378,9 @@ public class MainMenu : MonoBehaviour
         Globals.MainPlayerData.Progress1[Globals.CurrentLevel] = stars;
         SaveLoadManager.Save();
 
+        stars = GetStarsAmount();
         TextMeshProUGUI startText = GameObject.Find("StarsAmount").GetComponent<TextMeshProUGUI>();
-        startText.text = GetStarsAmount().ToString();
+        startText.text = stars.ToString();
 
         if (stars > 99)
         {
