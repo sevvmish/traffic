@@ -275,6 +275,7 @@ public class GameManager : MonoBehaviour
 
     public void PLayRewardedPlusStar()
     {
+        uiManager.TurnOffOptions();
         winGameMenu.gameObject.SetActive(false);
         rewarded.OnRewardedEndedOK = plusStarMenu.StartPlusStar;
         rewarded.OnError = backToLevels;
@@ -283,6 +284,7 @@ public class GameManager : MonoBehaviour
 
     public void PLayRewardedAddSeconds()
     {
+        uiManager.TurnOffOptions();
         loseGameMenu.gameObject.SetActive(false);
         rewarded.OnRewardedEndedOK = AddSecondsAndContinue;
         rewarded.OnError = RestartLevel;
@@ -322,13 +324,16 @@ public class GameManager : MonoBehaviour
     }
 
     public void SetGameStatus(bool isStarted)
-    {        
+    {
+        print("game made to: " + isStarted);
         uiManager.GameTimerStatus(isStarted);
         IsGameStarted = isStarted;
     }
 
     public void RestartLevel()
     {
+        uiManager.TurnOffOptions();
+
         if (Globals.CurrentLevel > 1
             && (DateTime.Now - Globals.TimeWhenLastInterstitialWas).TotalSeconds > Globals.INTERSTITIAL_COOLDOWN
             && (DateTime.Now - Globals.TimeWhenLastRewardedWas).TotalSeconds > (Globals.REWARDED_COOLDOWN / 2))
@@ -375,6 +380,8 @@ public class GameManager : MonoBehaviour
 
     public void BackToMainMenu(bool isMainScreenOn)
     {
+        uiManager.TurnOffOptions();
+
         if (Globals.CurrentLevel > 1 && !isMainScreenOn
             && (DateTime.Now - Globals.TimeWhenLastInterstitialWas).TotalSeconds > Globals.INTERSTITIAL_COOLDOWN
             && (DateTime.Now - Globals.TimeWhenLastRewardedWas).TotalSeconds > (Globals.REWARDED_COOLDOWN/2))

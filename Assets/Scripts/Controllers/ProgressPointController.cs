@@ -123,7 +123,8 @@ public class ProgressPointController : MonoBehaviour
     public static int StarsLimit(int level)
     {
         int[] data = new int[] { 0, 
-            0, 0, 0, 7, 10, 13, 16, 19, 22, 25   //1 - 10 lvls
+            0, 0, 0, 7, 10, 13, 16, 19, 22, 26,   //1 - 10 lvls
+            28, 31, 34, 37, 40, 44, 47, 50, 53, 56   //11 - 20 lvls
         }; 
 
         return data[level];

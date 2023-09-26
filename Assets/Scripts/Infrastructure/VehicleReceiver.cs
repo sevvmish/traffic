@@ -57,16 +57,19 @@ public class VehicleReceiver : MonoBehaviour, CityInfrastructure
                 case Vehicles.taxi:
                     gameManager.RemoveTaxi();
                     if (vehicle.IsWithObjectInside) gameManager.RemoveTaxiMan();
+                    gameManager.AddMistake();
                     break;
 
                 case Vehicles.van:
                     gameManager.RemoveVan();
                     if (vehicle.IsWithObjectInside) gameManager.RemoveVanCargo();
+                    gameManager.AddMistake();
                     break;
 
                 case Vehicles.ambulance:
                     gameManager.RemoveAmbulance();
                     if (vehicle.IsWithObjectInside) gameManager.RemoveAmbulanceMan();
+                    gameManager.AddMistake();
                     break;
             }
 

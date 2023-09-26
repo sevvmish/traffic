@@ -25,7 +25,14 @@ public class Tutorial : MonoBehaviour
     [SerializeField] private GameObject level5_tutorial_1;
     [SerializeField] private TextMeshProUGUI level5_tutorial_text_1;
 
+    [Header("level11")]
+    [SerializeField] private GameObject level11_tutorial;
+    [SerializeField] private TextMeshProUGUI level11_tutorial_text;
+    [SerializeField] private GameObject level11_tutorial_1;
+    [SerializeField] private TextMeshProUGUI level11_tutorial_text_1;
+
     private bool isLevel1_1, isLevel1_2, isLevel1_4, isEndLevel1;
+    private bool isLevel11_1, isLevel11_2;
     private float _timer;
     private GameManager gm;
 
@@ -41,8 +48,10 @@ public class Tutorial : MonoBehaviour
         level1_tutorial_4.SetActive(false);
         level1_tutorial_5.SetActive(false);
         level5_tutorial.SetActive(false);
+        level11_tutorial.SetActive(false);
+        level11_tutorial_1.SetActive(false);
 
-        if (Globals.CurrentLevel == 1 && MainMenu.GetLastLevel() == 1)
+        if (Globals.CurrentLevel == 1)
         {
             level1_tutorial_text.text = lang.Level1_Tutorial;
             level1_tutorial_text_2.text = lang.Level1_Tutorial_2;
@@ -61,6 +70,17 @@ public class Tutorial : MonoBehaviour
             StartCoroutine(activateAfterSecs(1, level5_tutorial));
             StartCoroutine(activateDeactivateAfterSecs(10f, level5_tutorial_1, 6f));
         }
+
+        if (Globals.CurrentLevel == 11)
+        {
+            level11_tutorial_text.text = lang.Level11_Tutorial;
+            level11_tutorial_text_1.text = lang.Level11_Tutorial_1;
+
+            StartCoroutine(activateAfterSecs(1, level11_tutorial));
+
+            new_region = GameObject.Find("tutorial_try2");
+            new_region.SetActive(false);
+        }
     }
 
     private void Update()
@@ -68,7 +88,7 @@ public class Tutorial : MonoBehaviour
         if (!gm.IsGameStarted) return;
         _timer += Time.deltaTime;
 
-        if (Globals.CurrentLevel == 1 && MainMenu.GetLastLevel() == 1)
+        if (Globals.CurrentLevel == 1)
         {
             if (gm.VanCurrent == 1 && !isLevel1_1)
             {
@@ -106,7 +126,30 @@ public class Tutorial : MonoBehaviour
             }
         }
 
-        
+        if (Globals.CurrentLevel == 11)
+        {
+            if (gm.AccidentsCurrent == 1 && !isLevel11_1)
+            {
+                level11_tutorial.SetActive(false);
+                isLevel11_1 = true;
+
+                StartCoroutine(playAccidentTutorial11());
+                StartCoroutine(activateDeactivateAfterSecs(6f, level11_tutorial_1, 6));
+                //StartCoroutine(activateAfterSecs(1f, new_region));
+            }
+        }
+
+
+
+    }
+
+    private IEnumerator playAccidentTutorial11()
+    {
+        yield return new WaitForSeconds(3.1f);
+        GameObject g = GameObject.Find("tutorial_try1");
+        gm.regionController.RemoveInfrastructure(g.GetComponent<CityInfrastructure>());
+        Destroy(g);
+        new_region.SetActive(true);
     }
 
     private IEnumerator activateAfterSecs(float delay, GameObject obj)

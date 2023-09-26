@@ -18,12 +18,14 @@ public class MainMenu : MonoBehaviour
     [Header("territories")]
     [SerializeField] private GameObject Visual01;
     [SerializeField] private GameObject Map01;
+    [SerializeField] private GameObject Map02;
 
     [Header("   ")]
     [SerializeField] private Camera mainCamera;
     [SerializeField] private Transform mainCameraBody;
     [SerializeField] private Transform cameraPosition1;
     [SerializeField] private Transform cameraPosition2;
+    [SerializeField] private Transform cameraPosition3map02;
 
     [SerializeField] private Button playButton;
     [SerializeField] private TextMeshProUGUI playButtonText;
@@ -44,6 +46,19 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private Button resetButton;
     [SerializeField] private Button resetOK;
     [SerializeField] private Button resetNO;
+
+    [Header("desert")]
+    [SerializeField] private GameObject part1;
+    [SerializeField] private GameObject part2;
+    [SerializeField] private GameObject part3;
+    private bool isMap01Done;
+    private bool isMap02Done;
+
+    [Header("forest")]
+    [SerializeField] private GameObject part4;
+    [SerializeField] private GameObject part5;
+    [SerializeField] private GameObject part6;
+
 
     private Ray ray;
     private RaycastHit hit;
@@ -73,6 +88,7 @@ public class MainMenu : MonoBehaviour
         press1stLevel.SetActive(false);
         Visual01.SetActive(false);
         Map01.SetActive(false);
+        Map02.SetActive(false);
         getMoreStarsInfo.SetActive(false);
 
 
@@ -154,17 +170,23 @@ public class MainMenu : MonoBehaviour
         int lastLevel = 0;
 
         for (int i = 1; i < Globals.MainPlayerData.Progress1.Length; i++)
-        {
-            if (i == 0)
+        {            
+            if (Globals.MainPlayerData.Progress1[i] == 0)
             {
                 lastLevel = i;
                 break;
             }
         }
 
+        print("what is last: " + lastLevel);
+
         if (lastLevel < 11)
         {
             StartCoroutine(playMap01());
+        }
+        else if (lastLevel < 21)
+        {
+            StartCoroutine(playMap02());
         }
     }
 
@@ -215,7 +237,7 @@ public class MainMenu : MonoBehaviour
 
             if (Physics.Raycast(ray, out hit, 50))
             {
-                if (hit.collider.TryGetComponent(out ProgressPointController progressPoint) && !Globals.IsInfoActive)
+                if (hit.collider.TryGetComponent(out ProgressPointController progressPoint))
                 {
                     if (progressPoint.IsActivated && GetStarsAmount() >= progressPoint.CurrentLimit)
                     {
@@ -231,6 +253,13 @@ public class MainMenu : MonoBehaviour
                     }
                 }
             }
+        }
+
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            Globals.CurrentLevel = GetLastLevel();
+            AddStarsUI(3);
+            SceneManager.LoadScene("menu");
         }
     }
 
@@ -248,7 +277,7 @@ public class MainMenu : MonoBehaviour
     }
     public static string GetLevelName(int level)
     {
-        if (level < 11)
+        if (level < 31)
         {
             return "desert";
         }
@@ -299,18 +328,70 @@ public class MainMenu : MonoBehaviour
     {
         ambient.SetData(AmbientType.desert);
 
-        Visual01.transform.DOScale(Vector3.zero, 0.5f).SetEase(Ease.OutSine);        
+        if (!isMap01Done)
+        {
+            isMap01Done = true;
+            showMapPart(part1, Vector3.zero, Vector3.zero, Map01.transform);
+            showMapPart(part2, new Vector3(8.25f, 0, 4.75f), Vector3.zero, Map01.transform);
+            showMapPart(part3, new Vector3(0, 0, 9.5f), Vector3.zero, Map01.transform);
+        }        
+
+        Visual01.transform.DOScale(Vector3.zero, 0.3f).SetEase(Ease.OutSine);        
         playButton.gameObject.SetActive(false);
         Map01.SetActive(true);
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(0.1f);
 
         Visual01.SetActive(false);
-        mainCameraBody.DOMove(cameraPosition2.position, 1f).SetEase(Ease.OutSine);
-        mainCameraBody.DORotate(cameraPosition2.eulerAngles, 1f).SetEase(Ease.OutSine);
+        mainCameraBody.DOMove(cameraPosition2.position, 0.7f).SetEase(Ease.OutSine);
+        mainCameraBody.DORotate(cameraPosition2.eulerAngles, 0.7f).SetEase(Ease.OutSine);
 
         yield return new WaitForSeconds(1f);
-        if (GetLastLevel() == 1) press1stLevel.SetActive(true);
-        
+        if (GetLastLevel() == 1) press1stLevel.SetActive(true);        
+    }
+
+
+    private IEnumerator playMap02()
+    {
+        ambient.SetData(AmbientType.desert);
+
+        if (!isMap01Done)
+        {
+            isMap01Done = true;
+            showMapPart(part1, Vector3.zero, Vector3.zero, Map01.transform);
+            showMapPart(part2, new Vector3(8.25f, 0, 4.75f), Vector3.zero, Map01.transform);
+            showMapPart(part3, new Vector3(0, 0, 9.5f), Vector3.zero, Map01.transform);
+        }
+
+        if (!isMap02Done)
+        {
+            isMap02Done = true;
+            showMapPart(part1, new Vector3(16.5f, 0, 9.5f), Vector3.zero, Map02.transform);
+            showMapPart(part2, new Vector3(0, 0, 19f), new Vector3(0,-60,0), Map02.transform);
+            showMapPart(part3, new Vector3(8.25f, 0, 14.25f), new Vector3(0, 120, 0), Map02.transform);
+            showMapPart(part5, new Vector3(8.25f, 0, 23.75f), new Vector3(0,180,0), Map02.transform);
+            showMapPart(part4, new Vector3(16.5f, 0, 19f), new Vector3(0,0,0), Map02.transform);
+            showMapPart(part2, new Vector3(24.75f, 0, 14.25f), new Vector3(0,120,0), Map02.transform);
+        }
+
+        Visual01.transform.DOScale(Vector3.zero, 0.3f).SetEase(Ease.OutSine);
+        playButton.gameObject.SetActive(false);
+        Map01.SetActive(true);
+        Map02.SetActive(true);
+        yield return new WaitForSeconds(0.1f);
+
+        Visual01.SetActive(false);
+        mainCameraBody.DOMove(cameraPosition3map02.position, 0.7f).SetEase(Ease.OutSine);
+        mainCameraBody.DORotate(cameraPosition3map02.eulerAngles, 0.7f).SetEase(Ease.OutSine);
+
+        yield return new WaitForSeconds(1f);
+    }
+
+    private void showMapPart(GameObject obj, Vector3 pos, Vector3 rot, Transform place)
+    {
+        GameObject g = Instantiate(obj, place);
+        g.transform.localPosition = pos;
+        g.transform.localEulerAngles = rot;
+        g.SetActive(true);
     }
 
     public static int GetLastLevel()

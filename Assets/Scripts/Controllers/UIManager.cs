@@ -37,14 +37,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI ambulanceManDataText;
 
     [Header("options menu")]
-    [SerializeField] private GameObject optionsPanel;
-    [SerializeField] private Button optionsButton;
-    [SerializeField] private Button continueButton;
-    [SerializeField] private Button soundButton;
-    [SerializeField] private Button homeButton;
-    [SerializeField] private Button restartButton;
-    [SerializeField] private Sprite soundOnSprite;
-    [SerializeField] private Sprite soundOffSprite;
+    [SerializeField] private OptionsMenu optionsMenu;
 
     
     private GameManager gm;
@@ -68,21 +61,13 @@ public class UIManager : MonoBehaviour
 
 
     private SoundController _sound;
-    
+        
     public void SetData(float timeForGame)
     {
         _sound = SoundController.Instance;
         dataPanel.SetActive(false);
-        optionsPanel.SetActive(false);
-        optionsButton.gameObject.SetActive(true);
-        if (Globals.IsSoundOn)
-        {
-            soundButton.GetComponent<Image>().sprite = soundOnSprite;
-        }
-        else
-        {
-            soundButton.GetComponent<Image>().sprite = soundOffSprite;
-        }
+        optionsMenu.TurnAllOff();
+        
 
         timerTextRect = timerText.GetComponent<RectTransform>();
         timerPanel.SetActive(false);
@@ -135,71 +120,17 @@ public class UIManager : MonoBehaviour
         currentVanCargo = gm.VanCargoCurrent;
         currentAmbuMan = gm.AmbulanceManCurrent;
 
-        //options
-        optionsButton.onClick.AddListener(() => 
-        {
-            _sound.PlayUISound(SoundsUI.click);
-            optionsButton.gameObject.SetActive(false);
-            optionsPanel.SetActive(true);
-            gm.SetGameStatus(false);
-
-            continueButton.transform.localScale = Vector3.zero;
-            soundButton.transform.localScale = Vector3.zero;
-            homeButton.transform.localScale = Vector3.zero;
-
-            continueButton.transform.DOScale(Vector3.one, 0.3f).SetEase(Ease.OutElastic);
-            soundButton.transform.DOScale(Vector3.one, 0.3f).SetEase(Ease.OutElastic);
-            homeButton.transform.DOScale(Vector3.one, 0.3f).SetEase(Ease.OutElastic);
-        });
-
-        continueButton.onClick.AddListener(() =>
-        {
-            _sound.PlayUISound(SoundsUI.click);
-            optionsButton.gameObject.SetActive(true);
-            optionsPanel.SetActive(false);
-            gm.SetGameStatus(true);            
-        });
-
-        soundButton.onClick.AddListener(() =>
-        {            
-            if (Globals.IsSoundOn)
-            {
-                Globals.IsSoundOn = false;
-                soundButton.GetComponent<Image>().sprite = soundOffSprite;
-                AudioListener.volume = 0;
-            }
-            else
-            {
-                _sound.PlayUISound(SoundsUI.click);
-                Globals.IsSoundOn = true;
-                soundButton.GetComponent<Image>().sprite = soundOnSprite;
-                AudioListener.volume = 1f;
-            }
-
-            SaveLoadManager.Save();
-        });
-
-        homeButton.onClick.AddListener(() =>
-        {
-            gm.BackToMainMenu(true);
-        });
-
-        restartButton.onClick.AddListener(() =>
-        {
-            gm.RestartLevel();
-        });
+        
     }
 
     public void TurnOffOptions()
     {
-        optionsPanel.SetActive(false);
-        optionsButton.gameObject.SetActive(false);
+        optionsMenu.TurnAllOff();
     }
 
     public void TurnOnOptions()
     {
-        optionsPanel.SetActive(false);
-        optionsButton.gameObject.SetActive(true);
+        optionsMenu.TurnAllOn();
     }
 
     public void AddSeconds(float seconds)
@@ -333,7 +264,9 @@ public class UIManager : MonoBehaviour
     }
 
     public void GameTimerStatus(bool isStart)
-    {        
+    {
+        if (isStart) optionsMenu.TurnAllOn();
+
         dataPanel.SetActive(isStart);
         timerPanel.SetActive(isStart);
         isPauseTimer = !isStart;

@@ -12,12 +12,11 @@ public class ActOnClick : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Globals.IsInfoActive = true;
-
+        
         button.onClick.AddListener(() => 
         {
             SoundController.Instance.PlayUISound(SoundsUI.tick);
-            Globals.IsInfoActive = false;
+            
 
             for (int i = 0; i < toActivate.Length; i++)
             {
@@ -29,13 +28,9 @@ public class ActOnClick : MonoBehaviour
                 toDeactivate[i].SetActive(false);
             }
 
+
         });
     }
 
-    private void OnEnable()
-    {
-        Globals.IsInfoActive = true;
-    }
-
-
+    
 }

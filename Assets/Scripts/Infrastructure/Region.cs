@@ -95,7 +95,12 @@ public class Region : MonoBehaviour, CityInfrastructure
 
     public void SetInActive_Accident(float _time, Vector3 pos, Vehicle one, Vehicle two)
     {
-        if (IsActive) StartCoroutine(playInactive(_time, pos, one, two));
+        if (IsActive)
+        {
+            StartCoroutine(playInactive(_time, pos, one, two));
+            GameManager.Instance.AddAccident();
+        }
+            
     }
     private IEnumerator playInactive(float _time, Vector3 pos, Vehicle one, Vehicle two)
     {
