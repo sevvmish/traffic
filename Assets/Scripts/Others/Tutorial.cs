@@ -31,8 +31,12 @@ public class Tutorial : MonoBehaviour
     [SerializeField] private GameObject level11_tutorial_1;
     [SerializeField] private TextMeshProUGUI level11_tutorial_text_1;
 
+    [Header("level12")]
+    [SerializeField] private GameObject level12_tutorial;
+    [SerializeField] private TextMeshProUGUI level12_tutorial_text;
+
     private bool isLevel1_1, isLevel1_2, isLevel1_4, isEndLevel1;
-    private bool isLevel11_1, isLevel11_2;
+    private bool isLevel11_1;
     private float _timer;
     private GameManager gm;
 
@@ -80,6 +84,12 @@ public class Tutorial : MonoBehaviour
 
             new_region = GameObject.Find("tutorial_try2");
             new_region.SetActive(false);
+        }
+
+        if (Globals.CurrentLevel == 12)
+        {
+            level12_tutorial_text.text = lang.Level12_Tutorial;
+            StartCoroutine(activateDeactivateAfterSecs(1f, level12_tutorial, 6));
         }
     }
 

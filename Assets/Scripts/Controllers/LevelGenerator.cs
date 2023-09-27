@@ -113,11 +113,11 @@ public class LevelGenerator : MonoBehaviour
                 break;
 
             case 12:
-
+                level_12();
                 break;
 
             case 13:
-
+                level_13();
                 break;
 
             case 14:
@@ -345,7 +345,51 @@ public class LevelGenerator : MonoBehaviour
         SetObject_Spawner(VanSpawnDesert, new Vector3(8.25f, 0, 4.75f), new Vector3(0, -120, 0), "", 6f, 3f, 0);
         
         SetObject(VanRecDesert, new Vector3(0, 0, 9.5f), new Vector3(0, -180, 0));
-        SetObject(TaxiRecDesert, new Vector3(0, 0, -9.5f), new Vector3(0, -120, 0));       
+        SetObject(TaxiRecDesert, new Vector3(0, 0, -9.5f), new Vector3(0, -120, 0));
+
+        SetObject(NonStraight2Desert, Vector3.zero, new Vector3(0, 60, 0));
+    }
+
+    private void level_12()
+    {
+        setDesert();
+        gm.TaxiCount = 3;
+        gm.VanCount = 3;
+        gm.GameTime = 40;
+        gm.StarsLimitTimer = 0.3f;
+        gm.StarsLimitMistakes = 1;
+        gm.StarsLimitAccidents = 1;
+        partsAngle(-50);
+        gm.SetScreenFOV(LevelScale.small);
+        
+        SetObject_Spawner(TaxiSpawnDesert, new Vector3(-8.25f, 0, 4.75f), new Vector3(0, 120, 0), "", 6f, 4f, 0);
+        SetObject_Spawner(VanSpawnDesert, new Vector3(0f, 0, 9.5f), new Vector3(0, -180, 0), "", 6f, 4f, 0);
+
+        SetObject(TaxiRecDesert, new Vector3(8.25f, 0, -4.75f), new Vector3(0, -180, 0));
+        SetObject(VanRecDesert, new Vector3(8.25f, 0, 4.75f), new Vector3(0, -120, 0));
+
+        SetObject(NonStraight2Desert, Vector3.zero, new Vector3(0, -60, 0));
+    }
+
+    private void level_13()
+    {
+        setDesert();
+        gm.TaxiCount = 3;
+        gm.VanCount = 3;
+        gm.GameTime = 40;
+        gm.StarsLimitTimer = 0.4f;
+        gm.StarsLimitMistakes = 1;
+        gm.StarsLimitAccidents = 1;
+        partsAngle(120);
+        gm.SetScreenFOV(LevelScale.small);
+
+        SetObject_Spawner(TaxiSpawnDesert, new Vector3(-8.25f, 0, 4.75f), new Vector3(0, 120, 0), "", 6f, 4f, 0);
+        SetObject_Spawner(VanSpawnDesert, new Vector3(0f, 0, 9.5f), new Vector3(0, -180, 0), "", 6f, 4f, 0);
+
+        SetObject(TaxiRecDesert, new Vector3(0, 0, -9.5f), new Vector3(0, -120, 0));
+        SetObject(VanRecDesert, new Vector3(8.25f, 0, -4.75f), new Vector3(0, -60, 0));
+
+        SetObject(Double1Desert, Vector3.zero, new Vector3(0, 60, 0));
     }
 
 

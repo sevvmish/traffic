@@ -32,5 +32,14 @@ public class ActOnClick : MonoBehaviour
         });
     }
 
-    
+    private void OnEnable()
+    {
+        Globals.IsInfoActive = true;
+    }
+
+    private void OnDisable()
+    {
+        Globals.IsInfoActive = false;
+    }
+
 }

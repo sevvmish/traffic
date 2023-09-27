@@ -158,15 +158,15 @@ public class WinGameMenu : MonoBehaviour
                 
         if (gm.StarsLimitMistakes > 0 && gm.StarsLimitAccidents > 0)
         {
-            starAmount = 0;
+            starAmount = 1;
         }
         else if (gm.StarsLimitMistakes > 0 && gm.StarsLimitAccidents <= 0)
         {
-            starAmount = 1;
+            starAmount = 2;
         }
         else if (gm.StarsLimitAccidents > 0 && gm.StarsLimitMistakes <= 0)
         {
-            starAmount = 1;
+            starAmount = 2;
         }
         
 

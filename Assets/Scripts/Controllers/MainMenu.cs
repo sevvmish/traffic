@@ -237,7 +237,7 @@ public class MainMenu : MonoBehaviour
 
             if (Physics.Raycast(ray, out hit, 50))
             {
-                if (hit.collider.TryGetComponent(out ProgressPointController progressPoint))
+                if (hit.collider.TryGetComponent(out ProgressPointController progressPoint) && !Globals.IsInfoActive)
                 {
                     if (progressPoint.IsActivated && GetStarsAmount() >= progressPoint.CurrentLimit)
                     {
