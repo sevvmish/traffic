@@ -316,8 +316,8 @@ public class MainMenu : MonoBehaviour
         resetButton.gameObject.SetActive(true);
         playButton.transform.DOPunchPosition(Vector3.one * 50, 0.3f).SetEase(Ease.OutQuad);
         
-        mainCameraBody.DOMove(cameraPosition1.position, 1f).SetEase(Ease.OutSine);
-        mainCameraBody.DORotate(cameraPosition1.eulerAngles, 1f).SetEase(Ease.OutSine);
+        mainCameraBody.DOMove(cameraPosition1.position, 0.5f).SetEase(Ease.OutSine);
+        mainCameraBody.DORotate(cameraPosition1.eulerAngles, 0.5f).SetEase(Ease.OutSine);
 
         yield return new WaitForSeconds(0.2f);
         sound.PlayUISound(SoundsUI.pop);
@@ -336,7 +336,7 @@ public class MainMenu : MonoBehaviour
             showMapPart(part3, new Vector3(0, 0, 9.5f), Vector3.zero, Map01.transform);
         }        
 
-        Visual01.transform.DOScale(Vector3.zero, 0.3f).SetEase(Ease.OutSine);        
+        Visual01.transform.DOScale(Vector3.zero, 0.1f).SetEase(Ease.OutSine);        
         playButton.gameObject.SetActive(false);
         Map01.SetActive(true);
         yield return new WaitForSeconds(0.1f);
@@ -373,7 +373,7 @@ public class MainMenu : MonoBehaviour
             showMapPart(part2, new Vector3(24.75f, 0, 14.25f), new Vector3(0,120,0), Map02.transform);
         }
 
-        Visual01.transform.DOScale(Vector3.zero, 0.3f).SetEase(Ease.OutSine);
+        Visual01.transform.DOScale(Vector3.zero, 0.1f).SetEase(Ease.OutSine);
         playButton.gameObject.SetActive(false);
         Map01.SetActive(true);
         Map02.SetActive(true);

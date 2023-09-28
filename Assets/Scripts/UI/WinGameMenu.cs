@@ -181,7 +181,15 @@ public class WinGameMenu : MonoBehaviour
         }
         else
         {
-            starAmount--;
+            if ((gm.GetUI().GetTimeLeft() / gm.GameTime) < 0.1f)
+            {
+                starAmount -= 2;
+            }
+            else
+            {
+                starAmount--;
+            }
+            
             speedColor = Color.red;
         }
 

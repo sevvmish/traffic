@@ -33,6 +33,8 @@ public class Globals : MonoBehaviour
     public const float TIME_FOR_RIDE_AMBULANCE = 4.5f;
     public const float TIME_FOR_RIDE_VAN = 5f;
 
+    public const float SWIPE_SPEED = 0.25f;
+
     public static int ScreenWidth = 0;
     public static int ScreenHeight = 0;
 

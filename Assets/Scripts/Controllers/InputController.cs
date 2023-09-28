@@ -113,6 +113,26 @@ public class InputController : MonoBehaviour
                         region.RotateRegion(sign);
                     }                    
                 }
+                else if (hit.collider.gameObject.TryGetComponent(out RotateInfrastructure rotator) && !rotator.IsBusyRotate)
+                {
+                    
+                    int sign = 0;
+                    if (hit.point.x >= part.position.x)
+                    {
+                        sign = 1;
+                    }
+                    else
+                    {
+                        sign = -1;
+                    }
+
+                    float delta = (Input.mousePosition - firstPos).magnitude;
+
+                    if (delta <= 50)
+                    {
+                        rotator.RotateRegion(sign);
+                    }
+                }
             }
         }
 

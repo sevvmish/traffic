@@ -274,3 +274,10 @@ public enum CityInfrastructureTypes
     object_spawner,
     vehicle_stopper
 }
+
+public interface IRotate
+{
+    bool IsBusyRotate { get; set; }
+    void RotateRegion(int sign);
+    void SetRotationAngle(float angle);
+}

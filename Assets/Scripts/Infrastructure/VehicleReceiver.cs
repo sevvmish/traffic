@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class VehicleReceiver : MonoBehaviour, CityInfrastructure
 {
+    public RotateInfrastructure Rotator;
+
     [SerializeField] private Transform EntryPoint;
 
     [SerializeField] private GameObject effect;

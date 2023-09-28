@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class VehicleSpawner : MonoBehaviour, CityInfrastructure
 {
+    public RotateInfrastructure Rotator;
+
     [SerializeField] private Transform EntryPoint;
     [SerializeField] private TrafficLightsController trafficLights;
 

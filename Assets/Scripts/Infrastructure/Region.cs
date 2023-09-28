@@ -36,8 +36,7 @@ public class Region : MonoBehaviour, CityInfrastructure
     private bool isBusyRotate;
     private AudioSource _audioSource;
     private AssetManager assetManager;
-    
-    private readonly float swipeSpeed = 0.25f;
+        
     private readonly float stopRotationForTooCloseToEndDistance = 1f;
 
     private void Start()
@@ -354,8 +353,8 @@ public class Region : MonoBehaviour, CityInfrastructure
         yield return new WaitForSeconds(0.025f);
 
 
-        _transform.DORotate(new Vector3(_transform.eulerAngles.x, _transform.eulerAngles.y + RotationAngle * sign, _transform.eulerAngles.z), swipeSpeed);
-        yield return new WaitForSeconds(swipeSpeed);
+        _transform.DORotate(new Vector3(_transform.eulerAngles.x, _transform.eulerAngles.y + RotationAngle * sign, _transform.eulerAngles.z), Globals.SWIPE_SPEED);
+        yield return new WaitForSeconds(Globals.SWIPE_SPEED);
         _transform.position = pos;
         
         isBusyRotate = false;

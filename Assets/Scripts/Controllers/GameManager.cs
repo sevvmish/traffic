@@ -142,6 +142,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Interstitial interstitial;
     [SerializeField] private PlusStarMenu plusStarMenu;
 
+    private LevelScale levelScale;
+
     public SoundController GetSoundUI() => sound;
     public AssetManager GetAssets() => assets;
     public Camera GetCamera() => mainCamera;
@@ -169,7 +171,7 @@ public class GameManager : MonoBehaviour
         Globals.IsInfoActive = false;
 
         //=====TO DELETE======
-        Globals.CurrentLevel = 13;
+        Globals.CurrentLevel = 14;
         Globals.MainPlayerData = new PlayerData();
         //====================
 
@@ -253,7 +255,7 @@ public class GameManager : MonoBehaviour
 
     public void AddSecondsAndContinue(float seconds)
     {
-        if (IsSecondsAddedReward) throw new System.NotImplementedException();
+        //if (IsSecondsAddedReward) return;
                 
         IsSecondsAddedReward = true;
         uiManager.AddSeconds(seconds);
@@ -263,7 +265,7 @@ public class GameManager : MonoBehaviour
 
     public void AddSecondsAndContinue()
     {
-        if (IsSecondsAddedReward) throw new System.NotImplementedException();
+        //if (IsSecondsAddedReward) throw new System.NotImplementedException();
 
         float seconds = HowManySecondsToAddForRewarded(Globals.CurrentLevel);
 
@@ -409,6 +411,8 @@ public class GameManager : MonoBehaviour
     
     public void SetScreenFOV(LevelScale scale)
     {
+        levelScale = scale; 
+
         switch(scale)
         {
             case LevelScale.small:
@@ -449,46 +453,66 @@ public class GameManager : MonoBehaviour
 
     private void InitPools()
     {
-        assets.CarDestroEffectPool = new ObjectPool(10, GetAssets().CarDestroEffect);
+        int objAmount = 10;
+
+        switch(levelScale)
+        {
+            case LevelScale.small:
+                objAmount = 4;
+                break;
+
+            case LevelScale.medium:
+                objAmount = 8;
+                break;
+
+            case LevelScale.large:
+                objAmount = 16;
+                break;
+        }
+
+        assets.CarDestroEffectPool = new ObjectPool(objAmount*2, GetAssets().CarDestroEffect);
+
 
         if (TaxiCount > 0)
         {
-            assets.TaxiPool = new ObjectPool(10, assets.GetVehicle(Vehicles.taxi), regionController.Location());
-            assets.TaxiSignPool = new ObjectPool(10, assets.TaxiSign);
+            assets.TaxiPool = new ObjectPool(objAmount, assets.GetVehicle(Vehicles.taxi), regionController.Location());
+            assets.TaxiSignPool = new ObjectPool(objAmount, assets.TaxiSign);
         }
         else
         {
-            //assets.TaxiPool = new ObjectPool(1, assets.GetVehicle(Vehicles.taxi), regionController.Location());
-            //assets.TaxiSignPool = new ObjectPool(1, assets.TaxiSign);
+            assets.TaxiPool = new ObjectPool(objAmount/2, assets.GetVehicle(Vehicles.taxi), regionController.Location());
+            assets.TaxiSignPool = new ObjectPool(objAmount/2, assets.TaxiSign);
         }
 
         if (VanCount > 0)
         {
-            assets.VanPool = new ObjectPool(10, assets.GetVehicle(Vehicles.van), regionController.Location());
-            assets.VanSignPool = new ObjectPool(10, assets.VanSign);
+            assets.VanPool = new ObjectPool(objAmount, assets.GetVehicle(Vehicles.van), regionController.Location());
+            assets.VanSignPool = new ObjectPool(objAmount, assets.VanSign);
         }
         else
         {
-            //assets.VanPool = new ObjectPool(1, assets.GetVehicle(Vehicles.van), regionController.Location());
-            //assets.VanSignPool = new ObjectPool(1, assets.VanSign);
+            assets.VanPool = new ObjectPool(objAmount/2, assets.GetVehicle(Vehicles.van), regionController.Location());
+            assets.VanSignPool = new ObjectPool(objAmount/2, assets.VanSign);
         }
 
         if (AmbulanceCount > 0)
         {
-            assets.AmbulancePool = new ObjectPool(10, assets.GetVehicle(Vehicles.ambulance), regionController.Location());
-            assets.AmbulanceSignPool = new ObjectPool(10, assets.AmbulanceSign);
+            assets.AmbulancePool = new ObjectPool(objAmount, assets.GetVehicle(Vehicles.ambulance), regionController.Location());
+            assets.AmbulanceSignPool = new ObjectPool(objAmount, assets.AmbulanceSign);
         }
         else
         {
-            //assets.AmbulancePool = new ObjectPool(1, assets.GetVehicle(Vehicles.ambulance), regionController.Location());
-            //assets.AmbulanceSignPool = new ObjectPool(1, assets.AmbulanceSign);
+            assets.AmbulancePool = new ObjectPool(objAmount/2, assets.GetVehicle(Vehicles.ambulance), regionController.Location());
+            assets.AmbulanceSignPool = new ObjectPool(objAmount/2, assets.AmbulanceSign);
         }
 
     }
 
     public static float HowManySecondsToAddForRewarded(int level)
     {
-        return (int)(Instance.GameTime * Globals.HOW_MANY_SEC_ADD_FOR_REWARD_KOEFF);
+        float result = (int)(Instance.GameTime * Globals.HOW_MANY_SEC_ADD_FOR_REWARD_KOEFF);
+
+        return result > 8 ? result : 8;
     }
 
     
