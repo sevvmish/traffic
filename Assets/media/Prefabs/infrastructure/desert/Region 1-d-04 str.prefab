@@ -5375,7 +5375,7 @@ MonoBehaviour:
   accidentEffect: {fileID: 2716748728158935580}
   lockEffect: {fileID: 1706115298819037148}
   border: {fileID: 2943258464399108080}
-  whenNotBlocked: {fileID: 2100000, guid: d70e19066004a924b866728834e0e2e1, type: 2}
+  whenNotBlocked: {fileID: 2100000, guid: e34a4d1299b8dba4c8aa643df1048ad9, type: 2}
   whenBlocked: {fileID: 2100000, guid: 2d2b1d63d222cb34db062c99e3de300e, type: 2}
 --- !u!82 &5489140628157623606
 AudioSource:
@@ -23387,6 +23387,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 2fef5ff2c0cae8844aef0e2465ba8cb7, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: e34a4d1299b8dba4c8aa643df1048ad9, type: 2}
     - target: {fileID: 919132149155446097, guid: 2fef5ff2c0cae8844aef0e2465ba8cb7, type: 3}
       propertyPath: m_Name
       value: hex pole

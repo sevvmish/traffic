@@ -146,6 +146,7 @@ public class MainMenu : MonoBehaviour
             }
 
             resetButton.gameObject.SetActive(true);
+            Localize();
 
             if (Globals.IsMainScreen)
             {
@@ -279,7 +280,15 @@ public class MainMenu : MonoBehaviour
     {
         if (level < 31)
         {
-            return "desert";
+            if (level == 16 || level == 19)
+            {
+                return "forest";
+            }
+            else
+            {
+                return "desert";
+            }
+            
         }
 
         return "";

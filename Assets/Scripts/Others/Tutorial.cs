@@ -19,6 +19,10 @@ public class Tutorial : MonoBehaviour
     [SerializeField] private GameObject level1_tutorial_5;
     [SerializeField] private TextMeshProUGUI level1_tutorial_text_5;
 
+    [Header("level2")]
+    [SerializeField] private GameObject level2_tutorial;
+    [SerializeField] private TextMeshProUGUI level2_tutorial_text;
+
     [Header("level5")]
     [SerializeField] private GameObject level5_tutorial;
     [SerializeField] private TextMeshProUGUI level5_tutorial_text;
@@ -65,6 +69,12 @@ public class Tutorial : MonoBehaviour
             new_region = GameObject.Find("tutorial_try2");
             new_region.SetActive(false);
             StartCoroutine(activateAfterSecs(1, level1_tutorial));            
+        }
+
+        if (Globals.CurrentLevel == 2 && MainMenu.GetLastLevel() == 2)
+        {
+            level2_tutorial_text.text = lang.Level2_Tutorial;            
+            StartCoroutine(activateDeactivateAfterSecs(1, level2_tutorial, 6));
         }
 
         if (Globals.CurrentLevel == 5 && MainMenu.GetLastLevel() == 5)

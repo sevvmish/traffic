@@ -62,6 +62,24 @@ public class Region : MonoBehaviour, CityInfrastructure
     {
         if (currentVehicles.Count>0 && IsActive)
         {
+            Vehicle[] vehicles = currentVehicles.ToArray();
+
+            for (int i = 0; i < vehicles.Length; i++)
+            {
+                for (int j = 0; j < vehicles.Length; j++)
+                {
+                    if (
+                        vehicles[i] != vehicles[j]
+                        && vehicles[i].vehicleType != vehicles[j].vehicleType
+                        && (vehicles[i].transform.position - vehicles[j].transform.position).magnitude < Globals.DISTANCE_FOR_ACCIDENT
+                        )
+                    {
+                        SetInActive_Accident(Globals.TIME_FOR_ACCIDENT, Vector3.Lerp(vehicles[i].transform.position, vehicles[j].transform.position, 0.5f) + Vector3.up * 0.5f, vehicles[i], vehicles[j]);
+                    }
+                }
+            }
+
+            /*
             foreach (var vehicle in currentVehicles)
             {
                 foreach (var vehicle2 in currentVehicles)
@@ -75,7 +93,7 @@ public class Region : MonoBehaviour, CityInfrastructure
                         SetInActive_Accident(Globals.TIME_FOR_ACCIDENT, Vector3.Lerp(vehicle.transform.position, vehicle2.transform.position, 0.5f) + Vector3.up * 0.5f, vehicle, vehicle2);
                     }
                 }
-            }
+            }*/
         }
     }
 
@@ -120,13 +138,24 @@ public class Region : MonoBehaviour, CityInfrastructure
 
         if (currentVehicles.Count > 0)
         {
+            Vehicle[] vehicles = currentVehicles.ToArray();
+
+            for (int i = 0; i < vehicles.Length; i++)
+            {
+                if (vehicles[i] != one && vehicles[i] != two)
+                {
+                    vehicles[i].MakeSelfDestruction();
+                }
+            }
+
+            /*
             foreach (Vehicle v in currentVehicles)
             {
                 if (v != one && v != two)
                 {
                     v.MakeSelfDestruction();
                 }                
-            }
+            }*/
         }
 
         yield return new WaitForSeconds(0.1f);
@@ -334,8 +363,35 @@ public class Region : MonoBehaviour, CityInfrastructure
     private IEnumerator rotatePart(int sign)
     {   
         Vector3 pos = _transform.position;
+        Vector3 rot = _transform.eulerAngles;
         isBusyRotate = true;
         IsActive = false;
+
+        float yy = rot.y;
+        bool isOK = false;/*
+        for (int j = 0; j < 6; j++)
+        {
+            yy += 60 * sign;
+            _transform.eulerAngles = new Vector3(_transform.eulerAngles.x, yy, _transform.eulerAngles.z);
+
+            
+            for (int i = 0; i < entrancesEnd.Length; i++)
+            {
+                if (regionController.IsAnyInfrastructureInRadius(2, entrancesEnd[i])
+                    || !regionController.IsDeadEndForRoute(this, entrancesEnd[i]))
+                {
+                    isOK = true;
+                    break;
+                }
+                
+            }
+
+            if (isOK) break;
+        }*/
+
+        if (!isOK) yy = rot.y + 60 * sign;
+
+        _transform.eulerAngles = rot;
 
         for (int i = 0; i < entrancesEnd.Length; i++)
         {
@@ -353,7 +409,8 @@ public class Region : MonoBehaviour, CityInfrastructure
         yield return new WaitForSeconds(0.025f);
 
 
-        _transform.DORotate(new Vector3(_transform.eulerAngles.x, _transform.eulerAngles.y + RotationAngle * sign, _transform.eulerAngles.z), Globals.SWIPE_SPEED);
+        //_transform.DORotate(new Vector3(_transform.eulerAngles.x, _transform.eulerAngles.y + RotationAngle * sign, _transform.eulerAngles.z), Globals.SWIPE_SPEED);
+        _transform.DORotate(new Vector3(_transform.eulerAngles.x, yy, _transform.eulerAngles.z), Globals.SWIPE_SPEED);
         yield return new WaitForSeconds(Globals.SWIPE_SPEED);
         _transform.position = pos;
         

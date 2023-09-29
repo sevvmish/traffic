@@ -19,12 +19,18 @@ public class RotateInfrastructure : MonoBehaviour, IRotate
     }
         
     private bool IsActive = true;
+    private Transform entryPoint;
+    private RegionController regionController;
+    private CityInfrastructure cityInfrastructure;
 
     private void Start()
     {
         IsBusyRotate = false;
         IsActive = true;
         border.SetActive(RotationAngle > 0);
+        entryPoint = mainBody.gameObject.GetComponent<CityInfrastructure>().GetEntryPoint();
+        regionController = GameManager.Instance.regionController;
+        cityInfrastructure = mainBody.gameObject.GetComponent<CityInfrastructure>();
     }
 
     public void RotateRegion(int sign)
@@ -46,9 +52,31 @@ public class RotateInfrastructure : MonoBehaviour, IRotate
     private IEnumerator rotatePart(int sign)
     {
         Vector3 pos = mainBody.position;
+        Vector3 rot = mainBody.eulerAngles;
         IsBusyRotate = true;
         IsActive = false;
-                
+
+        float yy = rot.y;
+        bool isOK = false;/*
+        for (int j = 0; j < 6; j++)
+        {
+            yy += 60 * sign;
+            mainBody.eulerAngles = new Vector3(mainBody.eulerAngles.x, yy, mainBody.eulerAngles.z);
+
+            
+            if (regionController.IsAnyInfrastructureInRadius(2, entryPoint, cityInfrastructure))
+            {
+                isOK = true;
+                break;
+            }            
+
+            if (isOK) break;
+        }*/
+
+        if (!isOK) yy = rot.y + 60 * sign;
+
+        mainBody.eulerAngles = rot;
+
         _audioSource.Play();
         edgeEffect?.GetComponent<ParticleSystem>().Play();
 
@@ -58,7 +86,8 @@ public class RotateInfrastructure : MonoBehaviour, IRotate
         yield return new WaitForSeconds(0.025f);
 
 
-        mainBody.DORotate(new Vector3(mainBody.eulerAngles.x, mainBody.eulerAngles.y + RotationAngle * sign, mainBody.eulerAngles.z), Globals.SWIPE_SPEED);
+        //mainBody.DORotate(new Vector3(mainBody.eulerAngles.x, mainBody.eulerAngles.y + RotationAngle * sign, mainBody.eulerAngles.z), Globals.SWIPE_SPEED);
+        mainBody.DORotate(new Vector3(mainBody.eulerAngles.x, yy, mainBody.eulerAngles.z), Globals.SWIPE_SPEED);
         yield return new WaitForSeconds(Globals.SWIPE_SPEED);
         mainBody.position = pos;
 

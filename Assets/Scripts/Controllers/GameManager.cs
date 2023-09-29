@@ -144,6 +144,8 @@ public class GameManager : MonoBehaviour
 
     private LevelScale levelScale;
 
+    public float CameraZShift;
+
     public SoundController GetSoundUI() => sound;
     public AssetManager GetAssets() => assets;
     public Camera GetCamera() => mainCamera;
@@ -171,8 +173,8 @@ public class GameManager : MonoBehaviour
         Globals.IsInfoActive = false;
 
         //=====TO DELETE======
-        Globals.CurrentLevel = 14;
-        Globals.MainPlayerData = new PlayerData();
+        //Globals.CurrentLevel = 16;
+        //Globals.MainPlayerData = new PlayerData();
         //====================
 
         if (YandexGame.EnvironmentData.isDesktop)
@@ -181,6 +183,9 @@ public class GameManager : MonoBehaviour
         }
 
         GetComponent<LevelGenerator>().InitLevel(Globals.CurrentLevel, this);
+
+        CameraZShift = CameraZShift != 0 ? CameraZShift : -9;
+        mainCameraBody.position = new Vector3(0, 15, CameraZShift);
 
         UIManager.BackImageBlack(true, 0);
         UIManager.BackImageBlack(false, 1f);
@@ -208,6 +213,8 @@ public class GameManager : MonoBehaviour
 
         regionController.SetData(mainCameraBody);
         //InitPools();
+
+        
 
         mainCameraBody.position = new Vector3(
             (regionController.xBorder.x + regionController.xBorder.y) / 2,
@@ -238,8 +245,8 @@ public class GameManager : MonoBehaviour
             StartCoroutine(handleLoseCondition());
         }
 
-        if (IsGameStarted && TaxiCount == TaxiCurrent && VanCount == VanCurrent && AmbulanceCount == AmbulanceCurrent && TaxiManCount == TaxiManCurrent
-            && VanCargoCount == VanCargoCurrent && AmbulanceManCount == AmbulanceManCurrent && RiddleCount == RiddleCurrent)
+        if (IsGameStarted && TaxiCount <= TaxiCurrent && VanCount <= VanCurrent && AmbulanceCount <= AmbulanceCurrent && TaxiManCount <= TaxiManCurrent
+            && VanCargoCount <= VanCargoCurrent && AmbulanceManCount <= AmbulanceManCurrent && RiddleCount <= RiddleCurrent)
         {
             Debug.LogError("game win!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
@@ -298,6 +305,7 @@ public class GameManager : MonoBehaviour
     {
         SoundController.Instance.PlayUISound(SoundsUI.win);
         SetGameStatus(false);
+        uiManager.SetDataPanel(false);
         yield return new WaitForSeconds(1);
 
         
@@ -335,6 +343,7 @@ public class GameManager : MonoBehaviour
     public void RestartLevel()
     {
         uiManager.TurnOffOptions();
+        uiManager.SetDataPanel(false);
 
         if (Globals.CurrentLevel > 1
             && (DateTime.Now - Globals.TimeWhenLastInterstitialWas).TotalSeconds > Globals.INTERSTITIAL_COOLDOWN
@@ -383,6 +392,7 @@ public class GameManager : MonoBehaviour
     public void BackToMainMenu(bool isMainScreenOn)
     {
         uiManager.TurnOffOptions();
+        uiManager.SetDataPanel(false);
 
         if (Globals.CurrentLevel > 1 && !isMainScreenOn
             && (DateTime.Now - Globals.TimeWhenLastInterstitialWas).TotalSeconds > Globals.INTERSTITIAL_COOLDOWN

@@ -250,6 +250,32 @@ public class RegionController : MonoBehaviour
             if ((infrastructures[j].GetEntryPoint().position - end.position).magnitude <= radius)
             {
                 return true;
+            }                        
+        }
+
+        return false;
+    }
+
+    public bool IsAnyInfrastructureInRadius(float radius, Transform end, CityInfrastructure mineObject)
+    {
+        for (int j = 0; j < infrastructures.Count; j++)
+        {
+            if (infrastructures[j] == mineObject) continue;
+
+            if ((infrastructures[j].GetEntryPoint().position - end.position).magnitude <= radius)
+            {
+                return true;
+            }
+
+            if (infrastructures[j].GetGameObject().TryGetComponent(out Region r))
+            {
+                for (int i = 0; i < r.entrances.Length; i++)
+                {
+                    if ((r.entrances[i].position - end.position).magnitude <= radius)
+                    {
+                        return true;
+                    }
+                }
             }
 
         }

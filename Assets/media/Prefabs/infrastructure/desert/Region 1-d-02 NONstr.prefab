@@ -85,7 +85,7 @@ MonoBehaviour:
   accidentEffect: {fileID: 9118475223729923495}
   lockEffect: {fileID: 1017242494483567129}
   border: {fileID: 3622346379768736776}
-  whenNotBlocked: {fileID: 2100000, guid: d70e19066004a924b866728834e0e2e1, type: 2}
+  whenNotBlocked: {fileID: 2100000, guid: e34a4d1299b8dba4c8aa643df1048ad9, type: 2}
   whenBlocked: {fileID: 2100000, guid: 2d2b1d63d222cb34db062c99e3de300e, type: 2}
 --- !u!82 &3949819731379321109
 AudioSource:
@@ -17851,7 +17851,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: 617e8b1c95dc7604e8601791819ffcf1, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: d70e19066004a924b866728834e0e2e1, type: 2}
+      objectReference: {fileID: 2100000, guid: e34a4d1299b8dba4c8aa643df1048ad9, type: 2}
     - target: {fileID: 919132149155446097, guid: 617e8b1c95dc7604e8601791819ffcf1, type: 3}
       propertyPath: m_Name
       value: hexagon

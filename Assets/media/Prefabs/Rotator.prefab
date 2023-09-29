@@ -5109,7 +5109,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: edb0606902921cc4ba28526216a96d59, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: d70e19066004a924b866728834e0e2e1, type: 2}
+      objectReference: {fileID: 2100000, guid: e34a4d1299b8dba4c8aa643df1048ad9, type: 2}
     - target: {fileID: 919132149155446097, guid: edb0606902921cc4ba28526216a96d59, type: 3}
       propertyPath: m_Name
       value: hexagon part border
