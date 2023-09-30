@@ -38,6 +38,10 @@ public class Globals : MonoBehaviour
     public static int ScreenWidth = 0;
     public static int ScreenHeight = 0;
 
+    public static int[] WINS_LOSES = new int[200];
+    public static bool IsSpectatorMode = false;
+    public static HashSet<int> LevelsWithEducation = new HashSet<int>(new[] { 6,9,10,12, 15, 16 });
+
     //public static int CurrentLevel = 1;
     //public static int CurrentStars = 1;
 }

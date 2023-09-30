@@ -141,6 +141,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Rewarded rewarded;
     [SerializeField] private Interstitial interstitial;
     [SerializeField] private PlusStarMenu plusStarMenu;
+    [SerializeField] private GameObject EducationForWinButton;
+    
+    [SerializeField] private EducationMode educationMode;
 
     private LevelScale levelScale;
 
@@ -157,6 +160,7 @@ public class GameManager : MonoBehaviour
     private UIManager uiManager;
     private InputController inputController;
     private bool isAfterAdv;
+    private GameObject starsPanel;
 
     void Awake()
     {
@@ -173,7 +177,8 @@ public class GameManager : MonoBehaviour
         Globals.IsInfoActive = false;
 
         //=====TO DELETE======
-        //Globals.CurrentLevel = 16;
+        //Globals.CurrentLevel = 18;
+        //Globals.IsSpectatorMode = true;
         //Globals.MainPlayerData = new PlayerData();
         //====================
 
@@ -183,6 +188,15 @@ public class GameManager : MonoBehaviour
         }
 
         GetComponent<LevelGenerator>().InitLevel(Globals.CurrentLevel, this);
+
+        //win rate======================
+        if (!Globals.IsSpectatorMode && Globals.WINS_LOSES[Globals.CurrentLevel] < 0)
+        {
+            float addedSeconds = MathF.Abs((float)(Globals.WINS_LOSES[Globals.CurrentLevel] * 10) / 100 * GameTime);
+            GameTime += addedSeconds;
+            print("bad win rate: " + Globals.WINS_LOSES[Globals.CurrentLevel]);
+            print("seconds added: " + addedSeconds);
+        }
 
         CameraZShift = CameraZShift != 0 ? CameraZShift : -9;
         mainCameraBody.position = new Vector3(0, 15, CameraZShift);
@@ -206,6 +220,8 @@ public class GameManager : MonoBehaviour
         }
 
         MainMenu.SetStarsUI();
+        starsPanel = GameObject.Find("Stars");
+        starsPanel.SetActive(false);
 
         regionController = GetComponent<RegionController>();
         inputController = GetComponent<InputController>();
@@ -232,6 +248,15 @@ public class GameManager : MonoBehaviour
 
         regionController.UpdateAll();
 
+        if (Globals.IsSpectatorMode)
+        {
+            educationMode.gameObject.SetActive(true);
+        }
+        else
+        {
+            educationMode.gameObject.SetActive(false);
+        }
+
         //start game
         StartCoroutine(gameStartDelay());
     }
@@ -251,29 +276,13 @@ public class GameManager : MonoBehaviour
             Debug.LogError("game win!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
             StartCoroutine(handleWinCondition());
-        }
-
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            plusStarMenu.StartPlusStar();
-            loseGameMenu.gameObject.SetActive(false);
-        }
+        }                
     }
 
-    public void AddSecondsAndContinue(float seconds)
-    {
-        //if (IsSecondsAddedReward) return;
-                
-        IsSecondsAddedReward = true;
-        uiManager.AddSeconds(seconds);
-        SetGameStatus(true);
-        uiManager.TurnOnOptions();
-    }
-
+    
     public void AddSecondsAndContinue()
     {
-        //if (IsSecondsAddedReward) throw new System.NotImplementedException();
-
+        starsPanel.SetActive(false);
         float seconds = HowManySecondsToAddForRewarded(Globals.CurrentLevel);
 
         IsSecondsAddedReward = true;
@@ -303,6 +312,20 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator handleWinCondition()
     {
+        if (Globals.IsSpectatorMode)
+        {
+            educationMode.IsDone = true;
+            SetGameStatus(false);
+            uiManager.SetDataPanel(false);
+            uiManager.TurnOffOptions();
+            yield break;
+        }
+
+        regionController.ShowDataToEdu();
+
+        starsPanel.SetActive(true);
+        winLoseLogics(Globals.CurrentLevel, 1);
+
         SoundController.Instance.PlayUISound(SoundsUI.win);
         SetGameStatus(false);
         uiManager.SetDataPanel(false);
@@ -312,10 +335,29 @@ public class GameManager : MonoBehaviour
         regionController.Location().gameObject.SetActive(false);
         winGameMenu.StartWinGameMenu();
         uiManager.TurnOffOptions();
+
+        //
+        if ((GetUI().GetTimeLeft() / GameTime) < 0.2f)
+        {
+            showBestVariant();
+        }
+        
     }
 
     private IEnumerator handleLoseCondition()
     {
+        if (Globals.IsSpectatorMode)
+        {
+            educationMode.IsDone = true;
+            SetGameStatus(false);
+            uiManager.SetDataPanel(false);
+            uiManager.TurnOffOptions();
+            yield break;
+        }
+
+        starsPanel.SetActive(true);
+        winLoseLogics(Globals.CurrentLevel, -1);
+
         SoundController.Instance.PlayUISound(SoundsUI.lose);
         SetGameStatus(false);
         yield return new WaitForSeconds(1);
@@ -324,6 +366,8 @@ public class GameManager : MonoBehaviour
         //regionController.Location().gameObject.SetActive(false);
         loseGameMenu.StartLoseGameMenu();
         uiManager.TurnOffOptions();
+
+        showBestVariant();
     }
 
     private IEnumerator gameStartDelay()
@@ -525,7 +569,60 @@ public class GameManager : MonoBehaviour
         return result > 8 ? result : 8;
     }
 
-    
+    private void winLoseLogics(int level, int result)
+    {
+        if (result > 0)
+        {
+            if (Globals.WINS_LOSES[level] < 0)
+            {
+                Globals.WINS_LOSES[level] = 0;
+            }
+            else
+            {
+                Globals.WINS_LOSES[level]++;
+            }
+        }
+        else
+        {
+            if (Globals.WINS_LOSES[level] > 0)
+            {
+                Globals.WINS_LOSES[level] = 0;
+            }
+            else
+            {
+                Globals.WINS_LOSES[level]--;
+            }
+        }
+    }
+
+    private void showBestVariant()
+    {
+        
+        if (!Globals.LevelsWithEducation.Contains(Globals.CurrentLevel)) return;
+
+        if (!Globals.IsSpectatorMode)
+        {
+            EducationForWinButton.SetActive(true);            
+            StartCoroutine(playShake(EducationForWinButton.transform));
+        }
+    }
+
+    private IEnumerator playShake(Transform _transform)
+    {
+        while (true)
+        {
+            _transform.DOShakeScale(0.5f, 0.3f, 30).SetEase(Ease.OutQuad);
+            yield return new WaitForSeconds(1.6f);
+
+            //transform.DOPunchScale(Vector3.one*0.2f, 0.3f).SetEase(Ease.OutQuad);
+            //yield return new WaitForSeconds(0.7f);
+
+            //transform.DOPunchPosition(Vector3.one * 0.2f, 0.3f).SetEase(Ease.OutQuad);
+            //yield return new WaitForSeconds(0.7f);
+        }
+
+
+    }
 }
 
 public enum LevelScale

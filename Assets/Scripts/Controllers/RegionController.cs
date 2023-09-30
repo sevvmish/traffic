@@ -20,6 +20,8 @@ public class RegionController : MonoBehaviour
     private Transform[] ObjectPlaces;
     private HashSet<Transform> busyPlaces = new HashSet<Transform>();
 
+    public List<string> dataToEdu = new List<string>();
+
     public ObjectSpawner GetObjectSpawner(Vehicles _type)
     {
         for (int i = 0; i < infrastructures.Count; i++)
@@ -58,6 +60,11 @@ public class RegionController : MonoBehaviour
         busyPlaces.Add(result);
 
         return result;
+    }
+
+    public void ShowDataToEdu()
+    {
+        print(string.Join("\n", dataToEdu));
     }
 
     public void ReturnObjectPlace(Transform objectPlace)

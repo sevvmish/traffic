@@ -36,6 +36,8 @@ public class Region : MonoBehaviour, CityInfrastructure
     private bool isBusyRotate;
     private AudioSource _audioSource;
     private AssetManager assetManager;
+
+    
         
     private readonly float stopRotationForTooCloseToEndDistance = 1f;
 
@@ -54,6 +56,11 @@ public class Region : MonoBehaviour, CityInfrastructure
         {
             //border.transform.GetChild(0).gameObject.SetActive(false);
             border.transform.GetChild(0).GetComponent<MeshRenderer>().material = whenBlocked;
+        }
+
+        if (string.IsNullOrEmpty(gameObject.name))
+        {
+            gameObject.name = UnityEngine.Random.Range(1, 1000).ToString();
         }
     }
 
@@ -322,13 +329,18 @@ public class Region : MonoBehaviour, CityInfrastructure
                 }                    
             }
         }
-                
+
+        //new Conditions(22.97f,-1,0),
+        string s = $"new Conditions({GameManager.Instance.GetUI().GetTimeLeft().ToString("f2").Replace(',','.')}f, {sign}, {gameObject.name.Substring(gameObject.name.Length-1,1)}),";
+        regionController.dataToEdu.Add(s);
+        //print(GameManager.Instance.GetUI().GetTimeLeft() + ": " + (sign) + ": " + gameObject.name + " ====================");
+
         StartCoroutine(rotatePart(sign));
     }
 
     private void playError()
     {
-        GameManager.Instance.GetSoundUI().PlayUISound(SoundsUI.error);
+        if (!Globals.IsSpectatorMode) GameManager.Instance.GetSoundUI().PlayUISound(SoundsUI.error);
     }
 
     public void PlayDestroWithVFX(int index)

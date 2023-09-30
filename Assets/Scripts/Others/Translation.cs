@@ -13,6 +13,10 @@ public class Translation : ScriptableObject
     public string Level1_Tutorial_4;
     public string Level1_Tutorial_5;
 
+    public string Level1_Tutorial_preclick;
+    public string Level1_Tutorial_leftClick;
+    public string Level1_Tutorial_rightClick;
+
     public string Level2_Tutorial;
 
     public string Level5_Tutorial;
@@ -37,6 +41,10 @@ public class Translation : ScriptableObject
     public string GetMoreStars;
 
     public string AllProgressWillBeReset;
+
+    public string ForEducationSpectator;
+    public string ForEducationStartButton;
+    public string ForEducationEndButton;
 
     public Translation() { }
 }

@@ -91,7 +91,7 @@ public class MainMenu : MonoBehaviour
         Map02.SetActive(false);
         getMoreStarsInfo.SetActive(false);
 
-
+        Globals.IsSpectatorMode = false;
 
         mainCameraBody.position = Vector3.zero;
         mainCameraBody.rotation = Quaternion.identity;
@@ -178,8 +178,6 @@ public class MainMenu : MonoBehaviour
                 break;
             }
         }
-
-        print("what is last: " + lastLevel);
 
         if (lastLevel < 11)
         {

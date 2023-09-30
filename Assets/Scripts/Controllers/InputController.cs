@@ -33,7 +33,7 @@ public class InputController : MonoBehaviour
     
     void Update()
     {
-        if (!gm.IsGameStarted)
+        if (!gm.IsGameStarted || Globals.IsSpectatorMode)
         {
             return;
         }

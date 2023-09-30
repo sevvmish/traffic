@@ -125,6 +125,8 @@ public class UIManager : MonoBehaviour
     }
 
     public void SetDataPanel(bool isActive) => dataPanel.SetActive(isActive);
+    public void SetDataPanelScale(float koeff) => dataPanel.transform.localScale = Vector3.one * koeff;
+    public void SetTimePanelScale(float koeff) => timerPanel.transform.localScale = Vector3.one * koeff;
 
     public void TurnOffOptions()
     {
