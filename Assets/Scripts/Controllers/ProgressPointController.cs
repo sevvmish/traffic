@@ -124,7 +124,8 @@ public class ProgressPointController : MonoBehaviour
     {
         int[] data = new int[] { 0, 
             0, 0, 0, 7, 10, 13, 16, 19, 22, 25,   //1 - 10 lvls
-            27, 30, 33, 36, 39, 42, 45, 48, 51, 54   //11 - 20 lvls
+            27, 30, 33, 36, 39, 42, 45, 48, 51, 54,   //11 - 20 lvls
+            57, 60, 63, 66, 69, 72, 75, 78, 81, 84   //21 - 30 lvls
         }; 
 
         return data[level];

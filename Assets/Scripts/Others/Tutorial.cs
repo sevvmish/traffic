@@ -85,7 +85,7 @@ public class Tutorial : MonoBehaviour
 
         if (Globals.CurrentLevel == 1)
         {
-            tutorial1AdditionalTutorial.SetActive(true);
+            
             region.SetData(gm.regionController);
             region.gameObject.SetActive(false);
 
@@ -158,7 +158,7 @@ public class Tutorial : MonoBehaviour
                 gm.regionController.RemoveInfrastructure(g.GetComponent<CityInfrastructure>());
                 Destroy(g);
                                 
-                StartCoroutine(activateAfterSecs(2f, new_region));
+                
                 StartCoroutine(activateDeactivateAfterSecs(0.3f, level1_tutorial_2, 6));
                 StartCoroutine(playLevel1Rotation());
             }
@@ -243,6 +243,7 @@ public class Tutorial : MonoBehaviour
         camerabodyOld = cameraBody.position;
         cameraBody.DOMove(new Vector3(cameraBody.position.x, cameraBody.position.y - 50, cameraBody.position.z), 0.3f).SetEase(Ease.OutSine);
         yield return new WaitForSeconds(0.3f);
+        tutorial1AdditionalTutorial.SetActive(true);
         region.gameObject.SetActive(true);
         region.transform.localEulerAngles = Vector3.zero;
         yield return new WaitForSeconds(0.2f);
@@ -312,6 +313,7 @@ public class Tutorial : MonoBehaviour
         yield return new WaitForSeconds(0.3f);
         level1_tutorial_2.SetActive(false);
         StartCoroutine(activateDeactivateAfterSecs(0f, level1_tutorial_4, 6f));
+        StartCoroutine(activateAfterSecs(0, new_region));
     }
 
 

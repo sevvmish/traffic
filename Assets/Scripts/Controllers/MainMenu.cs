@@ -19,6 +19,7 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private GameObject Visual01;
     [SerializeField] private GameObject Map01;
     [SerializeField] private GameObject Map02;
+    [SerializeField] private GameObject Map03;
 
     [Header("   ")]
     [SerializeField] private Camera mainCamera;
@@ -26,6 +27,7 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private Transform cameraPosition1;
     [SerializeField] private Transform cameraPosition2;
     [SerializeField] private Transform cameraPosition3map02;
+    [SerializeField] private Transform cameraPosition3map03;
 
     [SerializeField] private Button playButton;
     [SerializeField] private TextMeshProUGUI playButtonText;
@@ -53,12 +55,13 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private GameObject part3;
     private bool isMap01Done;
     private bool isMap02Done;
+    
 
     [Header("forest")]
     [SerializeField] private GameObject part4;
     [SerializeField] private GameObject part5;
     [SerializeField] private GameObject part6;
-
+    private bool isMap03Done;
 
     private Ray ray;
     private RaycastHit hit;
@@ -187,6 +190,10 @@ public class MainMenu : MonoBehaviour
         {
             StartCoroutine(playMap02());
         }
+        else if (lastLevel < 31)
+        {
+            StartCoroutine(playMap03());
+        }
     }
 
     private void Update()
@@ -276,7 +283,7 @@ public class MainMenu : MonoBehaviour
     }
     public static string GetLevelName(int level)
     {
-        if (level < 31)
+        if (level < 21)
         {
             if (level == 16 || level == 19)
             {
@@ -288,8 +295,12 @@ public class MainMenu : MonoBehaviour
             }
             
         }
+        else if (level < 31)
+        {
+            return "forest";
+        }
 
-        return "";
+            return "";
     }
 
     private IEnumerator playReset()
@@ -389,6 +400,45 @@ public class MainMenu : MonoBehaviour
         Visual01.SetActive(false);
         mainCameraBody.DOMove(cameraPosition3map02.position, 0.7f).SetEase(Ease.OutSine);
         mainCameraBody.DORotate(cameraPosition3map02.eulerAngles, 0.7f).SetEase(Ease.OutSine);
+
+        yield return new WaitForSeconds(1f);
+    }
+
+    private IEnumerator playMap03()
+    {
+        ambient.SetData(AmbientType.forest);
+                
+        if (!isMap02Done)
+        {
+            isMap02Done = true;
+            showMapPart(part1, new Vector3(16.5f, 0, 9.5f), Vector3.zero, Map02.transform);
+            showMapPart(part2, new Vector3(0, 0, 19f), new Vector3(0, -60, 0), Map02.transform);
+            showMapPart(part3, new Vector3(8.25f, 0, 14.25f), new Vector3(0, 120, 0), Map02.transform);
+            showMapPart(part5, new Vector3(8.25f, 0, 23.75f), new Vector3(0, 180, 0), Map02.transform);
+            showMapPart(part4, new Vector3(16.5f, 0, 19f), new Vector3(0, 0, 0), Map02.transform);
+            showMapPart(part2, new Vector3(24.75f, 0, 14.25f), new Vector3(0, 120, 0), Map02.transform);
+        }
+
+        if (!isMap03Done)
+        {
+            isMap03Done = true;
+            showMapPart(part6, new Vector3(24.75f, 0, 23.75f), Vector3.zero, Map03.transform);
+            showMapPart(part4, new Vector3(16.5f, 0, 28.5f), new Vector3(0, -60, 0), Map03.transform);
+            showMapPart(part4, new Vector3(8.25f, 0, 33.25f), new Vector3(0, -120, 0), Map03.transform);
+            showMapPart(part1, new Vector3(8.25f, 0, 4.75f), new Vector3(0, 0, 0), Map03.transform);
+            showMapPart(part1, new Vector3(0, 0, 9.5f), new Vector3(0, 0, 0), Map03.transform);
+        }
+
+        Visual01.transform.DOScale(Vector3.zero, 0.1f).SetEase(Ease.OutSine);
+        playButton.gameObject.SetActive(false);
+        Map01.SetActive(false);
+        Map02.SetActive(true);
+        Map03.SetActive(true);
+        yield return new WaitForSeconds(0.1f);
+
+        Visual01.SetActive(false);
+        mainCameraBody.DOMove(cameraPosition3map03.position, 0.7f).SetEase(Ease.OutSine);
+        mainCameraBody.DORotate(cameraPosition3map03.eulerAngles, 0.7f).SetEase(Ease.OutSine);
 
         yield return new WaitForSeconds(1f);
     }

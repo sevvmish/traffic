@@ -148,6 +148,7 @@ public class GameManager : MonoBehaviour
     private LevelScale levelScale;
 
     public float CameraZShift;
+    public float CameraXAngle;
 
     public SoundController GetSoundUI() => sound;
     public AssetManager GetAssets() => assets;
@@ -177,7 +178,7 @@ public class GameManager : MonoBehaviour
         Globals.IsInfoActive = false;
 
         //=====TO DELETE======
-        //Globals.CurrentLevel = 18;
+        //Globals.CurrentLevel = 22;
         //Globals.IsSpectatorMode = true;
         //Globals.MainPlayerData = new PlayerData();
         //====================
@@ -200,6 +201,9 @@ public class GameManager : MonoBehaviour
 
         CameraZShift = CameraZShift != 0 ? CameraZShift : -9;
         mainCameraBody.position = new Vector3(0, 15, CameraZShift);
+
+        CameraXAngle = CameraXAngle != 0 ? CameraXAngle : 60;
+        mainCameraBody.eulerAngles = new Vector3(CameraXAngle, 0, 0);
 
         UIManager.BackImageBlack(true, 0);
         UIManager.BackImageBlack(false, 1f);
