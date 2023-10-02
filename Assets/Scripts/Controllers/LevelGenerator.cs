@@ -155,6 +155,14 @@ public class LevelGenerator : MonoBehaviour
             case 22:
                 level_22();
                 break;
+
+            case 23:
+                level_23();
+                break;
+
+            case 24:
+                level_24();
+                break;
         }
     }
 
@@ -599,7 +607,7 @@ public class LevelGenerator : MonoBehaviour
         gm.CameraZShift = -8f;
         gm.CameraXAngle = 65f;
         partsAngle(90);
-        gm.SetScreenFOV(LevelScale.medium);
+        gm.SetScreenFOV(LevelScale.large);
 
         
         SetObject_Spawner(AmbSpawnForest, new Vector3(0f, 0, 9.5f), new Vector3(0, 240, 0), "", 5f, 2f, 0);
@@ -637,6 +645,60 @@ public class LevelGenerator : MonoBehaviour
         SetObject(Straight1Forest, new Vector3(0, 0, 0), new Vector3(0, 60, 0), true);
         SetObject(Double2Forest, new Vector3(0, 0, -9.5f), new Vector3(0, 0, 0), true);
         SetObject(Double2Forest, new Vector3(0, 0, 9.5f), new Vector3(0, 0, 0), true);
+    }
+
+    private void level_23()
+    {
+        setForest();
+        gm.VanCount = 2;
+        gm.AmbulanceCount = 2;
+        gm.GameTime = 60;
+        gm.StarsLimitTimer = 0.2f;
+        gm.StarsLimitMistakes = 1;
+        gm.StarsLimitAccidents = 1;
+        gm.CameraZShift = -7.8f;
+        gm.CameraXAngle = 65f;
+        partsAngle(-90);
+        gm.SetScreenFOV(LevelScale.large);
+
+        
+        SetObject(AmbRecForest, new Vector3(0, 0, 19), new Vector3(0, 60, 0), false);
+        SetObject(VanRecForest, new Vector3(0, 0, -19f), new Vector3(0, 0, 0), false);
+
+        SetObject_Spawner(AmbSpawnForest, new Vector3(-8.25f, 0, -14.25f), new Vector3(0, 0, 0), "", 6, 5, 0);
+        SetObject_Spawner(VanSpawnForest, new Vector3(-8.25f, 0, 14.25f), new Vector3(0, -180, 0), "", 6, 2, 0);
+                
+        SetObject(Double2Forest, new Vector3(-8.25f, 0, 4.75f), new Vector3(0, 0, 0), true);
+        SetObject(Double2Forest, new Vector3(-8.25f, 0, -4.75f), new Vector3(0, 0, 0), true);
+        SetObject(NonStraight2Forest, new Vector3(0, 0, 0f), new Vector3(0, 0, 0), true);
+        SetObject(Straight4Forest, new Vector3(0, 0, -9.50f), new Vector3(0, 0, 0), true);
+        SetObject(Straight4Forest, new Vector3(0, 0, 9.50f), new Vector3(0, 0, 0), true);
+    }
+
+    private void level_24()
+    {
+        setForest();
+        gm.VanCount = 2;
+        gm.AmbulanceCount = 2;
+        gm.GameTime = 65;
+        gm.StarsLimitTimer = 0.2f;
+        gm.StarsLimitMistakes = 1;
+        gm.StarsLimitAccidents = 1;
+        gm.CameraZShift = -8f;
+        gm.CameraXAngle = 65f;
+        partsAngle(-30);
+        gm.SetScreenFOV(LevelScale.large);
+
+        
+        SetObject(AmbRecForest, new Vector3(0, 0, 9.5f), new Vector3(0, 120, 0), false);
+        SetObject(VanRecForest, new Vector3(0, 0, -9.5f), new Vector3(0, 60, 0), false);
+
+        SetObject_Spawner(AmbSpawnForest, new Vector3(16.5f, 0, 0), new Vector3(0, -120, 0), "", 4, 0, 0);
+        SetObject_Spawner(VanSpawnForest, new Vector3(-16.5f, 0, 0), new Vector3(0, -300, 0), "", 4, 0, 0);
+
+        SetObject(Double2Forest, new Vector3(-8.25f, 0, 4.75f), new Vector3(0, 60, 0), true);
+        SetObject(Double2Forest, new Vector3(8.25f, 0, -4.75f), new Vector3(0, 60, 0), true);
+        SetObject(NonStraight2Forest, new Vector3(0, 0, 0f), new Vector3(0, 0, 0), true);
     }
 
 
