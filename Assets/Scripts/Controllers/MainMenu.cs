@@ -63,6 +63,15 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private GameObject part6;
     private bool isMap03Done;
 
+    [Header("rewarded")]
+    [SerializeField] private PlusStarMenu plusStar;
+    [SerializeField] private Rewarded rewarded;
+    [SerializeField] private Button startRewardForStarButton;
+    [SerializeField] private GameObject plusStarInfoPanel;
+    [SerializeField] private TextMeshProUGUI plusStarInfoPanelText;
+    [SerializeField] private Button okPlusStar;
+    [SerializeField] private Button noPlusStar;
+
     private Ray ray;
     private RaycastHit hit;
     
@@ -133,6 +142,28 @@ public class MainMenu : MonoBehaviour
             SoundController.Instance.PlayUISound(SoundsUI.error);
             resetPanel.SetActive(false);
         });
+
+        startRewardForStarButton.gameObject.SetActive(false);
+        plusStarInfoPanel.gameObject.SetActive(false);
+
+        startRewardForStarButton.onClick.AddListener(() =>
+        {
+            if (plusStarInfoPanel.activeSelf) return;
+            SoundController.Instance.PlayUISound(SoundsUI.positive);
+            plusStarInfoPanel.SetActive(true);
+        });
+
+        okPlusStar.onClick.AddListener(() =>
+        {            
+            SoundController.Instance.PlayUISound(SoundsUI.positive);
+            PLayRewardedPlusStar();
+        });
+
+        noPlusStar.onClick.AddListener(() =>
+        {
+            plusStarInfoPanel.SetActive(false);
+            SoundController.Instance.PlayUISound(SoundsUI.error);
+        });
     }
 
     private void Start()
@@ -164,7 +195,15 @@ public class MainMenu : MonoBehaviour
         }
     }
 
-    
+    private void PLayRewardedPlusStar()
+    {
+        Globals.TimeWhenLastRewardedInMainMenuWas = DateTime.Now;
+        rewarded.OnRewardedEndedOK = plusStar.StartPlusStar;
+        startRewardForStarButton.gameObject.SetActive(false);
+        rewarded.ShowRewardedVideo();
+    }
+
+
     private void getToLevels()
     {
         isLevelChosing = true;
@@ -198,6 +237,19 @@ public class MainMenu : MonoBehaviour
 
     private void Update()
     {
+        //show plus star button
+        if (YandexGame.SDKEnabled && Globals.IsInitiated)
+        {
+            int lvl = GetLastLevel();
+            if (lvl > 3 && ProgressPointController.StarsLimit(lvl) > GetStarsAmount()
+                && (DateTime.Now - Globals.TimeWhenLastRewardedInMainMenuWas).TotalSeconds > Globals.REWARDED_COOLDOWN)
+            {
+                startRewardForStarButton.gameObject.SetActive(true);
+                StartCoroutine(playShake(startRewardForStarButton.transform));
+            }
+        }
+        
+
         if (YandexGame.SDKEnabled && !Globals.IsInitiated)
         {
             Globals.IsInitiated = true;            
@@ -229,6 +281,7 @@ public class MainMenu : MonoBehaviour
                 Globals.TimeWhenStartedPlaying = DateTime.Now;
                 Globals.TimeWhenLastInterstitialWas = DateTime.Now;
                 Globals.TimeWhenLastRewardedWas = DateTime.Now;
+                Globals.TimeWhenLastRewardedInMainMenuWas = DateTime.Now;
             }
 
             Localize();
@@ -266,6 +319,11 @@ public class MainMenu : MonoBehaviour
             Globals.CurrentLevel = GetLastLevel();
             AddStarsUI(3);
             SceneManager.LoadScene("menu");
+        }
+
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            plusStar.StartPlusStar();
         }
     }
 
@@ -324,6 +382,7 @@ public class MainMenu : MonoBehaviour
         press1stLevelText.text = lang.PressFirstLevelText_MainMenu;
         resetText.text = lang.AllProgressWillBeReset;
         getMoreStarsInfoText.text = lang.GetMoreStars;
+        plusStarInfoPanelText.text = lang.PlusStarInfoPanelText;
     }
 
     private IEnumerator stage1()
@@ -534,6 +593,23 @@ public class MainMenu : MonoBehaviour
         }
 
         GameObject.Find("StarsBackImage").GetComponent<RectTransform>().sizeDelta = size;
+
+    }
+
+    private IEnumerator playShake(Transform _transform)
+    {
+        while (true)
+        {
+            _transform.DOShakeScale(0.5f, 0.5f, 30).SetEase(Ease.OutQuad);
+            yield return new WaitForSeconds(1f);
+
+            //transform.DOPunchScale(Vector3.one*0.2f, 0.3f).SetEase(Ease.OutQuad);
+            //yield return new WaitForSeconds(0.7f);
+
+            //transform.DOPunchPosition(Vector3.one * 0.2f, 0.3f).SetEase(Ease.OutQuad);
+            //yield return new WaitForSeconds(0.7f);
+        }
+
 
     }
 }

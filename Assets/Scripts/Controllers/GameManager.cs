@@ -178,9 +178,9 @@ public class GameManager : MonoBehaviour
         Globals.IsInfoActive = false;
 
         //=====TO DELETE======
-        Globals.CurrentLevel = 24;
+        //Globals.CurrentLevel = 20;
         //Globals.IsSpectatorMode = true;
-        Globals.MainPlayerData = new PlayerData();
+        //Globals.MainPlayerData = new PlayerData();
         //====================
 
         if (YandexGame.EnvironmentData.isDesktop)

@@ -40,6 +40,8 @@ public class Translation : ScriptableObject
 
     public string GetMoreStars;
 
+    public string PlusStarInfoPanelText;
+
     public string AllProgressWillBeReset;
 
     public string ForEducationSpectator;

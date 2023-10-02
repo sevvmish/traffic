@@ -15,6 +15,7 @@ public class Globals : MonoBehaviour
     public static DateTime TimeWhenStartedPlaying;
     public static DateTime TimeWhenLastInterstitialWas;
     public static DateTime TimeWhenLastRewardedWas;
+    public static DateTime TimeWhenLastRewardedInMainMenuWas;
 
     public static bool IsMainScreen = true;
     public static bool IsInfoActive;

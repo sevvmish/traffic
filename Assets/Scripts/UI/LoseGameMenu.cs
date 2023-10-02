@@ -18,6 +18,8 @@ public class LoseGameMenu : MonoBehaviour
     [SerializeField] private TextMeshProUGUI GetMoreText;
     [SerializeField] private TextMeshProUGUI SecondsText;
 
+    [SerializeField] private TextMeshProUGUI loseText;
+
     void Start()
     {
         
@@ -48,6 +50,7 @@ public class LoseGameMenu : MonoBehaviour
         //===========================================
         Translation lang = Localization.GetInstanse(Globals.CurrentLanguage).GetCurrentTranslation();
         GetMoreText.text = lang.GetMoreTextReward;
+        loseText.text = lang.LoseText;
         SoundController _sound = SoundController.Instance;
         GameManager gm = GameManager.Instance;
 

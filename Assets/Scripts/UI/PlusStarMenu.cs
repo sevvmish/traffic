@@ -5,7 +5,10 @@ using UnityEngine;
 
 public class PlusStarMenu : MonoBehaviour
 {
+    public bool isStayInCurrentScene;
+
     [SerializeField] private GameObject allStar;
+    
 
     public void StartPlusStar()
     {
@@ -33,6 +36,6 @@ public class PlusStarMenu : MonoBehaviour
         MainMenu.AddStarsUI(1);
 
         yield return new WaitForSeconds(0.3f);
-        GameManager.Instance.BackToMainMenu(false);
+        if (!isStayInCurrentScene) GameManager.Instance.BackToMainMenu(false);
     }
 }
