@@ -297,7 +297,7 @@ public class WinGameMenu : MonoBehaviour
         TextMeshProUGUI starsText = GameObject.Find("StarsAmount").GetComponent<TextMeshProUGUI>();
 
         //================        
-        YandexMetrica.Send("level-" + Globals.CurrentLevel + "-" + starAmount);
+        YandexMetrica.Send("level" + Globals.CurrentLevel);
         //================
 
         if (starAmount >= 1 && allreadyReceivedStars < 1)

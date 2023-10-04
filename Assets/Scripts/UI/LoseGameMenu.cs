@@ -38,7 +38,7 @@ public class LoseGameMenu : MonoBehaviour
     public void StartLoseGameMenu()
     {
         //================        
-        YandexMetrica.Send("lost-" + Globals.CurrentLevel);
+        YandexMetrica.Send("lost" + Globals.CurrentLevel);
         //================
 
         gameObject.SetActive(true);
