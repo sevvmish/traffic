@@ -6,6 +6,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using YG;
 
 public class LoseGameMenu : MonoBehaviour
 {
@@ -36,6 +37,10 @@ public class LoseGameMenu : MonoBehaviour
 
     public void StartLoseGameMenu()
     {
+        //================        
+        YandexMetrica.Send("lost-" + Globals.CurrentLevel);
+        //================
+
         gameObject.SetActive(true);
         gameObject.transform.localScale = Vector3.zero;
         StartCoroutine(play());

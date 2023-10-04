@@ -197,10 +197,18 @@ public class MainMenu : MonoBehaviour
 
     private void PLayRewardedPlusStar()
     {
-        Globals.TimeWhenLastRewardedInMainMenuWas = DateTime.Now;
-        rewarded.OnRewardedEndedOK = plusStar.StartPlusStar;
+        plusStarInfoPanel.SetActive(false);
+        rewarded.OnRewardedEndedOK = null;
+        rewarded.OnRewardedEndedOK += plusStar.StartPlusStar;
+        rewarded.OnRewardedEndedOK += restartAfterStar;
         startRewardForStarButton.gameObject.SetActive(false);
         rewarded.ShowRewardedVideo();
+    }
+
+    private void restartAfterStar()
+    {
+        Globals.IsMainScreen = false;
+        SceneManager.LoadScene("menu");
     }
 
 
@@ -242,10 +250,9 @@ public class MainMenu : MonoBehaviour
         {
             int lvl = GetLastLevel();
             if (lvl > 3 && ProgressPointController.StarsLimit(lvl) > GetStarsAmount()
-                && (DateTime.Now - Globals.TimeWhenLastRewardedInMainMenuWas).TotalSeconds > Globals.REWARDED_COOLDOWN)
+                && (DateTime.Now - Globals.TimeWhenLastRewardedWas).TotalSeconds > Globals.REWARDED_COOLDOWN)
             {
                 startRewardForStarButton.gameObject.SetActive(true);
-                StartCoroutine(playShake(startRewardForStarButton.transform));
             }
         }
         

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using YG;
 
 public class WinGameMenu : MonoBehaviour
 {
@@ -74,6 +75,8 @@ public class WinGameMenu : MonoBehaviour
 
     public void StartWinGameMenu()
     {
+        
+
         gameObject.SetActive(true);
         gameObject.transform.localScale = Vector3.zero;
         StartCoroutine(play());
@@ -292,6 +295,10 @@ public class WinGameMenu : MonoBehaviour
 
         int currentStars = MainMenu.GetStarsAmount();
         TextMeshProUGUI starsText = GameObject.Find("StarsAmount").GetComponent<TextMeshProUGUI>();
+
+        //================        
+        YandexMetrica.Send("level-" + Globals.CurrentLevel + "-" + starAmount);
+        //================
 
         if (starAmount >= 1 && allreadyReceivedStars < 1)
         {
