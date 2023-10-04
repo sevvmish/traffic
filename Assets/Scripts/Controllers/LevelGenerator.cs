@@ -163,6 +163,14 @@ public class LevelGenerator : MonoBehaviour
             case 24:
                 level_24();
                 break;
+
+            case 25:
+                level_25();
+                break;
+
+            case 26:
+                level_26();
+                break;
         }
     }
 
@@ -309,7 +317,7 @@ public class LevelGenerator : MonoBehaviour
         gm.StarsLimitTimer = 0.2f;
         gm.StarsLimitMistakes = 0;
         gm.StarsLimitAccidents = 0;
-        gm.CameraZShift = -11;
+        gm.CameraZShift = -9.75f;
         partsAngle(10);
         gm.SetScreenFOV(LevelScale.small);
 
@@ -328,7 +336,7 @@ public class LevelGenerator : MonoBehaviour
         gm.StarsLimitTimer = 0.3f;
         gm.StarsLimitMistakes = 0;
         gm.StarsLimitAccidents = 0;
-        gm.CameraZShift = -8;
+        gm.CameraZShift = -7.5f;
         partsAngle(-8);
         gm.SetScreenFOV(LevelScale.small);
 
@@ -347,7 +355,7 @@ public class LevelGenerator : MonoBehaviour
         gm.StarsLimitTimer = 0.33f;
         gm.StarsLimitMistakes = 0;
         gm.StarsLimitAccidents = 0;
-        gm.CameraZShift = -9;
+        gm.CameraZShift = -7.5f;
         partsAngle(65);
         gm.SetScreenFOV(LevelScale.small);
 
@@ -368,7 +376,7 @@ public class LevelGenerator : MonoBehaviour
         gm.StarsLimitTimer = 0.2f;
         gm.StarsLimitMistakes = 1;
         gm.StarsLimitAccidents = 1;
-        gm.CameraZShift = -9;
+        gm.CameraZShift = -8.75f;
         partsAngle(50);
         gm.SetScreenFOV(LevelScale.small);
 
@@ -394,7 +402,7 @@ public class LevelGenerator : MonoBehaviour
         gm.StarsLimitTimer = 0.3f;
         gm.StarsLimitMistakes = 1;
         gm.StarsLimitAccidents = 1;
-        gm.CameraZShift = -8;
+        gm.CameraZShift = -7;
         partsAngle(-50);
         gm.SetScreenFOV(LevelScale.small);
         
@@ -551,8 +559,8 @@ public class LevelGenerator : MonoBehaviour
         gm.StarsLimitTimer = 0.25f;
         gm.StarsLimitMistakes = 1;
         gm.StarsLimitAccidents = 1;
-        gm.CameraZShift = -8f;
-        gm.CameraXAngle = 65f;
+        gm.CameraZShift = -6.5f;
+        //gm.CameraXAngle = 65f;
         partsAngle(-150);
         gm.SetScreenFOV(LevelScale.medium);
                 
@@ -578,7 +586,7 @@ public class LevelGenerator : MonoBehaviour
         gm.StarsLimitMistakes = 1;
         gm.StarsLimitAccidents = 1;
         gm.CameraZShift = -9;
-        gm.CameraXAngle = 65f;
+        //gm.CameraXAngle = 65f;
         partsAngle(0);
         gm.SetScreenFOV(LevelScale.medium);
         
@@ -605,7 +613,7 @@ public class LevelGenerator : MonoBehaviour
         gm.StarsLimitMistakes = 1;
         gm.StarsLimitAccidents = 1;
         gm.CameraZShift = -8f;
-        gm.CameraXAngle = 65f;
+        //gm.CameraXAngle = 65f;
         partsAngle(90);
         gm.SetScreenFOV(LevelScale.large);
 
@@ -631,7 +639,7 @@ public class LevelGenerator : MonoBehaviour
         gm.StarsLimitMistakes = 1;
         gm.StarsLimitAccidents = 1;
         gm.CameraZShift = -5.5f;
-        gm.CameraXAngle = 65f;
+        //gm.CameraXAngle = 65f;
         partsAngle(-90);
         gm.SetScreenFOV(LevelScale.medium);
 
@@ -657,7 +665,7 @@ public class LevelGenerator : MonoBehaviour
         gm.StarsLimitMistakes = 1;
         gm.StarsLimitAccidents = 1;
         gm.CameraZShift = -7.8f;
-        gm.CameraXAngle = 65f;
+        //gm.CameraXAngle = 65f;
         partsAngle(-90);
         gm.SetScreenFOV(LevelScale.large);
 
@@ -685,7 +693,7 @@ public class LevelGenerator : MonoBehaviour
         gm.StarsLimitMistakes = 1;
         gm.StarsLimitAccidents = 1;
         gm.CameraZShift = -8f;
-        gm.CameraXAngle = 65f;
+        //gm.CameraXAngle = 65f;
         partsAngle(-30);
         gm.SetScreenFOV(LevelScale.large);
 
@@ -699,6 +707,60 @@ public class LevelGenerator : MonoBehaviour
         SetObject(Double2Forest, new Vector3(-8.25f, 0, 4.75f), new Vector3(0, 60, 0), true);
         SetObject(Double2Forest, new Vector3(8.25f, 0, -4.75f), new Vector3(0, 60, 0), true);
         SetObject(NonStraight2Forest, new Vector3(0, 0, 0f), new Vector3(0, 0, 0), true);
+    }
+
+    private void level_25()
+    {
+        setForest();
+        gm.VanCount = 2;
+        gm.AmbulanceCount = 2;
+        gm.GameTime = 50;
+        gm.StarsLimitTimer = 0.3f;
+        gm.StarsLimitMistakes = 1;
+        gm.StarsLimitAccidents = 1;
+        gm.CameraZShift = -8f;
+        //gm.CameraXAngle = 65f;
+        partsAngle(0);
+        gm.SetScreenFOV(LevelScale.large);
+
+        
+        SetObject(AmbRecForest, new Vector3(24.75f, 0, 4.75f), new Vector3(0, 120, 0), false);
+        SetObject(VanRecForest, new Vector3(24.75f, 0, -4.75f), new Vector3(0, -60, 0), false);
+
+        SetObject_Spawner(AmbSpawnForest, new Vector3(-8.25f, 0, -4.75f), new Vector3(0, -300, 0), "", 6, 2, 0);
+        SetObject_Spawner(VanSpawnForest, new Vector3(-8.25f, 0, 4.75f), new Vector3(0, -240, 0), "", 6, 4, 0);
+
+        SetObject(Double2Forest, new Vector3(0, 0, 0), new Vector3(0, 60, 0), true);
+        SetObject(Double2Forest, new Vector3(16.5f, 0, 0), new Vector3(0, 60, 0), true);
+        SetObject(NonStraight2Forest, new Vector3(8.25f, 0, 4.75f), new Vector3(0, 0, 0), true);
+        SetObject(NonStraight2Forest, new Vector3(8.25f, 0, -4.75f), new Vector3(0, 180, 0), true);
+    }
+
+    private void level_26()
+    {
+        setForest();
+        gm.VanCount = 2;
+        gm.AmbulanceCount = 2;
+        gm.GameTime = 50;
+        gm.StarsLimitTimer = 0.3f;
+        gm.StarsLimitMistakes = 1;
+        gm.StarsLimitAccidents = 1;
+        gm.CameraZShift = -8f;
+        //gm.CameraXAngle = 65f;
+        partsAngle(0);
+        gm.SetScreenFOV(LevelScale.large);
+
+        /*
+        SetObject(AmbRecForest, new Vector3(24.75f, 0, 4.75f), new Vector3(0, 120, 0), false);
+        SetObject(VanRecForest, new Vector3(24.75f, 0, -4.75f), new Vector3(0, -60, 0), false);
+
+        SetObject_Spawner(AmbSpawnForest, new Vector3(-8.25f, 0, -4.75f), new Vector3(0, -300, 0), "", 6, 2, 0);
+        SetObject_Spawner(VanSpawnForest, new Vector3(-8.25f, 0, 4.75f), new Vector3(0, -240, 0), "", 6, 4, 0);
+
+        SetObject(Double2Forest, new Vector3(0, 0, 0), new Vector3(0, 60, 0), true);
+        SetObject(Double2Forest, new Vector3(16.5f, 0, 0), new Vector3(0, 60, 0), true);
+        SetObject(NonStraight2Forest, new Vector3(8.25f, 0, 4.75f), new Vector3(0, 0, 0), true);
+        SetObject(NonStraight2Forest, new Vector3(8.25f, 0, -4.75f), new Vector3(0, 180, 0), true);*/
     }
 
 

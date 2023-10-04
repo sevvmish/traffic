@@ -178,9 +178,9 @@ public class GameManager : MonoBehaviour
         Globals.IsInfoActive = false;
 
         //=====TO DELETE======
-        //Globals.CurrentLevel = 20;
+        Globals.CurrentLevel = 26;
         //Globals.IsSpectatorMode = true;
-        //Globals.MainPlayerData = new PlayerData();
+        Globals.MainPlayerData = new PlayerData();
         //====================
 
         if (YandexGame.EnvironmentData.isDesktop)
@@ -376,7 +376,7 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator gameStartDelay()
     {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1.5f);
         regionController.UpdateAll();
         SetGameStatus(true);
     }
@@ -477,10 +477,12 @@ public class GameManager : MonoBehaviour
                 if (Globals.IsMobilePlatform)
                 {
                     mainCamera.fieldOfView = 55;
+                    mainCamera.orthographicSize = 11;
                 }
                 else
                 {
                     mainCamera.fieldOfView = 65;
+                    mainCamera.orthographicSize = 13;
                 }
                 
                 break;
@@ -489,10 +491,12 @@ public class GameManager : MonoBehaviour
                 if (Globals.IsMobilePlatform)
                 {
                     mainCamera.fieldOfView = 65;
+                    mainCamera.orthographicSize = 12;
                 }
                 else
                 {
                     mainCamera.fieldOfView = 75;
+                    mainCamera.orthographicSize = 14;
                 }
                 break;
 
@@ -500,10 +504,12 @@ public class GameManager : MonoBehaviour
                 if (Globals.IsMobilePlatform)
                 {
                     mainCamera.fieldOfView = 75;
+                    mainCamera.orthographicSize = 13;
                 }
                 else
                 {
                     mainCamera.fieldOfView = 85;
+                    mainCamera.orthographicSize = 15;
                 }
                 break;
         }

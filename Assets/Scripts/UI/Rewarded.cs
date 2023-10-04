@@ -20,12 +20,12 @@ public class Rewarded : MonoBehaviour
         YandexGame.CloseVideoEvent = advRewardedClosed;
         YandexGame.ErrorVideoEvent = advRewardedError;
         YandexGame.RewVideoShow(155);
-        Globals.TimeWhenLastRewardedWas = DateTime.Now;
+        
     }
 
     private void rewardStarted()
     {        
-        print("reward started OK");
+        //print("reward started OK");
         Time.timeScale = 0;
         if (Globals.IsSoundOn)
         {
@@ -40,11 +40,13 @@ public class Rewarded : MonoBehaviour
         {
             isRewardedOK = true;
         }
+
+        Globals.TimeWhenLastRewardedWas = DateTime.Now;
     }
 
     private void advRewardedClosed()
     {
-        print("rewarded was closed ok");
+        //print("rewarded was closed ok");
         Time.timeScale = 1;
         if (Globals.IsSoundOn)
         {
@@ -64,7 +66,7 @@ public class Rewarded : MonoBehaviour
 
     private void advRewardedError()
     {
-        print("rewarded was ERROR!");
+        //print("rewarded was ERROR!");
         Time.timeScale = 1;
         if (Globals.IsSoundOn)
         {

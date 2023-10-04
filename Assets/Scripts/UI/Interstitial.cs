@@ -14,13 +14,13 @@ public class Interstitial : MonoBehaviour
         YandexGame.CloseFullAdEvent = advClosed;//nextLevelAction;
         YandexGame.ErrorFullAdEvent = advError;//nextLevelAction;
         YandexGame.FullscreenShow();
-        print("starting to show Interstitial");
-        Globals.TimeWhenLastInterstitialWas = DateTime.Now;
+        //print("starting to show Interstitial");
+        
     }
 
     private void advStarted()
     {
-        print("interstitial staarted OK");
+        //print("interstitial staarted OK");
         Time.timeScale = 0;
         if (Globals.IsSoundOn)
         {
@@ -30,7 +30,7 @@ public class Interstitial : MonoBehaviour
 
     private void advError()
     {
-        print("interstitial was ERROR");
+        //print("interstitial was ERROR");
         Time.timeScale = 1;
         if (Globals.IsSoundOn)
         {
@@ -41,12 +41,15 @@ public class Interstitial : MonoBehaviour
 
     private void advClosed()
     {
-        print("interstitial was closed");
+        //print("interstitial was closed");
         Time.timeScale = 1;
         if (Globals.IsSoundOn)
         {
             AudioListener.volume = 1;
         }
+
+        Globals.TimeWhenLastInterstitialWas = DateTime.Now;
+
         OnEnded?.Invoke();
     }
 }

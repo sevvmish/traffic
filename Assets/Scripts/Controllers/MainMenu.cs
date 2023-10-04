@@ -72,6 +72,8 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private Button okPlusStar;
     [SerializeField] private Button noPlusStar;
 
+    [SerializeField] private Button levelForward;
+
     private Ray ray;
     private RaycastHit hit;
     
@@ -163,6 +165,13 @@ public class MainMenu : MonoBehaviour
         {
             plusStarInfoPanel.SetActive(false);
             SoundController.Instance.PlayUISound(SoundsUI.error);
+        });
+
+        levelForward.onClick.AddListener(() =>
+        {
+            Globals.CurrentLevel = GetLastLevel();
+            AddStarsUI(3);
+            SceneManager.LoadScene("menu");
         });
     }
 
