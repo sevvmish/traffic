@@ -35,6 +35,7 @@ public class LevelGenerator : MonoBehaviour
     [SerializeField] private GameObject Double2Forest;
     [SerializeField] private GameObject Empty1Forest;
     [SerializeField] private GameObject Empty2Forest;
+    [SerializeField] private GameObject addition;
 
     [Header("town")]
     [SerializeField] private GameObject AmbSpawnTown;
@@ -164,12 +165,29 @@ public class LevelGenerator : MonoBehaviour
                 level_24();
                 break;
 
-            case 25:
-                level_25();
+            case 25:                
+                level_25(); //29
                 break;
 
             case 26:
                 level_26();
+                break;
+
+            case 27:
+                level_27(); //25
+                break;
+
+            case 28:
+                
+                level_28();
+                break;
+
+            case 29:
+                level_29(); //boat
+                break;
+
+            case 30:                
+                level_30(); //boats
                 break;
         }
     }
@@ -709,7 +727,7 @@ public class LevelGenerator : MonoBehaviour
         SetObject(NonStraight2Forest, new Vector3(0, 0, 0f), new Vector3(0, 0, 0), true);
     }
 
-    private void level_25()
+    private void level_27()
     {
         setForest();
         gm.VanCount = 2;
@@ -736,31 +754,159 @@ public class LevelGenerator : MonoBehaviour
         SetObject(NonStraight2Forest, new Vector3(8.25f, 0, -4.75f), new Vector3(0, 180, 0), true);
     }
 
-    private void level_26()
+    private void level_28()
     {
         setForest();
         gm.VanCount = 2;
-        gm.AmbulanceCount = 2;
+        gm.GameTime = 70;
+        gm.StarsLimitTimer = 0.2f;
+        gm.StarsLimitMistakes = 1;
+        gm.StarsLimitAccidents = 1;
+        gm.CameraZShift = -7.5f;
+        //gm.CameraXAngle = 65f;
+        partsAngle(20);
+        gm.SetScreenFOV(LevelScale.large);
+
+        
+        SetObject(VanRecForest, new Vector3(-16.5f, 0, -9.5f), new Vector3(0, 120, 0), false);
+        
+        SetObject_Spawner(TaxiSpawnForest, new Vector3(8.25f, 0, 14.25f), new Vector3(0, 240, 0), "", 6, 4, 0);
+        SetObject_Spawner(AmbSpawnForest, new Vector3(16.5f, 0, 0f), new Vector3(0, -120, 0), "", 6, 4, 0);
+        SetObject_Spawner(VanSpawnForest, new Vector3(-16.5f, 0, 0), new Vector3(0, 60, 0), "", 5, 0, 0);
+
+        SetObject(Double2Forest, new Vector3(-8.25f, 0, 4.75f), new Vector3(0, 60, 0), true);
+        SetObject(Double2Forest, new Vector3(0, 0, -9.5f), new Vector3(0, 60, 0), true);
+        SetObject(NonStraight2Forest, new Vector3(8.25f, 0, 4.75f), new Vector3(0, 0, 0), true);
+        SetObject(NonStraight1Forest, new Vector3(-8.25f, 0, -14.25f), new Vector3(0, 0, 0), true);
+        SetObject(Straight1Forest, new Vector3(0, 0, 9.5f), new Vector3(0, 0, 0), true);
+        SetObject(Straight1Forest, new Vector3(8.25f, 0, -4.75f), new Vector3(0, 0, 0), true);
+    }
+
+    private void level_29()
+    {
+        setForest();
+        gm.VanCount = 1;
+        gm.TaxiCount = 1;
+        gm.GameTime = 55;
+        gm.StarsLimitTimer = 0.35f;
+        gm.StarsLimitMistakes = 1;
+        gm.StarsLimitAccidents = 1;
+        gm.CameraZShift = -7f;
+        //gm.CameraXAngle = 65f;
+        partsAngle(-60);
+        gm.SetScreenFOV(LevelScale.large);
+
+        SetObject(TaxiRecForest, new Vector3(16.5f, 0, -9.5f), new Vector3(0, -180, 0), false);
+        SetObject(VanRecForest, new Vector3(-16.5f, 0, 9.5f), new Vector3(0, 120, 0), false);
+
+        SetObject_Spawner(TaxiSpawnForest, new Vector3(0, 0, 19f), new Vector3(0, 180, 0), "", 6, 4, 0);
+        SetObject_Spawner(VanSpawnForest, new Vector3(0, 0, -19), new Vector3(0, 0, 0), "", 5, 0, 0);
+
+        SetObject(Double2Forest, new Vector3(0, 0, 9.5f), new Vector3(0, 60, 0), true);
+        SetObject(Double2Forest, new Vector3(0, 0, -9.5f), new Vector3(0, 60, 0), true);
+        SetObject(Straight1Forest, new Vector3(-8.25f, 0, 4.75f), new Vector3(0, 0, 0), true);
+        SetObject(Straight1Forest, new Vector3(8.25f, 0, -4.75f), new Vector3(0, 0, 0), true);
+        SetObject(addition, new Vector3(0, 0, 0f), new Vector3(0, 0, 0), false);
+        TownBoat t = addition.transform.GetChild(12).transform.GetComponent<TownBoat>();
+        t.mainTimerContinue = 6;
+        t.cooldown = 12;
+        t.startCooldown = 5;
+    }
+
+    private void level_30()
+    {
+        setForest();
+        gm.TaxiCount = 2;
+        gm.GameTime = 50;
+        gm.StarsLimitTimer = 0.35f;
+        gm.StarsLimitMistakes = 1;
+        gm.StarsLimitAccidents = 1;
+        gm.CameraZShift = -7f;
+        //gm.CameraXAngle = 65f;
+        partsAngle(-90);
+        gm.SetScreenFOV(LevelScale.large);
+        
+        SetObject(TaxiRecForest, new Vector3(0, 0, -19f), new Vector3(0, -120, 0), false);
+
+        SetObject_Spawner(TaxiSpawnForest, new Vector3(0, 0, 19f), new Vector3(0, 180, 0), "", 6, 4, 0);
+        SetObject_Spawner(VanSpawnForest, new Vector3(0, 0, 0), new Vector3(0, 180, 0), "", 5, 0, 0);
+
+        SetObject(Double2Forest, new Vector3(0, 0, 9.5f), new Vector3(0, 60, 0), true);
+        SetObject(Double2Forest, new Vector3(0, 0, -9.5f), new Vector3(0, 0, 0), true);
+        SetObject(NonStraight1Forest, new Vector3(-8.25f, 0, 4.75f), new Vector3(0, 0, 0), true);
+        SetObject(NonStraight2Forest, new Vector3(8.25f, 0, -4.75f), new Vector3(0, 0, 0), true);
+               
+        
+        TownBoat t = addition.transform.GetChild(12).transform.GetComponent<TownBoat>();
+        t.mainTimerContinue = 6;
+        t.cooldown = 12;
+        t.startCooldown = 5;
+        SetObject(addition, new Vector3(8.25f, 0, 4.75f), new Vector3(0, 0, 0), true);
+
+        
+        TownBoat t1 = addition.transform.GetChild(12).transform.GetComponent<TownBoat>();
+        t1.mainTimerContinue = 6;
+        t1.cooldown = 12;
+        t1.startCooldown = 0;
+        SetObject(addition, new Vector3(-8.25f, 0, -4.75f), new Vector3(0, 0, 0), true);
+    }
+
+    private void level_25()
+    {
+        setForest();
+        gm.TaxiCount = 5;
         gm.GameTime = 50;
         gm.StarsLimitTimer = 0.3f;
         gm.StarsLimitMistakes = 1;
         gm.StarsLimitAccidents = 1;
-        gm.CameraZShift = -8f;
+        gm.CameraZShift = -7f;
         //gm.CameraXAngle = 65f;
-        partsAngle(0);
+        partsAngle(120);
         gm.SetScreenFOV(LevelScale.large);
+        
+        SetObject(TaxiRecForest, new Vector3(0, 0, -19f), new Vector3(0, -120, 0), false);
 
-        /*
-        SetObject(AmbRecForest, new Vector3(24.75f, 0, 4.75f), new Vector3(0, 120, 0), false);
-        SetObject(VanRecForest, new Vector3(24.75f, 0, -4.75f), new Vector3(0, -60, 0), false);
+        SetObject_Spawner(TaxiSpawnForest, new Vector3(0, 0, 19f), new Vector3(0, 180, 0), "", 5, 0, 0);
+        
+        SetObject_Spawner(VanSpawnForest, new Vector3(-8.25f, 0, -4.75f), new Vector3(0, 120, 0), "", 6, 4, 0);
+        SetObject_Spawner(VanSpawnForest, new Vector3(8.25f, 0, 4.75f), new Vector3(0, 240, 0), "", 6, 4, 0);
+        SetObject_Spawner(VanSpawnForest, new Vector3(16.5f, 0, -9.5f), new Vector3(0, 300, 0), "", 6, 0, 0);
+        SetObject_Spawner(VanSpawnForest, new Vector3(-16.5f, 0, 9.5f), new Vector3(0, 120, 0), "", 6, 0, 0);
 
-        SetObject_Spawner(AmbSpawnForest, new Vector3(-8.25f, 0, -4.75f), new Vector3(0, -300, 0), "", 6, 2, 0);
-        SetObject_Spawner(VanSpawnForest, new Vector3(-8.25f, 0, 4.75f), new Vector3(0, -240, 0), "", 6, 4, 0);
+        SetObject(Straight1Forest, new Vector3(0, 0, 9.5f), new Vector3(0, 0, 0), true);
+        SetObject(Straight1Forest, new Vector3(0, 0, -9.5f), new Vector3(0, 0, 0), true);
+        SetObject(Straight1Forest, new Vector3(8.25f, 0, -4.75f), new Vector3(0, 0, 0), true);
+        SetObject(Straight1Forest, new Vector3(-8.25f, 0, 4.75f), new Vector3(0, 0, 0), true);
 
-        SetObject(Double2Forest, new Vector3(0, 0, 0), new Vector3(0, 60, 0), true);
-        SetObject(Double2Forest, new Vector3(16.5f, 0, 0), new Vector3(0, 60, 0), true);
-        SetObject(NonStraight2Forest, new Vector3(8.25f, 0, 4.75f), new Vector3(0, 0, 0), true);
-        SetObject(NonStraight2Forest, new Vector3(8.25f, 0, -4.75f), new Vector3(0, 180, 0), true);*/
+        SetObject(NonStraight1Forest, new Vector3(0, 0, 0), new Vector3(0, 0, 0), true);
+    }
+
+    private void level_26()
+    {
+        setForest();
+        gm.TaxiCount = 3;
+        gm.GameTime = 50;
+        gm.StarsLimitTimer = 0.2f;
+        gm.StarsLimitMistakes = 1;
+        gm.StarsLimitAccidents = 1;
+        gm.CameraZShift = -7f;
+        //gm.CameraXAngle = 65f;
+        partsAngle(90);
+        gm.SetScreenFOV(LevelScale.large);
+        
+        SetObject(TaxiRecForest, new Vector3(0, 0, -19f), new Vector3(0, -120, 0), false);
+
+        SetObject_Spawner(TaxiSpawnForest, new Vector3(0, 0, 19f), new Vector3(0, 180, 0), "", 5, 0, 0);
+
+        SetObject_Spawner(VanSpawnForest, new Vector3(-8.25f, 0, -14.25f), new Vector3(0, 0, 0), "", 6, 4, 0);
+        SetObject_Spawner(VanSpawnForest, new Vector3(-16.5f, 0, 0), new Vector3(0, 60, 0), "", 6, 4, 0);
+        SetObject_Spawner(VanSpawnForest, new Vector3(-16.5f, 0, 9.5f), new Vector3(0, 120, 0), "", 6, 4, 0);
+        
+        SetObject(Straight1Forest, new Vector3(-8.25f, 0, -4.75f), new Vector3(0, 0, 0), true);
+        
+        SetObject(NonStraight1Forest, new Vector3(0, 0, -9.5f), new Vector3(0, 0, 0), true);
+        SetObject(NonStraight1Forest, new Vector3(0, 0, 9.5f), new Vector3(0, 0, 0), true);
+        SetObject(NonStraight1Forest, new Vector3(-8.25f, 0, 4.75f), new Vector3(0, 0, 0), true);
     }
 
 
@@ -777,7 +923,7 @@ public class LevelGenerator : MonoBehaviour
 
         if (g.TryGetComponent(out Region r) && !isRotating)
         {
-            r.RotationAngle = 0;
+            r.SetToNonRotation();
         }      
         else if (g.TryGetComponent(out VehicleReceiver vr))
         {

@@ -54,14 +54,20 @@ public class Region : MonoBehaviour, CityInfrastructure
 
         if (RotationAngle == 0)
         {
-            //border.transform.GetChild(0).gameObject.SetActive(false);
-            border.transform.GetChild(0).GetComponent<MeshRenderer>().material = whenBlocked;
+            SetToNonRotation();
         }
 
         if (string.IsNullOrEmpty(gameObject.name))
         {
             gameObject.name = UnityEngine.Random.Range(1, 1000).ToString();
         }
+    }
+
+    public void SetToNonRotation()
+    {
+        setBorderLocked(true);
+        RotationAngle = 0;
+        border.transform.GetChild(0).GetComponent<MeshRenderer>().material = whenBlocked;
     }
 
 

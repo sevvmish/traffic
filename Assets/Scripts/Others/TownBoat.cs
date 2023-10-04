@@ -26,7 +26,7 @@ public class TownBoat : MonoBehaviour
     void Start()
     {
         stopper.Radius = stopperRadius;
-        startCooldown = UnityEngine.Random.Range(0, startCooldown);
+        //startCooldown = UnityEngine.Random.Range(0, startCooldown);
         leftBridge.localEulerAngles = Vector3.zero;
         rightBridge.localEulerAngles = Vector3.zero;
         boat.gameObject.SetActive(false);

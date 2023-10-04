@@ -238,6 +238,8 @@ public class MainMenu : MonoBehaviour
             }
         }
 
+        lastLevel = lastLevel > 30 ? 30 : lastLevel;
+
         if (lastLevel < 11)
         {
             StartCoroutine(playMap01());
@@ -330,6 +332,7 @@ public class MainMenu : MonoBehaviour
             }
         }
 
+        /*
         if (Input.GetKeyDown(KeyCode.L))
         {
             Globals.CurrentLevel = GetLastLevel();
@@ -340,7 +343,7 @@ public class MainMenu : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.S))
         {
             plusStar.StartPlusStar();
-        }
+        }*/
     }
 
     private IEnumerator startLevel(int level)
@@ -538,6 +541,8 @@ public class MainMenu : MonoBehaviour
                 break;
             }
         }
+
+        lastLevel = lastLevel > 30 ? 30 : lastLevel;
 
         return lastLevel;
     }

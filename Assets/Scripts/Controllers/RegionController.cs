@@ -118,7 +118,7 @@ public class RegionController : MonoBehaviour
         }
 
         xBorder = new Vector2(minX + cameraTransform.position.x + 8, maxX + cameraTransform.position.x - 8);
-        zBorder = new Vector2(minZ + cameraTransform.position.z, maxZ + cameraTransform.position.z);
+        zBorder = new Vector2(minZ + cameraTransform.position.z + 8, maxZ + cameraTransform.position.z - 8);
 
     }
 
